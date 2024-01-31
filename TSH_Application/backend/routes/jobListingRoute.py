@@ -87,8 +87,7 @@ def edit_job_listing(job_id):
         })
     
 @job_listing_routes.route('/delete_job_listing', methods=['DELETE'])
-def delete_job_listing():
-    job_id = 3
+def delete_job_listing(job_id):
     query_job_listing = Job_listing.query.get(job_id)
 
     try:
