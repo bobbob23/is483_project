@@ -27,5 +27,7 @@ bcrypt = Bcrypt(app)
 migrate = Migrate(app, db)
 
 from routes.applicantRoute import *
+from routes.jobListingRoute import *
 # Register routes
 app.register_blueprint(applicant_routes)
+app.register_blueprint(job_listing_routes)
