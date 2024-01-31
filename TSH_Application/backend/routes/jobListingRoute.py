@@ -34,7 +34,7 @@ def get_job_listings():
 @job_listing_routes.route('/new_job_listing', methods=['POST'])
 def new_job_listing():
     data = request.get_json()
-    print(data)
+
     try:
         new_record = Job_listing(
             title = data['title'], 
@@ -56,5 +56,32 @@ def new_job_listing():
         return jsonify({
             'isApplied': False,
             'message': 'Failed to save job listing!',
+            'error' : str(e)
+        })
+    
+@job_listing_routes.route('/edit_job_listing', methods=['PUT'])
+def edit_job_listing(job_id):
+    edit_data = request.get_json()
+    query_job_listing = Job_listing.query.get(job_id)
+
+    try:
+        query_job_listing.title = edit_data['title'], 
+        query_job_listing.location = edit_data['location'], 
+        query_job_listing.type = edit_data['type'], 
+        query_job_listing.category = edit_data['category'],
+        query_job_listing.closing_date = edit_data['closing_date']
+
+        db.session.commit()
+
+        return jsonify({
+            'isApplied': True,
+            'message': f'Job id {job_id} has been saved!'
+        })
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            'isApplied': False,
+            'message': f'Failed to edit job id {job_id}!',
             'error' : str(e)
         })
