@@ -30,3 +30,31 @@ def get_job_listings():
     return ({
         "message": f"No data in database"
     })
+
+@job_listing_routes.route('/new_job_listing', methods=['POST'])
+def new_job_listing():
+    data = request.get_json()
+    print(data)
+    try:
+        new_record = Job_listing(
+            title = data['title'], 
+            location = data['location'], 
+            type = data['type'], 
+            category = data['category'],
+            closing_date = data['closing_date']
+        )
+
+        db.session.add(new_record)
+        db.session.commit()
+
+        return jsonify({
+            'isApplied': True,
+            'message': 'A new job listing has been saved!'
+        })
+
+    except Exception as e:
+        return jsonify({
+            'isApplied': False,
+            'message': 'Failed to save job listing!',
+            'error' : str(e)
+        })
