@@ -85,3 +85,25 @@ def edit_job_listing(job_id):
             'message': f'Failed to edit job id {job_id}!',
             'error' : str(e)
         })
+    
+@job_listing_routes.route('/delete_job_listing', methods=['DELETE'])
+def delete_job_listing():
+    job_id = 3
+    query_job_listing = Job_listing.query.get(job_id)
+
+    try:
+        db.session.delete(query_job_listing)
+        db.session.commit()
+
+        return jsonify({
+            'isApplied': True,
+            'message': f'Job id {job_id} has been deleted!'
+        })
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            'isApplied': False,
+            'message': f'Failed to delete job id {job_id}!',
+            'error' : str(e)
+        })
