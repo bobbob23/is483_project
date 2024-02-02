@@ -1,3 +1,20 @@
+<template>
+<div>
+  <h1>Welcome to ATRS</h1>
+  <div v-if="jobs.length > 0">
+    <h2>Available Jobs:</h2>
+      <ul>
+        <li v-for="job in jobs" :key="job.title">
+          <strong>{{ job.title }}</strong> - {{ job.location }} | {{ job.type }}
+        </li>
+      </ul>
+  </div>
+  <div v-else>
+    <p>No jobs available at the moment.</p>
+  </div>
+</div>
+</template>
+
 <script>
     export default {
       data() {
@@ -20,25 +37,6 @@
       },
     };
     </script>
-
-
-<template>
-    <div>
-        <h1>Welcome to ATRS</h1>
-        <div v-if="jobs.length > 0">
-            <h2>Available Jobs:</h2>
-            <ul>
-                <li v-for="job in jobs" :key="job.title">
-                    <strong>{{ job.title }}</strong> - {{ job.location }} | {{ job.type }}
-                </li>
-            </ul>
-        </div>
-        <div v-else>
-            <p>No jobs available at the moment.</p>
-        </div>
-  </div>
-</template>
-
 
 <style>
 </style>
