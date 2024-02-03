@@ -19,7 +19,9 @@ def new_applicant():
             school = data['school'], 
             course_of_study = data['course_of_study'], 
             GPA = data['GPA'], 
-            grad_month = data['grad_month']
+            grad_month = data['grad_month'],
+            past_salary = data['past_salary'],
+            work_permit = data['work_permit']
         )
 
         db.session.add(new_record)
