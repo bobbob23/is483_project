@@ -1,0 +1,38 @@
+[
+    {
+      "title": "UI/UX",
+      "location": "Singapore",
+      "type": "Internship",
+      "department": "Technology",
+      "closing_date": "2015-11-01"
+    },
+    {
+      "title": "Software Engineer",
+      "location": "Singapore",
+      "type": "Entry-Level",
+      "department": "Technology",
+      "closing_date": "2015-11-15"
+    },
+    {
+      "title": "Machining Intern",
+      "location": "Singapore",
+      "type": "Internship",
+      "department": "Engineering",
+      "closing_date": "2015-12-01"
+    },
+    {
+      "title": "Precision Engineer",
+      "location": "Singapore",
+      "type": "Entry-Level",
+      "department": "Technology",
+      "closing_date": "2015-12-15"
+    },
+    {
+      "title": "Machining Specialist",
+      "location": "Singapore",
+      "type": "Internship",
+      "department": "Machining",
+      "closing_date": "2016-01-01"
+    }
+]
+  
