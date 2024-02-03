@@ -17,7 +17,7 @@ def get_job_listings():
         job_dict['title'] = job.title
         job_dict['location'] = job.location
         job_dict['type'] = job.type
-        job_dict['category'] = job.category
+        job_dict['department'] = job.department
         job_dict['closing_date'] = job.closing_date
         job_list.append(job_dict)
 
@@ -40,7 +40,7 @@ def new_job_listing():
             title = data['title'], 
             location = data['location'], 
             type = data['type'], 
-            category = data['category'],
+            department = data['department'],
             closing_date = data['closing_date']
         )
 
@@ -60,7 +60,7 @@ def new_job_listing():
         })
     
 @job_listing_routes.route('/edit_job_listing', methods=['PUT'])
-def edit_job_listing(job_id):
+def edit_job_listing(job_id=1):
     edit_data = request.get_json()
     query_job_listing = Job_listing.query.get(job_id)
 
@@ -68,7 +68,7 @@ def edit_job_listing(job_id):
         query_job_listing.title = edit_data['title'], 
         query_job_listing.location = edit_data['location'], 
         query_job_listing.type = edit_data['type'], 
-        query_job_listing.category = edit_data['category'],
+        query_job_listing.department = edit_data['department'],
         query_job_listing.closing_date = edit_data['closing_date']
 
         db.session.commit()

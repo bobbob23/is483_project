@@ -6,5 +6,5 @@ class Job_listing(db.Model):
     title = db.Column(db.String(150))
     location = db.Column(db.String(150))
     type = db.Column(db.Integer)
-    category = db.Column(db.String(150))
+    department = db.Column(db.String(150))
     closing_date = db.Column(db.DateTime(timezone=True))

@@ -29,6 +29,6 @@ CREATE TABLE Job_listing (
     Title VARCHAR(250),
     Location VARCHAR(250),
     Type VARCHAR(250),
-    Category VARCHAR(250),
+    Department VARCHAR(250),
     Closing_date DATETIME
 );
