@@ -5,6 +5,7 @@ import ATRSHome from './components/ATRSHome.vue'
 
 <template>
   <Banner msg="CAREERS AT TSH" />
+  <ATRSHome/>
 </template>
 
 <style scoped>

@@ -1,33 +1,25 @@
-<template>
-<h1>Careers at TSH</h1>
-<div>
-    <ul>
-        <li v-for="jobs in jobs" :key="job.title">
-            <strong>{{ job.title }}</strong> - {{ job.location }} - {{ job.type }} - {{ job.department }}
-        </li>
-    </ul>
-</div>
-</template>
-
 <script>
 export default {
     data() {
         return {
-            jobs: []
+            jobs:[]
         };
     },
     mounted() {
-        this.fetchJobs();
-    },
-    methods: {
-        async fetchJobs(){
-            try {
-            const response = await fetch('/jobs.json');
-            this.jobs = await response.json();
-            } catch (error) {
-            console.error('Error fetching jobs:', error);
-            }
-        }
+        fetch('http://localhost:3000/')
+        .then(res => res.json())
+        .then(data => this.jobs = data)
     }
-} 
+}
 </script>
+
+<template>
+    <h1>Available Jobs</h1>
+    <div>
+        <ul>
+            <li v-for="job in jobs" :key="job.title">
+                <strong>{{ job.title }}</strong> - {{ job.location }} - {{ job.type }} - {{ job.department }}
+            </li>
+        </ul>
+    </div>
+</template>
