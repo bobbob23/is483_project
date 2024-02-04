@@ -6,7 +6,7 @@ export default {
         };
     },
     mounted() {
-        fetch('http://localhost:3000/')
+        fetch('../../public/jobs.json')
         .then(res => res.json())
         .then(data => this.jobs = data)
     }
