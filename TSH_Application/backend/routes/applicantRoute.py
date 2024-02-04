@@ -32,8 +32,9 @@ def new_applicant():
             'message': 'Application has been received!'
         })
 
-    except:
+    except Exception as e:
         return jsonify({
             'isApplied': False,
-            'message': 'Failed to receive application!'
+            'message': 'Failed to receive application!',
+            'error' : str(e)
         })
