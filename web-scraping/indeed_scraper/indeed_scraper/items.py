@@ -8,5 +8,7 @@ import scrapy
 
 class IndeedScraperItem(scrapy.Item):
     # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+    jobKey = scrapy.Field()
+    jobTitle = scrapy.Field()
+    jobDescription = scrapy.Field()
+ 
