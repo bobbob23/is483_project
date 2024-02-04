@@ -9,7 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.2",
+    "bootstrap-vue": "^2.23.1",
     "json-server": "^1.0.0-alpha.23",
+    "primevue": "^3.47.2",
     "vue": "^3.4.15"
   },
   "devDependencies": {

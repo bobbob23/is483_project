@@ -6,20 +6,32 @@ export default {
         };
     },
     mounted() {
-        fetch('../../public/jobs.json')
+        fetch('jobs.json')
         .then(res => res.json())
         .then(data => this.jobs = data)
-    }
+    },
 }
 </script>
 
 <template>
-    <h1>Available Jobs</h1>
+    <h2 id="header">Available Jobs</h2>
     <div>
-        <ul>
-            <li v-for="job in jobs" :key="job.title">
-                <strong>{{ job.title }}</strong> - {{ job.location }} - {{ job.type }} - {{ job.department }}
-            </li>
-        </ul>
+    <Card v-for="job in jobs" :key="job.title">
+        <template #title>{{ job.title }}</template>
+        <template #content>
+            <p class="m-0">
+                {{ job.location }} - {{ job.type }} - {{ job.department }}
+            </p>
+        </template>
+    </Card>
     </div>
 </template>
+
+<style scoped>
+
+#header {
+    text-align: center;
+    margin: 20px;
+}
+
+</style scoped>
