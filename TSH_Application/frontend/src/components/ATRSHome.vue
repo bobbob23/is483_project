@@ -1,23 +1,3 @@
-<script>
-import Toolbar from 'primevue/toolbar';
-import Button from 'primevue/button'
-import Card from 'primevue/card';
-
-export default {
-    data() {
-        return {
-            jobs: [],
-            searchItem: ""
-        };
-    },
-    mounted() {
-        fetch('jobs.json')
-            .then(res => res.json())
-            .then(data => this.jobs = data)
-    },
-}
-</script>
-
 <template>
     <Toolbar>
         <template #center>
@@ -37,7 +17,6 @@ export default {
     <h2 id="header">Available Jobs</h2>
 
     <!-- TRY TO USE DATA VIEW -->
-    
     <div class="container">
         <div class="col-sm">
             <Card v-for="job in jobs" :key="job.title">
@@ -51,6 +30,26 @@ export default {
         </div>
     </div>
 </template>
+
+<script>
+import Toolbar from 'primevue/toolbar';
+import Button from 'primevue/button'
+import Card from 'primevue/card';
+
+export default {
+    data() {
+        return {
+            jobs: [],
+            searchItem: ""
+        };
+    },
+    mounted() {
+        fetch('jobs.json')
+            .then(res => res.json())
+            .then(data => this.jobs = data)
+    },
+}
+</script>
 
 <style scoped>
 #header {
