@@ -6,7 +6,8 @@ import 'primeicons/primeicons.css'
 
 <template>
   <Banner msg="CAREERS AT TSH" />
-  <ATRSHome/>
+  <router-view />
+  <!-- <ATRSHome/> -->
 </template>
 
 <style scoped>

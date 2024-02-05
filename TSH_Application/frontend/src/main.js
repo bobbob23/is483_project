@@ -1,7 +1,9 @@
 import './assets/main.css'
 import { createApp } from 'vue';
 import App from './App.vue';
+import { registerPlugins } from '@/plugins'
 const app = createApp(App);
+registerPlugins(app);
 
 /* import primevue ui components */
 import 'primevue/resources/primevue.min.css';
