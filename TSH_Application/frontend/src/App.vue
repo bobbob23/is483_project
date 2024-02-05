@@ -2,6 +2,7 @@
 import Banner from './components/Banner.vue'
 import ATRSHome from './components/ATRSHome.vue'
 import 'primeicons/primeicons.css'
+import 'bootstrap/dist/css/bootstrap.css';
 </script>
 
 <template>
