@@ -13,11 +13,13 @@ import Card from 'primevue/card';
 import Toolbar from 'primevue/toolbar';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
+import Listbox from 'primevue/listbox';
 
 /* use imported primevue components */
 app.component('Card', Card);
 app.component('Toolbar', Toolbar)
 app.component('InputText', InputText)
 app.component('Button', Button)
+app.component('Listbox', Listbox)
 
 app.use(PrimeVue).mount('#app')
