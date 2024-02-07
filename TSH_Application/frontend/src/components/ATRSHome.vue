@@ -22,7 +22,7 @@
             <h3 style="margin-left: 155px; ">Filters</h3>
         </div>
         <div class="p-2 col-8">
-            <h2 id="header" style="padding-left: 50px;">Available Jobs</h2>
+            <h3 id="header" style="padding-left: 50px;">Available Jobs</h3>
             <hr>
         </div>
     </div>
@@ -32,10 +32,10 @@
             <div class="col-3">
                 <h4>Experience Level</h4>
                 <Listbox class="w-full" v-model="selectedExperience" :options="experienceLevel"
-                    @click="reloadListings(selectedExperience, selectedCountry)" />
+                    @click="reloadListings(selectedExperience, selectedLocation)" />
                 <h4 class="mt-3">Location</h4>
-                <Listbox class="w-full" v-model="selectedCountry" :options="countries" style="padding: 0px;"
-                    @click="reloadListings(selectedExperience, selectedCountry)" />
+                <Listbox class="w-full" v-model="selectedLocation" :options="countries" style="padding: 0px;"
+                    @click="reloadListings(selectedExperience, selectedLocation)" />
             </div>
             <div class="col-1">
             </div>
@@ -68,7 +68,7 @@ export default {
             jobs: [],
             selectedExperience: "",
             experienceLevel: ["Internship", "Entry-Level", "Experienced"],
-            selectedCountry: "",
+            selectedLocation: "",
             countries: ["Singapore", "Malaysia"],
             searchItem: "",
             hover: [],
@@ -86,18 +86,18 @@ export default {
         viewRoleListing(job) {
             alert(job.title + " job listing")
         },
-        reloadListings(selectedExperience, selectedCountry) {
+        reloadListings(selectedExperience, selectedLocation) {
             fetch('jobs.json')
                 .then(res => res.json())
                 .then(data => {
-                    if (!selectedExperience && !selectedCountry) {
+                    if (!selectedExperience && !selectedLocation) {
                         this.jobs = data;
-                    } else if (selectedExperience && selectedCountry) {
+                    } else if (selectedExperience && selectedLocation) {
                         this.jobs = data.filter(job => {
-                            return job.type === selectedExperience && job.location === selectedCountry;
+                            return job.type === selectedExperience && job.location === selectedLocation;
                         });
-                    } else if (selectedCountry) {
-                        this.jobs = data.filter(job => job.location === selectedCountry);
+                    } else if (selectedLocation) {
+                        this.jobs = data.filter(job => job.location === selectedLocation);
                     } else {
                         this.jobs = data.filter(job => job.type === selectedExperience);
                     }
