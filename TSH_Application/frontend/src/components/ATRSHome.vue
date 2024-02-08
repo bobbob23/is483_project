@@ -4,7 +4,9 @@
             <div>
                 <span class="p-input-icon-left">
                     <AutoComplete v-model="searchItem" placeholder="Search by keyword"
-                        style="border-radius: 100px; width: 200px" :suggestions="jobListingTitles" @complete="search" />
+                        style="border-radius: 100px; width: 200px" :suggestions="jobListingTitles" @complete="search" 
+                        @keyup.enter="retrieveListings(searchItem)"
+                        />
                 </span>
                 <span>
                     <Button label="Search Jobs" style="margin-left: 20px; 
