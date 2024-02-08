@@ -14,6 +14,7 @@ import Toolbar from 'primevue/toolbar';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import Listbox from 'primevue/listbox';
+import AutoComplete from 'primevue/autocomplete';
 
 /* use imported primevue components */
 app.component('Card', Card);
@@ -21,5 +22,6 @@ app.component('Toolbar', Toolbar)
 app.component('InputText', InputText)
 app.component('Button', Button)
 app.component('Listbox', Listbox)
+app.component('AutoComplete', AutoComplete)
 
 app.use(PrimeVue).mount('#app')

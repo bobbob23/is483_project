@@ -3,13 +3,12 @@
         <template #center>
             <div>
                 <span class="p-input-icon-left">
-                    <i class="pi pi-search" style="color:grey, " />
-                    <InputText v-model="searchItem" placeholder="Search by keyword"
-                        style="border-radius: 50px; width: 500px" />
+                    <AutoComplete v-model="searchItem" placeholder="Search by keyword"
+                        style="border-radius: 100px; width: 200px" :suggestions="jobListingTitles" @complete="search" />
                 </span>
                 <span>
-                    <Button label="Search Jobs"
-                        style="margin-left: 20px; border-radius: 50px; background-color: darkblue" />
+                    <Button label="Search Jobs" style="margin-left: 20px; 
+                        border-radius: 50px; background-color: darkblue" @click="retrieveListings(searchItem)" />
                 </span>
             </div>
         </template>
@@ -18,8 +17,8 @@
     <div class="row">
         <div class="mt-4 p-2 col-1">
         </div>
-        <div class="mt-4 p-2 mr-2 col-3">
-            <h3 style="margin-left: 155px; ">Filters</h3>
+        <div class="mt-4 p-2 col-3">
+            <h3>Filters</h3>
         </div>
         <div class="p-2 col-8">
             <h3 id="header" style="padding-left: 50px;">Available Jobs</h3>
@@ -61,11 +60,14 @@ import Toolbar from 'primevue/toolbar';
 import Button from 'primevue/button';
 import Card from 'primevue/card';
 import Listbox from 'primevue/listbox'
+import AutoComplete from 'primevue/autocomplete'
 
 export default {
     data() {
         return {
-            jobs: [],
+            jobs: [], // to be used to populate all listings
+            untouchedJobList: [], // original job list that contains all job listings
+            jobListingTitles: [], // to be used to populate datalist tag for search bar
             selectedExperience: "",
             experienceLevel: ["Internship", "Entry-Level", "Experienced"],
             selectedLocation: "",
@@ -79,6 +81,7 @@ export default {
             .then(res => res.json())
             .then(data => {
                 this.jobs = data;
+                this.untouchedJobList = data;
                 this.hover = new Array(data.length).fill(false);
             })
     },
@@ -102,6 +105,30 @@ export default {
                         this.jobs = data.filter(job => job.type === selectedExperience);
                     }
                 })
+        },
+
+        search(event) {
+            setTimeout(() => {
+                if (!event.query.trim().length) {
+                    this.jobListingTitles = [...this.untouchedJobList];
+                } else {
+                    this.jobListingTitles = this.untouchedJobList.filter((job) => {
+                        const title = job.title.toLowerCase();
+                        return title.startsWith(event.query.toLowerCase());
+                    }).map((job) => job.title); // extracting only the 'title' property
+                }
+            }, 200);
+        },
+
+        retrieveListings(searchVar) {
+            fetch('jobs.json')
+                .then(res => res.json())
+                .then(data => {
+                    let jobTitleSearch = searchVar.toLowerCase()
+                    this.jobs = this.untouchedJobList.filter((job) => {
+                        return job.title.toLowerCase().includes(jobTitleSearch)
+                    });
+                });
         }
     },
 }
