@@ -3,10 +3,8 @@
         <template #center>
             <div>
                 <span class="p-input-icon-left">
-                    <AutoComplete v-model="searchItem" placeholder="Search by keyword"
-                        style="border-radius: 100px; width: 200px" :suggestions="jobListingTitles" @complete="search" 
-                        @keyup.enter="retrieveListings(searchItem)"
-                        />
+                    <AutoComplete v-model="searchItem" placeholder="Search by keyword" style="border-radius: 100px;"
+                        :suggestions="jobListingTitles" @complete="search" @keyup.enter="retrieveListings(searchItem)" />
                 </span>
                 <span>
                     <Button label="Search Jobs" style="margin-left: 20px; 
@@ -17,12 +15,14 @@
     </Toolbar>
 
     <div class="row">
-        <div class="mt-4 p-2 col-1">
+        <div class="mt-4 col-1">
         </div>
-        <div class="mt-4 p-2 col-3">
-            <h3>Filters</h3>
+        <div class="mt-4 col-3">
+            <h3 style="margin-left: 75px;">Filters</h3>
         </div>
-        <div class="p-2 col-8">
+        <div class="col-1">
+        </div>
+        <div class="p-2 col-7">
             <h3 id="header" style="padding-left: 50px;">Available Jobs</h3>
             <hr>
         </div>
@@ -30,6 +30,8 @@
 
     <div class="container">
         <div class="row">
+            <div class="col-1">
+            </div>
             <div class="col-3">
                 <h4>Experience Level</h4>
                 <Listbox class="w-full" v-model="selectedExperience" :options="experienceLevel"
@@ -40,16 +42,21 @@
             </div>
             <div class="col-1">
             </div>
-            <div class="col-8">
-                <Card v-for="(job, index) in jobs" :key="job.title"
-                    style="margin-bottom: 20px; margin-left: -35px; width: 45rem;" @click="viewRoleListing(job)"
-                    @mouseenter="hover[index] = true" @mouseleave="hover[index] = false" class="div"
-                    :class="{ 'div-hover': hover[index] }">
+            <div class="col-7">
+                <Card v-for="(job, index) in jobs" :key="job.title" style="margin-bottom: 20px; margin-left: 30px;"
+                    @click="viewRoleListing(job)" @mouseenter="hover[index] = true" @mouseleave="hover[index] = false"
+                    class="div" :class="{ 'div-hover': hover[index] }">
                     <template #title>{{ job.title }}</template>
                     <template #content>
-                        <p class="m-0">
-                            {{ job.location }} - {{ job.type }} - {{ job.department }}
-                        </p>
+                        <span class="m-3">
+                            <i class="pi pi-map-marker mx-2"></i>{{ job.location }} 
+                        </span>
+                        <span class="m-3">
+                            <i class="pi pi-users mx-2"></i>{{ job.type }} 
+                        </span>
+                        <span class="m-3">
+                            <i class="pi pi-briefcase mx-2"></i>{{ job.department }}
+                        </span>
                     </template>
                 </Card>
             </div>
