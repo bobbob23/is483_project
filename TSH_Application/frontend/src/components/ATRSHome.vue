@@ -1,4 +1,5 @@
 <template>
+    <Banner msg="CAREERS AT TSH" />
     <Toolbar>
         <template #center>
             <div>
@@ -70,8 +71,12 @@ import Button from 'primevue/button';
 import Card from 'primevue/card';
 import Listbox from 'primevue/listbox'
 import AutoComplete from 'primevue/autocomplete'
+import Banner from './Banner.vue'
 
 export default {
+    components: {
+        Banner
+    },
     data() {
         return {
             jobs: [], // to be used to populate all listings
