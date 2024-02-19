@@ -6,7 +6,7 @@ from __init__ import db
 
 job_listing_routes = Blueprint('job_listing', __name__)
 
-@job_listing_routes.route('/job_listings', methods=['GET'])
+@job_listing_routes.route('/job_listing_list', methods=['GET'])
 def get_job_listings():
     listing_query_list = Job_listing.query.all()
     job_list = []

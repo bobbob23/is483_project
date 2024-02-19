@@ -15,7 +15,9 @@ CREATE TABLE Applicant (
     School VARCHAR(250),
     Course_of_study VARCHAR(250),
     GPA VARCHAR(20),
-    Grad_Month DATETIME
+    Grad_Month DATETIME,
+    Past_salary VARCHAR(250),
+    Work_permit VARCHAR(250)
 );
 
 -- INSERT INTO Access_Control (Access_ID, Access_Control_Name) VALUES ('1', 'Admin');
