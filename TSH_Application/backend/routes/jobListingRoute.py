@@ -31,6 +31,27 @@ def get_job_listings():
         "message": f"No data in database"
     })
 
+@job_listing_routes.route('/job_listing', methods=['GET'])
+def get_job_listing(job_id):
+    query_job_listing = Job_listing.query.get(job_id)
+
+    if (query_job_listing != 'None'):
+        job_dict = {}
+        job_dict['title'] = query_job_listing.title
+        job_dict['location'] = query_job_listing.location
+        job_dict['type'] = query_job_listing.type
+        job_dict['department'] = query_job_listing.department
+        job_dict['closing_date'] = query_job_listing.closing_date
+
+        return jsonify({
+            "message": "Succesfully retrieved data from database!",
+            "data": job_dict
+        })
+
+    return ({
+        "message": f"No data in database"
+    })
+
 @job_listing_routes.route('/new_job_listing', methods=['POST'])
 def new_job_listing():
     data = request.get_json()
@@ -60,7 +81,7 @@ def new_job_listing():
         })
     
 @job_listing_routes.route('/edit_job_listing', methods=['PUT'])
-def edit_job_listing(job_id=1):
+def edit_job_listing(job_id):
     edit_data = request.get_json()
     query_job_listing = Job_listing.query.get(job_id)
 
