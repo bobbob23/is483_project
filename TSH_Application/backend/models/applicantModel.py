@@ -10,3 +10,5 @@ class Applicant(db.Model):
     course_of_study = db.Column(db.String(150))
     GPA = db.Column(db.String(20))
     grad_month = db.Column(db.DateTime(timezone=True))
+    past_salary = db.Column(db.String(150))
+    work_permit = db.Column(db.String(150))
