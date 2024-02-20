@@ -1,5 +1,6 @@
 [
   {
+      "job_ID": 1,
       "title": "UI/UX",
       "location": "Singapore",
       "type": "Internship",
@@ -7,6 +8,7 @@
       "closing_date": "2015-11-01"
   },
   {
+      "job_ID": 2,
       "title": "Software Engineer",
       "location": "Singapore",
       "type": "Entry-Level",
@@ -14,6 +16,7 @@
       "closing_date": "2015-11-15"
   },
   {
+      "job_ID": 3,
       "title": "Machining Intern",
       "location": "Singapore",
       "type": "Internship",
@@ -21,6 +24,7 @@
       "closing_date": "2015-12-01"
   },
   {
+      "job_ID": 4,
       "title": "Precision Engineer",
       "location": "Singapore",
       "type": "Entry-Level",
@@ -28,6 +32,7 @@
       "closing_date": "2015-12-15"
   },
   {
+      "job_ID": 5,
       "title": "Machining Specialist",
       "location": "Singapore",
       "type": "Internship",

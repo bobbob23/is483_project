@@ -45,7 +45,7 @@
             </div>
             <div class="col-7">
                 <Card v-for="(job, index) in jobs" :key="job.title" style="margin-bottom: 20px; margin-left: 30px;"
-                    @click="viewRoleListing(job)" @mouseenter="hover[index] = true" @mouseleave="hover[index] = false"
+                    @click="viewRoleListing(job.job_ID)" @mouseenter="hover[index] = true" @mouseleave="hover[index] = false"
                     class="div" :class="{ 'div-hover': hover[index] }">
                     <template #title>{{ job.title }}</template>
                     <template #content>
@@ -100,8 +100,13 @@ export default {
             })
     },
     methods: {
-        viewRoleListing(job) {
-            alert(job.title + " job listing")
+        viewRoleListing(job_ID) {
+            this.$router.push({
+                name: "JobDetails",
+                params: {
+                    job_ID: job_ID
+                }
+            })
         },
         reloadListings(selectedExperience, selectedLocation) {
             fetch('jobs.json')

@@ -9,28 +9,33 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "home" */ "@/components/ATRSHome.vue"),
+      import("@/components/ATRSHome.vue"),
   },
-
   {
-    path: "/Job",
+    path: "/job/:job_ID",
     name: "JobDetails",
     component: () =>
-      import(/* webpackChunkName: "job" */ "@/components/JobPage.vue"),
+      import("@/components/JobPage.vue"),
+      props: (route) => ({
+        job_ID: route.params.job_ID,
+    })
   },
 
   {
-    path: "/Apply",
+    path: "/apply/:job_ID",
     name: "ApplyForm",
     component: () =>
-      import(/* webpackChunkName: "job" */ "@/components/JobApplication.vue"),
+      import("@/components/JobApplication.vue"),
+      props: (route) => ({
+        job_ID: route.params.job_ID,
+    })
   },
 
   {
-    path: "/Success",
+    path: "/success",
     name: "Success",
     component: () =>
-      import(/* webpackChunkName: "job" */ "@/components/ApplySuccess.vue"),
+      import("@/components/ApplySuccess.vue"),
   }
 ];
 

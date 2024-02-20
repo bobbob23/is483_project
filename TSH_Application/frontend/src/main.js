@@ -15,6 +15,7 @@ import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import Listbox from 'primevue/listbox';
 import AutoComplete from 'primevue/autocomplete';
+import FileUpload from 'primevue/fileupload';
 
 /* use imported primevue components */
 app.component('Card', Card);
@@ -23,5 +24,6 @@ app.component('InputText', InputText)
 app.component('Button', Button)
 app.component('Listbox', Listbox)
 app.component('AutoComplete', AutoComplete)
+app.component("FileUpload", FileUpload)
 
 app.use(PrimeVue).mount('#app')

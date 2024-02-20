@@ -1,81 +1,129 @@
 <template>
-    <div>
-      <h1>Apply for {{ job.title }}</h1>
-      <form @submit.prevent="submitForm">
-        <div class="p-field">
-          <label for="name">Name</label>
-          <InputText v-model="formData.name" id="name" :class="{'p-invalid': formErrors.name}" />
-          <small class="p-error" v-if="formErrors.name">Name is required</small>
+  <Banner msg="CAREERS AT TSH" />
+  <Button label="< Back" class="mt-2 mx-2"
+    style="border-radius: 20%; border: lightgrey; height: 35px; background-color: white; color: black "
+    @click="$router.go(-1)" />
+  <div class="m-3 px-4">
+    <h1 class="m-3">{{ jobData.title }}</h1>
+    <hr>
+    <form @submit.prevent="submitForm">
+      <div class="row">
+        <div class="col-3"></div>
+        <div class="col">
+          <label for="firstname" style="display: block">First Name</label>
+          <InputText id="firstname" v-model="fName" style="width: 300px" />
         </div>
-        <div class="p-field">
+        <div class="col">
+          <label for="lName" style="display: block"> Last Name</label>
+          <InputText v-model="lName" id="lName" style="width: 300px" />
+        </div>
+        <div class="col-3"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-3"></div>
+        <div class="col">
           <label for="email">Email</label>
-          <InputText v-model="formData.email" id="email" :class="{'p-invalid': formErrors.email}" />
-          <small class="p-error" v-if="formErrors.email">Email is required</small>
+          <InputText v-model="email" id="email" style="width: 300px"/>
         </div>
-        <div class="p-field">
-          <label for="resume">Resume</label>
-          <FileUpload mode="basic" v-model="formData.resume" id="resume" :class="{'p-invalid': formErrors.resume}" />
-          <small class="p-error" v-if="formErrors.resume">Resume is required</small>
+        <div class="col">
+          <label for="contact">Contact Number</label>
+          <InputText v-model="number" id="number" style="width: 300px"/>
         </div>
-        <div class="p-field">
-          <Button label="Submit" type="submit" :disabled="!isFormValid" />
-        </div>
-      </form>
-    </div>
-  </template>
+        <div class="col-3"></div>
+      </div>
+      <div class="p-field">
+        <Button label="Submit" type="submit" v-model="formValid" @click="submitForm(formValid)" />
+        <!--to add in disable submit button if form is not filled up-->
+      </div>
+    </form>
+  </div>
+</template>
   
-  <script>
-  import { ref, reactive } from 'vue';
-  import { InputText } from 'primevue/inputtext';
-  import { FileUpload } from 'primevue/fileupload';
-  import { Button } from 'primevue/button';
-  
-  export default {
-    name: 'ApplyForm',
-    components: {
-      InputText,
-      FileUpload,
-      Button
-    },
-    setup() {
-      const job = ref({
-        title: 'Software Engineer'
-      });
-  
-      const formData = reactive({
-        name: '',
-        email: '',
-        resume: null
-      });
-  
-      const formErrors = reactive({
-        name: false,
-        email: false,
-        resume: false
-      });
-  
-      const validateForm = () => {
-        formErrors.name = !formData.name.trim();
-        formErrors.email = !formData.email.trim();
-        formErrors.resume = !formData.resume;
-      };
-  
-      const isFormValid = () => {
-        return !Object.values(formErrors).some(error => error);
-      };
-  
-      const submitForm = () => {
-        validateForm();
-        if (isFormValid()) {
-          // Implement your form submission logic here
-          console.log('Form Data:', formData);
-          // For example, you could send the form data to an API endpoint
-          // After successful submission, navigate to the success page
-          router.push('/Success');
+<script>
+import InputText from 'primevue/inputtext';
+import FileUpload from 'primevue/fileupload';
+import Button from 'primevue/button';
+import Banner from './Banner.vue'
+
+export default {
+  components: {
+    Banner
+  },
+  data() {
+    return {
+      jobs: [
+        {
+          "job_ID": 1,
+          "title": "UI/UX",
+          "location": "Singapore",
+          "type": "Internship",
+          "department": "Technology",
+          "closing_date": "2015-11-01"
+        },
+        {
+          "job_ID": 2,
+          "title": "Software Engineer",
+          "location": "Singapore",
+          "type": "Entry-Level",
+          "department": "Technology",
+          "closing_date": "2015-11-15"
+        },
+        {
+          "job_ID": 3,
+          "title": "Machining Intern",
+          "location": "Singapore",
+          "type": "Internship",
+          "department": "Engineering",
+          "closing_date": "2015-12-01"
+        },
+        {
+          "job_ID": 4,
+          "title": "Precision Engineer",
+          "location": "Singapore",
+          "type": "Entry-Level",
+          "department": "Technology",
+          "closing_date": "2015-12-15"
+        },
+        {
+          "job_ID": 5,
+          "title": "Machining Specialist",
+          "location": "Singapore",
+          "type": "Internship",
+          "department": "Machining",
+          "closing_date": "2016-01-01"
         }
-      };
-  
-      return { job, formData, formErrors, isFormValid, submitForm };
+      ],
+      jobData: "",
+      job_ID: this.$route.params.job_ID,
+      name: "",
+      email: "",
+      resume: "",
+      number: "",
+      formValid: true,
     }
-  };
-  </script>
+  },
+  mounted() {
+    this.jobData = this.jobs[this.job_ID - 1]
+  },
+  methods: {
+    submitForm(formValid) {
+      if (formValid) {
+        this.$router.push({
+          name: "Success",
+        })
+      }
+    }
+  }
+}
+</script>
+<style scoped>
+.row{
+  padding-top: 10px;
+}
+
+label,
+InputText {
+  display: block;
+}
+</style scoped>
