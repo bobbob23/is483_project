@@ -1,4 +1,5 @@
 <template>
+    <NavBar/>
     <Banner msg="CAREERS AT TSH" />
     <Toolbar>
         <template #center>
@@ -72,10 +73,12 @@ import Card from 'primevue/card';
 import Listbox from 'primevue/listbox'
 import AutoComplete from 'primevue/autocomplete'
 import Banner from './Banner.vue'
+import NavBar from './NavBar.vue'
 
 export default {
     components: {
-        Banner
+        Banner,
+        NavBar
     },
     data() {
         return {

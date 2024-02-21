@@ -1,5 +1,6 @@
 <template>
-  <Banner msg="CAREERS AT TSH" />
+  <NavBar/>
+  <!-- <Banner msg="CAREERS AT TSH" /> -->
   <Button label="< Back" class="mt-2 mx-2"
     style="border-radius: 20%; border: lightgrey; height: 35px; background-color: white; color: black "
     @click="$router.go(-1)" />
@@ -56,10 +57,12 @@
 <script>
 import Button from 'primevue/button';
 import Banner from './Banner.vue'
+import NavBar from './NavBar.vue'
 
 export default {
   components: {
-    Banner
+    Banner,
+    NavBar
   },
   data() {
     return {
