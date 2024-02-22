@@ -33,6 +33,14 @@ export default {
                         })
                     }
                 },
+                {
+                    label: "Applicant",
+                    command:() => {
+                        this.$router.push({
+                            name: "Home"
+                        })
+                    }
+                }
             ]
         }
     }
