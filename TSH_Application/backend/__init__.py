@@ -6,6 +6,7 @@ from flask_migrate import Migrate
 from decouple import config, UndefinedValueError
 import os
 from dotenv import load_dotenv
+from flask_cors import CORS, cross_origin
 
 load_dotenv()
 
@@ -21,9 +22,11 @@ except UndefinedValueError:
 app.secret_key = 'asdfghjkl'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+cors = CORS(app)
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 migrate = Migrate(app, db)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 from routes.applicantRoute import *
 from routes.jobListingRoute import *

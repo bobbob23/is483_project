@@ -74,6 +74,9 @@ import Listbox from 'primevue/listbox'
 import AutoComplete from 'primevue/autocomplete'
 import Banner from './Banner.vue'
 import NavBar from './NavBar.vue'
+import axios from "axios";
+import { getAllJobListing } from "@/api/api.js";
+
 
 export default {
     components: {
@@ -94,13 +97,18 @@ export default {
         };
     },
     mounted() {
-        fetch('jobs.json')
-            .then(res => res.json())
-            .then(data => {
-                this.jobs = data;
-                this.untouchedJobList = data;
-                this.hover = new Array(data.length).fill(false);
+        axios.get(getAllJobListing)
+            .then((response) => {
+                console.log(response.data.data)
+                this.jobs = response.data.data
             })
+        // fetch('jobs.json')
+        //     .then(res => res.json())
+        //     .then(data => {
+        //         this.jobs = data;
+        //         this.untouchedJobList = data;
+        //         this.hover = new Array(data.length).fill(false);
+        //     })
     },
     methods: {
         viewRoleListing(job_ID) {
