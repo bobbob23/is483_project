@@ -31,7 +31,7 @@ def get_job_listings():
         "message": f"No data in database"
     })
 
-@job_listing_routes.route('/job_listing', methods=['GET'])
+@job_listing_routes.route('/job_listing/<int:job_id>', methods=['GET'])
 def get_job_listing(job_id):
     query_job_listing = Job_listing.query.get(job_id)
 
