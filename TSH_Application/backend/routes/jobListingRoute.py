@@ -80,7 +80,7 @@ def new_job_listing():
             'error' : str(e)
         })
     
-@job_listing_routes.route('/edit_job_listing', methods=['PUT'])
+@job_listing_routes.route('/edit_job_listing/<int:job_id>', methods=['PUT'])
 def edit_job_listing(job_id):
     edit_data = request.get_json()
     query_job_listing = Job_listing.query.get(job_id)
@@ -107,7 +107,7 @@ def edit_job_listing(job_id):
             'error' : str(e)
         })
     
-@job_listing_routes.route('/delete_job_listing', methods=['DELETE'])
+@job_listing_routes.route('/delete_job_listing/<int:job_id>', methods=['DELETE'])
 def delete_job_listing(job_id):
     query_job_listing = Job_listing.query.get(job_id)
 
