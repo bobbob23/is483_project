@@ -4,18 +4,17 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
 from decouple import config, UndefinedValueError
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 
-db_username = 'root'
-db_password = ''
-port = '3306'
-db_name = 'tsh_db'
+DB_URI = os.environ["DB_URI"]
 
-# INSERT SQL URL
-db_uri = f'mysql://{db_username}:{db_password}@localhost:{port}/{db_name}'
 try:
-    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+    app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
 except UndefinedValueError:
     app.config['SQLALCHEMY_DATABASE_URI'] = None
 
