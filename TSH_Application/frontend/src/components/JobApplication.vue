@@ -16,7 +16,7 @@
         <div class="col">
           <FileUpload class="flex-end" mode="basic" name="resume" v-model="resume" url="/api/upload"
             accept="application/pdf, application/docx, application/doc" :maxFileSize="1000000"
-            style="background-color: rgba(211, 211, 211, 0); color: darkblue;" @upload="onUpload" :auto="true"
+            style="background-color: rgba(211, 211, 211, 0); color: darkblue;" @upload="onUpload"
             chooseLabel="Upload" />
         </div>
         <div class="col"></div>
@@ -29,7 +29,7 @@
         <div class="col">
           <FileUpload class="flex-end" mode="basic" name="resume" v-model="transcript" url="/api/upload"
             accept="application/pdf, application/docx, application/doc" :maxFileSize="1000000"
-            style="background-color: rgba(211, 211, 211, 0); color: darkblue;" @upload="onUpload" :auto="true"
+            style="background-color: rgba(211, 211, 211, 0); color: darkblue;" @upload="onUpload"
             chooseLabel="Upload" />
         </div>
         <div class="col"></div>
@@ -42,7 +42,7 @@
         <div class="col">
           <FileUpload class="flex-end" mode="basic" name="refLetter" v-model="refLetter" url="/api/upload"
             accept="application/pdf, application/docx, application/doc" :maxFileSize="1000000"
-            style="background-color: rgba(211, 211, 211, 0); color: darkblue;" @upload="onUpload" :auto="true"
+            style="background-color: rgba(211, 211, 211, 0); color: darkblue;" @upload="onUpload"
             chooseLabel="Upload" />
         </div>
         <div class="col"></div>

@@ -1,5 +1,5 @@
 <template>
-    <NavBar/>
+    <NavBar />
     <Banner msg="CAREERS AT TSH" />
     <Toolbar>
         <template #center>
@@ -46,15 +46,15 @@
             </div>
             <div class="col-7">
                 <Card v-for="(job, index) in jobs" :key="job.title" style="margin-bottom: 20px; margin-left: 30px;"
-                    @click="viewRoleListing(job.job_ID)" @mouseenter="hover[index] = true" @mouseleave="hover[index] = false"
-                    class="div" :class="{ 'div-hover': hover[index] }">
+                    @click="viewRoleListing(job.job_ID)" @mouseenter="hover[index] = true"
+                    @mouseleave="hover[index] = false" class="div" :class="{ 'div-hover': hover[index] }">
                     <template #title>{{ job.title }}</template>
                     <template #content>
                         <span class="m-3">
-                            <i class="pi pi-map-marker mx-2"></i>{{ job.location }} 
+                            <i class="pi pi-map-marker mx-2"></i>{{ job.location }}
                         </span>
                         <span class="m-3">
-                            <i class="pi pi-users mx-2"></i>{{ job.type }} 
+                            <i class="pi pi-users mx-2"></i>{{ job.type }}
                         </span>
                         <span class="m-3">
                             <i class="pi pi-briefcase mx-2"></i>{{ job.department }}
@@ -99,16 +99,10 @@ export default {
     mounted() {
         axios.get(getAllJobListing)
             .then((response) => {
-                console.log(response.data.data)
                 this.jobs = response.data.data
+                this.untouchedJobList = response.data.data
+                this.hover = new Array(response.data.data.length).fill(false);
             })
-        // fetch('jobs.json')
-        //     .then(res => res.json())
-        //     .then(data => {
-        //         this.jobs = data;
-        //         this.untouchedJobList = data;
-        //         this.hover = new Array(data.length).fill(false);
-        //     })
     },
     methods: {
         viewRoleListing(job_ID) {
@@ -120,19 +114,18 @@ export default {
             })
         },
         reloadListings(selectedExperience, selectedLocation) {
-            fetch('jobs.json')
-                .then(res => res.json())
-                .then(data => {
+            axios.get(getAllJobListing)
+                .then((response) => {
                     if (!selectedExperience && !selectedLocation) {
-                        this.jobs = data;
+                        this.jobs = response.data.data;
                     } else if (selectedExperience && selectedLocation) {
-                        this.jobs = data.filter(job => {
+                        this.jobs = response.data.data.filter(job => {
                             return job.type === selectedExperience && job.location === selectedLocation;
                         });
                     } else if (selectedLocation) {
-                        this.jobs = data.filter(job => job.location === selectedLocation);
+                        this.jobs = response.data.data.filter(job => job.location === selectedLocation);
                     } else {
-                        this.jobs = data.filter(job => job.type === selectedExperience);
+                        this.jobs = response.data.data.filter(job => job.type === selectedExperience);
                     }
                 })
         },
@@ -151,14 +144,14 @@ export default {
         },
 
         retrieveListings(searchVar) {
-            fetch('jobs.json')
-                .then(res => res.json())
-                .then(data => {
+            axios.get(getAllJobListing)
+                .then((response) => {
+                    console.log(response.data.data)
                     let jobTitleSearch = searchVar.toLowerCase()
                     this.jobs = this.untouchedJobList.filter((job) => {
                         return job.title.toLowerCase().includes(jobTitleSearch)
                     });
-                });
+                })
         }
     },
 }

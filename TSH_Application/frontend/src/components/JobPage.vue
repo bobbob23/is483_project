@@ -58,6 +58,8 @@
 import Button from 'primevue/button';
 import Banner from './Banner.vue'
 import NavBar from './NavBar.vue'
+import axios from 'axios';
+import { getJobListing } from '@/api/api';
 
 export default {
   components: {
@@ -66,59 +68,18 @@ export default {
   },
   data() {
     return {
-      jobs: [
-        {
-          "job_ID": 1,
-          "title": "UI/UX",
-          "location": "Singapore",
-          "type": "Internship",
-          "department": "Technology",
-          "closing_date": "2015-11-01"
-        },
-        {
-          "job_ID": 2,
-          "title": "Software Engineer",
-          "location": "Singapore",
-          "type": "Entry-Level",
-          "department": "Technology",
-          "closing_date": "2015-11-15"
-        },
-        {
-          "job_ID": 3,
-          "title": "Machining Intern",
-          "location": "Singapore",
-          "type": "Internship",
-          "department": "Engineering",
-          "closing_date": "2015-12-01"
-        },
-        {
-          "job_ID": 4,
-          "title": "Precision Engineer",
-          "location": "Singapore",
-          "type": "Entry-Level",
-          "department": "Technology",
-          "closing_date": "2015-12-15"
-        },
-        {
-          "job_ID": 5,
-          "title": "Machining Specialist",
-          "location": "Singapore",
-          "type": "Internship",
-          "department": "Machining",
-          "closing_date": "2016-01-01"
-        }
-      ],
       job_ID: this.$route.params.job_ID,
-      jobData: {},
+      jobData: "",
     };
   },
   mounted() {
-    this.getListingDetails();
+    axios.get(`${getJobListing}/${this.job_ID}`)
+    .then((response) => {
+      console.log(response.data.data)
+      this.jobData = response.data.data
+    })
   },
   methods: {
-    getListingDetails() {
-      this.jobData = this.jobs[this.job_ID - 1]
-    },
     applyNow(job_ID) {
       this.$router.push({
         name: "ApplyForm",
