@@ -68,7 +68,7 @@
           <div class="col-3"></div>
           <div class="col">
             <label for="email">Email <span style="color: red;">*</span></label>
-            <InputText v-model="email" id="email" style="width: 300px" :class="{ 'invalid': fNameEmpty }"/>
+            <InputText v-model="email" id="email" style="width: 300px"/>
           </div>
           <div class="col">
             <label for="contact">Contact Number <span style="color: red;">*</span></label>
@@ -118,7 +118,7 @@
           </div>
           <div class="col-2 justify-content-centre">
             <Button label="Submit" type="submit" v-model="formValid" @click="submitForm(formValid)"
-              style="border-radius: 50px; background-color: darkblue; width: 150px" />
+              style="border-radius: 50px; background-color: darkblue; width: 150px" :disabled="!formValid"/>
           </div>
           <div class="col-5">
           </div>
@@ -171,7 +171,7 @@ export default {
       pastSalary: "",
       workPermit: "",
       workPermitList: ["Singaporean", "Permanent Resident", "Work/Study Visa"],
-      formValid: true,
+      formValid: false,
       job_title: "",
 
     }
@@ -186,8 +186,9 @@ export default {
     }
   },
   methods: {
-    submitForm(formValid) {
-      if (formValid) {
+    submitForm() {
+      
+      if (this.formValid) {
         this.$router.push({
           name: "Success",
           params: {
@@ -207,5 +208,9 @@ export default {
 label,
 InputText {
   display: block;
+}
+
+.invalid {
+  border-color: red !important;
 }
 </style scoped>

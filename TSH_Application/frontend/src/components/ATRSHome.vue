@@ -10,12 +10,12 @@
                 </span>
                 <span>
                     <Button label="Search Jobs" style="margin-left: 20px; 
-                        border-radius: 50px; background-color: darkblue" @click="retrieveListings(searchItem)" />
+                        border-radius: 50px; background-color: darkblue" @click="retrieveListings(searchItem)"/>
                 </span>
             </div>
         </template>
     </Toolbar>
-    <div v-if="jobs == []" class="text-center mt-5">
+    <div v-if="jobs.length == 0" class="text-center mt-5">
         <i class="pi pi-spin pi-spinner" style="font-size: 3em;"></i> <!-- Progress spinner -->
     </div>
     <div v-else>
