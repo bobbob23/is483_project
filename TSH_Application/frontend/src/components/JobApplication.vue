@@ -55,11 +55,11 @@
           <div class="col-3"></div>
           <div class="col">
             <label for="firstname" style="display: block">First Name <span style="color: red;">*</span></label>
-            <InputText id="firstname" v-model="fName" style="width: 300px"/>
+            <InputText id="firstname" v-model="fName" style="width: 300px" />
           </div>
           <div class="col">
             <label for="lName" style="display: block"> Last Name <span style="color: red;">*</span></label>
-            <InputText v-model="lName" id="lName" style="width: 300px"/>
+            <InputText v-model="lName" id="lName" style="width: 300px" />
           </div>
           <div class="col-3"></div>
         </div>
@@ -68,7 +68,7 @@
           <div class="col-3"></div>
           <div class="col">
             <label for="email">Email <span style="color: red;">*</span></label>
-            <InputText v-model="email" id="email" style="width: 300px"/>
+            <InputText v-model="email" id="email" style="width: 300px" />
           </div>
           <div class="col">
             <label for="contact">Contact Number <span style="color: red;">*</span></label>
@@ -118,7 +118,7 @@
           </div>
           <div class="col-2 justify-content-centre">
             <Button label="Submit" type="submit" v-model="formValid" @click="submitForm(formValid)"
-              style="border-radius: 50px; background-color: darkblue; width: 150px" :disabled="!formValid"/>
+              style="border-radius: 50px; background-color: darkblue; width: 150px" :disabled="!formValid" />
           </div>
           <div class="col-5">
           </div>
@@ -144,7 +144,7 @@ import Dropdown from 'primevue/dropdown';
 import NavBar from './NavBar.vue'
 import axios from 'axios'
 import Message from 'primevue/message';
-import { getJobListing } from '@/api/api';
+import { getJobListing, createApplicant } from '@/api/api';
 
 
 export default {
@@ -187,7 +187,20 @@ export default {
   },
   methods: {
     submitForm() {
-      
+      axios.post(createApplicant, {
+        email: this.email,
+        first_name: this.first_name,
+        last_name: this.lName,
+        phone_number: this.number,
+        school: this.school,
+        course_of_study: this.course,
+        GPA: this.gpa,
+        grad_month: this.gradDate,
+        past_salary: this.pastSalary,
+        work_permit: this.workPermit
+      }).then((response) => {
+        
+      })
       if (this.formValid) {
         this.$router.push({
           name: "Success",

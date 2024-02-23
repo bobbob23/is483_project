@@ -15,7 +15,7 @@
             </div>
         </template>
     </Toolbar>
-    <div v-if="jobs.length == 0" class="text-center mt-5">
+    <div v-if="jobs.length == 0 && !selectedLocation && !selectedExperience" class="text-center mt-5">
         <i class="pi pi-spin pi-spinner" style="font-size: 3em;"></i> <!-- Progress spinner -->
     </div>
     <div v-else>
