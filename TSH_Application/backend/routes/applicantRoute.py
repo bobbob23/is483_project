@@ -21,15 +21,15 @@ def new_applicant():
         # Applicant schema
         new_record = Applicant(
             email = data['email'], 
-            first_name = data['first_name'], 
-            last_name = data['last_name'], 
-            phone_number = data['phone_number'], 
+            first_name = data['fName'], 
+            last_name = data['lName'], 
+            phone_number = data['number'], 
             school = data['school'], 
-            course_of_study = data['course_of_study'], 
-            GPA = data['GPA'], 
-            grad_month = data['grad_month'],
-            past_salary = data['past_salary'],
-            work_permit = data['work_permit']
+            course_of_study = data['course'], 
+            GPA = data['gpa'], 
+            grad_month = data['gradDate'],
+            past_salary = data['pastSalary'],
+            work_permit = data['workPermit']
         )
 
         db.session.add(new_record)
@@ -105,7 +105,7 @@ def new_applicant_files():
         })
 
 @applicant_routes.route('/applicant_details', methods=['GET'])
-def applicant_details(email='ryan4@water.com'):
+def applicant_details(email):
 
     aws_access_key_id = 'AKIAQ3EGVT4KGSPT4YKR'
     aws_secret_access_key = 'SQzmqxEDKJisvds+Fez7fkNJ2rYjV42MRM0Ma1w8'
@@ -116,7 +116,7 @@ def applicant_details(email='ryan4@water.com'):
     )
 
     # data directory, INPUT YOUR OWN PATH
-    data_folder = r""
+    data_folder = r"DIRECTORY_PATH"
     if not os.path.exists(data_folder):
         os.makedirs(data_folder)
 
