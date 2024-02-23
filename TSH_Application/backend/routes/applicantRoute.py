@@ -1,4 +1,5 @@
 import boto3
+import os
 import logging
 from botocore.exceptions import ClientError
 import uuid
@@ -114,6 +115,11 @@ def applicant_details(email='ryan4@water.com'):
         aws_secret_access_key=aws_secret_access_key
     )
 
+    # data directory, INPUT YOUR OWN PATH
+    data_folder = r""
+    if not os.path.exists(data_folder):
+        os.makedirs(data_folder)
+
     try:
         # File schema
         query_candidate = Applicant.query.get(email)
@@ -134,7 +140,17 @@ def applicant_details(email='ryan4@water.com'):
         for key, value in file_dict.items():
             folder_name = key
             file_uuid = value
-            s3_client.download_file(bucket_name, f"{folder_name}/{file_uuid}", Filename=f"{fname}{lname}_{folder_name}.pdf")
+            file_name = f"{fname}{lname}_{folder_name}.pdf"
+
+            # subfolder_name = f'{fname}{lname}'
+            # subfolder_path = os.path.join(data_folder, subfolder_name)
+
+            # # Create the folder if it doesn't exist
+            # if not os.path.exists(subfolder_path):
+            #     os.makedirs(subfolder_path)
+        
+            folder_path = os.path.join(data_folder, file_name)
+            s3_client.download_file(bucket_name, f"{folder_name}/{file_uuid}", Filename=folder_path)
 
         return jsonify({
             'isApplied': True,
