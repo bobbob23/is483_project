@@ -15,52 +15,56 @@
             </div>
         </template>
     </Toolbar>
-
-    <div class="row">
-        <div class="mt-4 col-1">
-        </div>
-        <div class="mt-4 col-3">
-            <h3 style="margin-left: 75px;">Filters</h3>
-        </div>
-        <div class="col-1">
-        </div>
-        <div class="p-2 col-7">
-            <h3 id="header" style="padding-left: 50px;">Available Jobs</h3>
-            <hr>
-        </div>
+    <div v-if="!jobs" class="text-center mt-5">
+        <i class="pi pi-spin pi-spinner" style="font-size: 3em;"></i> <!-- Progress spinner -->
     </div>
-
-    <div class="container">
+    <div v-else>
         <div class="row">
-            <div class="col-1">
+            <div class="mt-4 col-1">
             </div>
-            <div class="col-3">
-                <h4>Experience Level</h4>
-                <Listbox class="w-full" v-model="selectedExperience" :options="experienceLevel"
-                    @click="reloadListings(selectedExperience, selectedLocation)" />
-                <h4 class="mt-3">Location</h4>
-                <Listbox class="w-full" v-model="selectedLocation" :options="countries" style="padding: 0px;"
-                    @click="reloadListings(selectedExperience, selectedLocation)" />
+            <div class="mt-4 col-3">
+                <h3 style="margin-left: 75px;">Filters</h3>
             </div>
             <div class="col-1">
             </div>
-            <div class="col-7">
-                <Card v-for="(job, index) in jobs" :key="job.title" style="margin-bottom: 20px; margin-left: 30px;"
-                    @click="viewRoleListing(job.job_ID)" @mouseenter="hover[index] = true"
-                    @mouseleave="hover[index] = false" class="div" :class="{ 'div-hover': hover[index] }">
-                    <template #title>{{ job.title }}</template>
-                    <template #content>
-                        <span class="m-3">
-                            <i class="pi pi-map-marker mx-2"></i>{{ job.location }}
-                        </span>
-                        <span class="m-3">
-                            <i class="pi pi-users mx-2"></i>{{ job.type }}
-                        </span>
-                        <span class="m-3">
-                            <i class="pi pi-briefcase mx-2"></i>{{ job.department }}
-                        </span>
-                    </template>
-                </Card>
+            <div class="p-2 col-7">
+                <h3 id="header" style="padding-left: 50px;">Available Jobs</h3>
+                <hr>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-1">
+                </div>
+                <div class="col-3">
+                    <h4>Experience Level</h4>
+                    <Listbox class="w-full" v-model="selectedExperience" :options="experienceLevel"
+                        @click="reloadListings(selectedExperience, selectedLocation)" />
+                    <h4 class="mt-3">Location</h4>
+                    <Listbox class="w-full" v-model="selectedLocation" :options="countries" style="padding: 0px;"
+                        @click="reloadListings(selectedExperience, selectedLocation)" />
+                </div>
+                <div class="col-1">
+                </div>
+                <div class="col-7">
+                    <Card v-for="(job, index) in jobs" :key="job.title" style="margin-bottom: 20px; margin-left: 30px;"
+                        @click="viewRoleListing(job.job_ID)" @mouseenter="hover[index] = true"
+                        @mouseleave="hover[index] = false" class="div" :class="{ 'div-hover': hover[index] }">
+                        <template #title>{{ job.title }}</template>
+                        <template #content>
+                            <span class="m-3">
+                                <i class="pi pi-map-marker mx-2"></i>{{ job.location }}
+                            </span>
+                            <span class="m-3">
+                                <i class="pi pi-users mx-2"></i>{{ job.type }}
+                            </span>
+                            <span class="m-3">
+                                <i class="pi pi-briefcase mx-2"></i>{{ job.department }}
+                            </span>
+                        </template>
+                    </Card>
+                </div>
             </div>
         </div>
     </div>
@@ -85,7 +89,7 @@ export default {
     },
     data() {
         return {
-            jobs: [], // to be used to populate all listings
+            jobs: null, // to be used to populate all listings
             untouchedJobList: [], // original job list that contains all job listings
             jobListingTitles: [], // to be used to populate datalist tag for search bar
             selectedExperience: "",
@@ -94,6 +98,7 @@ export default {
             countries: ["Singapore", "Malaysia"],
             searchItem: "",
             hover: [],
+            loading: true,
         };
     },
     mounted() {
