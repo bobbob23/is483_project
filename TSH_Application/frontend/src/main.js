@@ -19,6 +19,7 @@ import AutoComplete from 'primevue/autocomplete';
 import FileUpload from 'primevue/fileupload';
 import Dropdown from 'primevue/dropdown';
 import Menubar from 'primevue/menubar';
+import Message from 'primevue/message'
 
 
 /* use imported primevue components */
@@ -31,5 +32,6 @@ app.component('AutoComplete', AutoComplete)
 app.component("FileUpload", FileUpload)
 app.component("Dropdown", Dropdown)
 app.component("Menubar", Menubar)
+app.component("Message", Message)
 
 app.use(PrimeVue).mount('#app')

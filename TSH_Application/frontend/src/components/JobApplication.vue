@@ -55,11 +55,11 @@
           <div class="col-3"></div>
           <div class="col">
             <label for="firstname" style="display: block">First Name <span style="color: red;">*</span></label>
-            <InputText id="firstname" v-model="fName" style="width: 300px" />
+            <InputText id="firstname" v-model="fName" style="width: 300px"/>
           </div>
           <div class="col">
             <label for="lName" style="display: block"> Last Name <span style="color: red;">*</span></label>
-            <InputText v-model="lName" id="lName" style="width: 300px" />
+            <InputText v-model="lName" id="lName" style="width: 300px"/>
           </div>
           <div class="col-3"></div>
         </div>
@@ -68,7 +68,7 @@
           <div class="col-3"></div>
           <div class="col">
             <label for="email">Email <span style="color: red;">*</span></label>
-            <InputText v-model="email" id="email" style="width: 300px" />
+            <InputText v-model="email" id="email" style="width: 300px" :class="{ 'invalid': fNameEmpty }"/>
           </div>
           <div class="col">
             <label for="contact">Contact Number <span style="color: red;">*</span></label>
@@ -122,6 +122,12 @@
           </div>
           <div class="col-5">
           </div>
+          <div class="row" style="width: 95%" v-if="errorMsg">
+            <div class="col-5"></div>
+            <div class="col-2">
+              <Message severity="error">Warning Message</Message>
+            </div>
+          </div>
         </div>
         <!--to add in disable submit button if form is not filled up-->
       </form>
@@ -137,6 +143,7 @@ import Banner from './Banner.vue'
 import Dropdown from 'primevue/dropdown';
 import NavBar from './NavBar.vue'
 import axios from 'axios'
+import Message from 'primevue/message';
 import { getJobListing } from '@/api/api';
 
 
@@ -149,6 +156,7 @@ export default {
     return {
       jobData: "",
       job_ID: this.$route.params.job_ID,
+      errorMsg: "",
       resume: "",
       refLetter: "",
       transcript: "",
@@ -165,6 +173,7 @@ export default {
       workPermitList: ["Singaporean", "Permanent Resident", "Work/Study Visa"],
       formValid: true,
       job_title: "",
+
     }
   },
   mounted() {
@@ -198,4 +207,5 @@ export default {
 label,
 InputText {
   display: block;
-}</style scoped>
+}
+</style scoped>

@@ -15,7 +15,7 @@
             </div>
         </template>
     </Toolbar>
-    <div v-if="!jobs" class="text-center mt-5">
+    <div v-if="jobs == []" class="text-center mt-5">
         <i class="pi pi-spin pi-spinner" style="font-size: 3em;"></i> <!-- Progress spinner -->
     </div>
     <div v-else>
@@ -89,7 +89,7 @@ export default {
     },
     data() {
         return {
-            jobs: null, // to be used to populate all listings
+            jobs: [], // to be used to populate all listings
             untouchedJobList: [], // original job list that contains all job listings
             jobListingTitles: [], // to be used to populate datalist tag for search bar
             selectedExperience: "",
