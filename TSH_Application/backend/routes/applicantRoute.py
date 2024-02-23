@@ -56,18 +56,34 @@ def new_applicant_files():
         aws_access_key_id=aws_access_key_id,
         aws_secret_access_key=aws_secret_access_key
     )
+    resume_file = None
+    transcript_file = None
+    reference_letter_file = None
+
     try:
         # File schema
         email = request.form.get('email')
-        resume_file = request.files['resume']
-        query_candidate = Applicant.query.get(email)
-        # transcript_file = data['transcript']
-        # reference_letter_file = data['reference_letter']
+        if 'resume' in request.files:
+            resume_file = request.files['resume']
+        if 'transcript' in request.files:
+            transcript_file = request.files['transcript']
+        if 'reference_letter' in request.files:
+            reference_letter_file = request.files['reference_letter']
+        
+        file_dict = dict(
+            resume = resume_file,
+            transcript = transcript_file,
+            reference_letter = reference_letter_file
+        )
 
-        new_filename = uuid.uuid4().hex + '.pdf'
+        query_candidate = Applicant.query.get(email)
         bucket_name = 'candidate-uploaded-files'
-        s3_client.upload_fileobj(resume_file, bucket_name, new_filename)
-        query_candidate.resume = new_filename
+
+        for key, value in file_dict.items():
+            folder_name = key
+            new_filename = uuid.uuid4().hex + '.pdf'
+            s3_client.upload_fileobj(value, bucket_name, f'{folder_name}/{new_filename}')
+            setattr(query_candidate, folder_name, new_filename)
 
         db.session.commit()
 
@@ -101,13 +117,24 @@ def applicant_details(email='ryan4@water.com'):
     try:
         # File schema
         query_candidate = Applicant.query.get(email)
-        resume_uuid = query_candidate.resume
-        # transcript_file = data['transcript']
-        # reference_letter_file = data['reference_letter']
+        fname = query_candidate.first_name
+        lname = query_candidate.last_name
+        resume_file = query_candidate.resume
+        transcript_file = query_candidate.transcript
+        reference_letter_file = query_candidate.reference_letter
+
+        file_dict = dict(
+            resume = resume_file,
+            transcript = transcript_file,
+            reference_letter = reference_letter_file
+        )
 
         bucket_name = 'candidate-uploaded-files'
         
-        s3_client.download_file(bucket_name, resume_uuid, Filename="Test1.pdf")
+        for key, value in file_dict.items():
+            folder_name = key
+            file_uuid = value
+            s3_client.download_file(bucket_name, f"{folder_name}/{file_uuid}", Filename=f"{fname}{lname}_{folder_name}.pdf")
 
         return jsonify({
             'isApplied': True,

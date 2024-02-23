@@ -20,20 +20,20 @@
           <div class="col">
             <input type="file" class="flex-end" mode="basic" name="resume"
               accept="application/pdf, application/docx, application/doc" :maxFileSize="1000000"
-              style="background-color: rgba(211, 211, 211, 0); color: darkblue;" @change="onUpload"
+              style="background-color: rgba(211, 211, 211, 0); color: darkblue;" @change="onUpload($event, 'resume')"
               chooseLabel="Upload"/>
           </div>
           <div class="col"></div>
         </div>
-        <!-- <div class="row">
+        <div class="row">
           <div class="col"></div>
           <div class="col">
             <label for="transcript">Transcript <span style="color: red;">*</span></label>
           </div>
           <div class="col">
-            <FileUpload class="flex-end" mode="basic" name="resume" v-model="transcript" url="/api/upload"
+            <input type="file" class="flex-end" mode="basic" name="transcript"
               accept="application/pdf, application/docx, application/doc" :maxFileSize="1000000"
-              style="background-color: rgba(211, 211, 211, 0); color: darkblue;" @upload="onUpload"
+              style="background-color: rgba(211, 211, 211, 0); color: darkblue;" @change="onUpload($event, 'transcript')"
               chooseLabel="Upload" />
           </div>
           <div class="col"></div>
@@ -44,13 +44,14 @@
             <label for="refLetter">Reference Letter</label>
           </div>
           <div class="col">
-            <FileUpload class="flex-end" mode="basic" name="refLetter" v-model="refLetter" url="/api/upload"
+            <input type="file" class="flex-end" mode="basic" name="refLetter"
               accept="application/pdf, application/docx, application/doc" :maxFileSize="1000000"
-              style="background-color: rgba(211, 211, 211, 0); color: darkblue;" @upload="onUpload"
+              style="background-color: rgba(211, 211, 211, 0); color: darkblue;" @change="onUpload($event, 'reference_letter')"
               chooseLabel="Upload" />
           </div>
           <div class="col"></div>
-        </div> -->
+        </div>
+        <br>
         <div class="row">
           <div class="col-3"></div>
           <div class="col">
@@ -157,9 +158,6 @@ export default {
       jobData: "",
       job_ID: this.$route.params.job_ID,
       errorMsg: "",
-      resume: "",
-      refLetter: "",
-      transcript: "",
       fName: "",
       lName: "",
       email: "",
@@ -173,7 +171,7 @@ export default {
       workPermitList: ["Singaporean", "Permanent Resident", "Work/Study Visa"],
       formValid: false,
       job_title: "",
-      formDataResume: new FormData(),
+      filesData: new FormData(),
 
     }
   },
@@ -187,10 +185,11 @@ export default {
     }
   },
   methods: {
-    onUpload(event) {
+    onUpload(event, name) {
       const file = event.target.files[0];
+      console.log(name)
       console.log(file)
-      this.formDataResume.append('resume', file)
+      this.filesData.append(name, file)
     },
     submitForm(formValid) {
       if (formValid) {
@@ -217,11 +216,11 @@ export default {
           .then(response => {
             if (response.ok) {
               console.log('Form submitted successfully');
-              this.formDataResume.append('email', this.email)
+              this.filesData.append('email', this.email)
               // Redirect to success page or perform other actions
               fetch('http://localhost:5000/new_applicant_files', {
                 method: 'POST',
-                body: this.formDataResume
+                body: this.filesData
               })
                 .then(response => {
                   if (response.ok) {
