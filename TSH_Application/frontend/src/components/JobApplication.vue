@@ -117,7 +117,7 @@
           <div class="col-5">
           </div>
           <div class="col-2 justify-content-centre">
-            <Button label="Submit" type="submit" v-model="formValid" @click="submitForm(formValid)"
+            <Button label="Submit" v-model="formValid" @click="submitForm(formValid)"
               style="border-radius: 50px; background-color: darkblue; width: 150px" :disabled="!formValid" />
           </div>
           <div class="col-5">
