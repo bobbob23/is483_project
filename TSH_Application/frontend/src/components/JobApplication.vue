@@ -118,7 +118,7 @@
           </div>
           <div class="col-2 justify-content-centre">
             <Button label="Submit" type="submit" v-model="formValid" @click="submitForm(formValid)"
-              style="border-radius: 50px; background-color: darkblue; width: 150px" />
+              style="border-radius: 50px; background-color: darkblue; width: 150px" :disabled="!formValid" />
           </div>
           <div class="col-5">
           </div>
@@ -144,7 +144,7 @@ import Dropdown from 'primevue/dropdown';
 import NavBar from './NavBar.vue'
 import axios from 'axios'
 import Message from 'primevue/message';
-import { getJobListing } from '@/api/api';
+import { getJobListing, createApplicant } from '@/api/api';
 
 
 export default {
@@ -171,7 +171,7 @@ export default {
       pastSalary: "",
       workPermit: "",
       workPermitList: ["Singaporean", "Permanent Resident", "Work/Study Visa"],
-      formValid: true,
+      formValid: false,
       job_title: "",
       formDataResume: new FormData(),
 
@@ -259,5 +259,9 @@ export default {
 label,
 InputText {
   display: block;
+}
+
+.invalid {
+  border-color: red !important;
 }
 </style scoped>
