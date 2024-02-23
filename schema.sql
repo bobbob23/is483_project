@@ -17,13 +17,11 @@ CREATE TABLE Applicant (
     GPA VARCHAR(20),
     Grad_month DATETIME,
     Past_salary VARCHAR(250),
-    Work_permit VARCHAR(250)
+    Work_permit VARCHAR(250),
+    Resume VARCHAR(250),
+    Transcript VARCHAR(250),
+    Reference_Letter VARCHAR(250)
 );
-
--- INSERT INTO Access_Control (Access_ID, Access_Control_Name) VALUES ('1', 'Admin');
--- INSERT INTO Access_Control (Access_ID, Access_Control_Name) VALUES ('2', 'User');
--- INSERT INTO Access_Control (Access_ID, Access_Control_Name) VALUES ('3', 'Manager');
--- INSERT INTO Access_Control (Access_ID, Access_Control_Name) VALUES ('4', 'HR');
 
 ---------------------- Job_listing -----------------------
 CREATE TABLE Job_listing (
