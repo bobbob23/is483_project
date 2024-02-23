@@ -12,3 +12,6 @@ class Applicant(db.Model):
     grad_month = db.Column(db.DateTime(timezone=True))
     past_salary = db.Column(db.String(150))
     work_permit = db.Column(db.String(150))
+    resume = db.Column(db.String(250))
+    transcript = db.Column(db.String(250))
+    reference_letter = db.Column(db.String(250))

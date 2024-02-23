@@ -48,7 +48,7 @@ def new_applicant():
 
 @applicant_routes.route('/new_applicant_files', methods=['POST'])
 def new_applicant_files():
-    print("========REACHED=========")
+
     aws_access_key_id = 'AKIAQ3EGVT4KGSPT4YKR'
     aws_secret_access_key = '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'
     s3_client = boto3.client(
@@ -56,7 +56,6 @@ def new_applicant_files():
         aws_access_key_id=aws_access_key_id,
         aws_secret_access_key=aws_secret_access_key
     )
-    
     try:
         # File schema
         email = request.form.get('email')
@@ -66,12 +65,11 @@ def new_applicant_files():
         # reference_letter_file = data['reference_letter']
 
         new_filename = uuid.uuid4().hex + '.pdf'
-
         bucket_name = 'candidate-uploaded-files'
-
         s3_client.upload_fileobj(resume_file, bucket_name, new_filename)
+        query_candidate.resume = new_filename
 
-        # db.session.commit()
+        db.session.commit()
 
         return jsonify({
             'isApplied': True,
@@ -86,5 +84,43 @@ def new_applicant_files():
         return jsonify({
             'isApplied': False,
             'message': 'Failed to receive application!',
+            'error' : str(e)
+        })
+
+@applicant_routes.route('/applicant_details', methods=['GET'])
+def applicant_details(email='ryan4@water.com'):
+
+    aws_access_key_id = 'AKIAQ3EGVT4KGSPT4YKR'
+    aws_secret_access_key = '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'
+    s3_client = boto3.client(
+        's3',
+        aws_access_key_id=aws_access_key_id,
+        aws_secret_access_key=aws_secret_access_key
+    )
+
+    try:
+        # File schema
+        query_candidate = Applicant.query.get(email)
+        resume_uuid = query_candidate.resume
+        # transcript_file = data['transcript']
+        # reference_letter_file = data['reference_letter']
+
+        bucket_name = 'candidate-uploaded-files'
+        
+        s3_client.download_file(bucket_name, resume_uuid, Filename="Test1.pdf")
+
+        return jsonify({
+            'isApplied': True,
+            'message': 'Applicant details have been received!'
+        })
+    
+    except ClientError as e:
+        print("========ERROR========")
+        print(logging.error(e))
+
+    except Exception as e:
+        return jsonify({
+            'isApplied': False,
+            'message': 'Failed to receive applicant details!',
             'error' : str(e)
         })
