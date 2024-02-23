@@ -18,14 +18,14 @@
             <label for="resume">Resume <span style="color: red;">*</span></label>
           </div>
           <div class="col">
-            <FileUpload class="flex-end" mode="basic" name="resume" v-model="resume" url="/api/upload"
+            <input type="file" class="flex-end" mode="basic" name="resume"
               accept="application/pdf, application/docx, application/doc" :maxFileSize="1000000"
-              style="background-color: rgba(211, 211, 211, 0); color: darkblue;" @upload="onUpload"
-              chooseLabel="Upload" />
+              style="background-color: rgba(211, 211, 211, 0); color: darkblue;" @change="onUpload"
+              chooseLabel="Upload"/>
           </div>
           <div class="col"></div>
         </div>
-        <div class="row">
+        <!-- <div class="row">
           <div class="col"></div>
           <div class="col">
             <label for="transcript">Transcript <span style="color: red;">*</span></label>
@@ -50,16 +50,16 @@
               chooseLabel="Upload" />
           </div>
           <div class="col"></div>
-        </div>
+        </div> -->
         <div class="row">
           <div class="col-3"></div>
           <div class="col">
             <label for="firstname" style="display: block">First Name <span style="color: red;">*</span></label>
-            <InputText id="firstname" v-model="fName" style="width: 300px"/>
+            <InputText id="firstname" v-model="fName" style="width: 300px" />
           </div>
           <div class="col">
             <label for="lName" style="display: block"> Last Name <span style="color: red;">*</span></label>
-            <InputText v-model="lName" id="lName" style="width: 300px"/>
+            <InputText v-model="lName" id="lName" style="width: 300px" />
           </div>
           <div class="col-3"></div>
         </div>
@@ -68,7 +68,7 @@
           <div class="col-3"></div>
           <div class="col">
             <label for="email">Email <span style="color: red;">*</span></label>
-            <InputText v-model="email" id="email" style="width: 300px" :class="{ 'invalid': fNameEmpty }"/>
+            <InputText v-model="email" id="email" style="width: 300px" :class="{ 'invalid': fNameEmpty }" />
           </div>
           <div class="col">
             <label for="contact">Contact Number <span style="color: red;">*</span></label>
@@ -173,6 +173,7 @@ export default {
       workPermitList: ["Singaporean", "Permanent Resident", "Work/Study Visa"],
       formValid: true,
       job_title: "",
+      formDataResume: new FormData(),
 
     }
   },
@@ -186,14 +187,65 @@ export default {
     }
   },
   methods: {
+    onUpload(event) {
+      const file = event.target.files[0];
+      console.log(file)
+      this.formDataResume.append('resume', file)
+    },
     submitForm(formValid) {
       if (formValid) {
-        this.$router.push({
-          name: "Success",
-          params: {
-            job_title: this.jobData.title
-          }
+        const formData = {
+          fName: this.fName,
+          lName: this.lName,
+          email: this.email,
+          number: this.number,
+          school: this.school,
+          course: this.course,
+          gradDate: this.gradDate,
+          gpa: this.gpa,
+          pastSalary: this.pastSalary,
+          workPermit: this.workPermit,
+        };
+
+        fetch('http://localhost:5000/new_applicant', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
         })
+          .then(response => {
+            if (response.ok) {
+              console.log('Form submitted successfully');
+              this.formDataResume.append('email', this.email)
+              // Redirect to success page or perform other actions
+              fetch('http://localhost:5000/new_applicant_files', {
+                method: 'POST',
+                body: this.formDataResume
+              })
+                .then(response => {
+                  if (response.ok) {
+                    console.log('Files sent successful');
+                    // Perform actions after the second request
+                  } else {
+                    console.error('Failed to send files');
+                    // Handle error
+                  }
+                })
+                .catch(error => {
+                  console.error('Error sending files:', error);
+                  // Handle error
+                });
+
+            } else {
+              console.error('Failed to submit form');
+              // Handle error
+            }
+          })
+          .catch(error => {
+            console.error('Error submitting form:', error);
+            // Handle error
+          });
       }
     }
   }
