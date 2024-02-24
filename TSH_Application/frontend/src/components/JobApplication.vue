@@ -12,6 +12,13 @@
       <div class="m-3 px-4">
         <h1 class="m-3">{{ jobData.title }}</h1>
         <hr>
+        <div class="row" style="width: 95%" v-if="errorMsg">
+              <div class="col-4"></div>
+              <div class="col">
+                <Message severity="error">Please fill up all required fields! </Message>
+              </div>
+              <div class="col-4"></div>
+            </div>
         <form @submit.prevent="submitForm">
           <div class="row">
             <div class="col"></div>
@@ -19,10 +26,9 @@
               <label for="resume">Resume <span style="color: red;">*</span></label>
             </div>
             <div class="col">
-              <input type="file" class="flex-end" mode="basic" name="resume"
+              <input type="file" class="flex-end" name="resume"
                 accept="application/pdf, application/docx, application/doc" :maxFileSize="1000000"
-                style="background-color: rgba(211, 211, 211, 0); color: darkblue;" @change="onUpload($event, 'resume')"
-                chooseLabel="Upload" />
+                style="background-color: rgba(211, 211, 211, 0); color: darkblue;" @change="onUpload($event, 'resume')" />
             </div>
             <div class="col"></div>
           </div>
@@ -124,12 +130,6 @@
             </div>
             <div class="col-5">
             </div>
-            <div class="row" style="width: 95%" v-if="errorMsg">
-              <div class="col-5"></div>
-              <div class="col-2">
-                <Message severity="error">Warning Message</Message>
-              </div>
-            </div>
           </div>
           <!--to add in disable submit button if form is not filled up-->
         </form>
@@ -206,7 +206,7 @@ export default {
           pastSalary: this.pastSalary,
           workPermit: this.workPermit,
         };
-
+        
         fetch('http://localhost:5000/new_applicant', {
           method: 'POST',
           headers: {
@@ -218,12 +218,12 @@ export default {
             if (response.ok) {
               console.log('Form submitted successfully');
               this.filesData.append('email', this.email)
-              // this.$router.push({
-              //         name: "Success",
-              //         params: {
-              //           job_title: this.jobData.title
-              //         }
-              //       })
+              this.$router.push({
+                name: "Success",
+                params: {
+                  job_title: this.jobData.title
+                }
+              })
               // Redirect to success page or perform other actions
               fetch('http://localhost:5000/new_applicant_files', {
                 method: 'POST',
