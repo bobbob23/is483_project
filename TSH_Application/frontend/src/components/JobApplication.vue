@@ -120,7 +120,7 @@
             </div>
             <div class="col-2 justify-content-centre">
               <Button label="Submit" v-model="formValid" @click="submitForm(formValid)"
-                style="border-radius: 50px; background-color: darkblue; width: 150px" :disabled="formValid" />
+                style="border-radius: 50px; background-color: darkblue; width: 150px" :disabled="!formValid" />
             </div>
             <div class="col-5">
             </div>
@@ -171,10 +171,9 @@ export default {
       pastSalary: "",
       workPermit: "",
       workPermitList: ["Singaporean", "Permanent Resident", "Work/Study Visa"],
-      formValid: false,
+      formValid: true,
       job_title: "",
       filesData: new FormData(),
-
     }
   },
   mounted() {
@@ -219,6 +218,12 @@ export default {
             if (response.ok) {
               console.log('Form submitted successfully');
               this.filesData.append('email', this.email)
+              // this.$router.push({
+              //         name: "Success",
+              //         params: {
+              //           job_title: this.jobData.title
+              //         }
+              //       })
               // Redirect to success page or perform other actions
               fetch('http://localhost:5000/new_applicant_files', {
                 method: 'POST',
