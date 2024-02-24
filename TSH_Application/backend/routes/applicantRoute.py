@@ -81,10 +81,11 @@ def new_applicant_files():
         bucket_name = 'candidate-uploaded-files'
 
         for key, value in file_dict.items():
-            folder_name = key
-            new_filename = uuid.uuid4().hex + '.pdf'
-            s3_client.upload_fileobj(value, bucket_name, f'{folder_name}/{new_filename}')
-            setattr(query_candidate, folder_name, new_filename)
+            if value is not None:
+                folder_name = key
+                new_filename = uuid.uuid4().hex + '.pdf'
+                s3_client.upload_fileobj(value, bucket_name, f'{folder_name}/{new_filename}')
+                setattr(query_candidate, folder_name, new_filename)
 
         db.session.commit()
 
