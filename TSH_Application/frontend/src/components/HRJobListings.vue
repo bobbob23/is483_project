@@ -1,9 +1,13 @@
 <template>
     <HRNavBar />
-    <Button label="< Back" class="mt-2 mx-2"
-        style="border-radius: 20%; border: lightgrey; height: 35px; background-color: white; color: black "
-        @click="$router.go(-1)" />
-    <div class="container">
+    <div class="row flex" style="background-color: rgb(230, 230, 230);">
+        <div class="col-1">
+            <Button label="< Back" class="my-2 mx-2 flex-start"
+                style="border-radius: 20%; border: rgb(230, 230, 230); height: 35px; background-color: rgb(230, 230, 230); color: black "
+                @click="$router.go(-1)" />
+        </div>
+    </div>
+    <div class="container mt-4">
         <div class="row">
             <div class="col-2"></div>
             <h3 class="col-2">Job Listings ({{ jobCount }})</h3>
@@ -12,37 +16,55 @@
             <div class="col-2"></div>
         </div>
 
-        <Card v-for="(job, index) in jobs" :key="job.title"
-            style="width: 70%; margin-left: 13%; margin-bottom: 2%; margin-top: 2%" @mouseenter="hover[index] = true"
-            @mouseleave="hover[index] = false" class="div" :class="{ 'div-hover': hover[index] }">
-            <template #title>{{ job.title }}</template>
-            <template #content>
-                <div class="row">
-                    <div class="col-4">
-                        <span style="color: rgb(91, 91, 91); padding-top: 30%;">
-                            Application Deadline: {{ job.closing_date }}
-                        </span>
-                    </div>
-                    <div class="col-6">
-                    </div>
-                    <div class="col-2">
-                        <Button label="Edit"
-                            style="margin-left: 20%; margin-bottom: 5%; background-color: white; 
-                            color: darkblue; border: darkblue 1px solid;" 
-                        />
-                        <Button label="Deactivate"
-                            style="background-color: white; color: darkblue; border: darkblue 1px solid" 
-                        />
-                    </div>
-                </div>
-            </template>
+        <div class="row mt-3" v-for="(job, index) in jobs" :key="job.title">
+            <!-- <div class="col-1">
+            </div> -->
+            <div class="col-8">
+                <Card
+                    style="width: 100%; margin-left: 13%; margin-bottom: 2%; margin-right: 3%" @mouseenter="hover[index] = true"
+                    @mouseleave="hover[index] = false" class="div" :class="{ 'div-hover': hover[index] }">
+                    <template #title>{{ job.title }}</template>
+                    <template #content>
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <span style="color: rgb(91, 91, 91);">Application Deadline: {{ job.closing_date }}</span>
+                            </div>
+                            <div class="d-flex">
+                                <div class="text-center mx-3">
+                                    <h3>0</h3>
+                                    <span class="d-block">Unprocessed</span>
+                                </div>
+                                <div class="text-center mx-3">
+                                    <h3>12</h3>
+                                    <span class="d-block">Shortlist</span>
+                                </div>
+                                <div class="text-center mx-3">
+                                    <h3>2</h3>
+                                    <span class="d-block">Interview</span>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </Card>
+            </div>
+            <div class="col-1">
+            </div>
+            <div class="col-2 mt-5" style="display:block;">
+                <Button label="Edit" style="display: block; margin: -3% auto 3%; background-color: white; 
+                color: darkblue; border: darkblue 1px solid; width: 60%;" />
+                <Button label="Deactivate" style="display: block; margin: 0 auto; background-color: white; 
+                color: darkblue; border: darkblue 1px solid; width: 60%;" />
+            </div>
+        </div>
 
-        </Card>
 
     </div>
 </template>
 <script>
 import HRNavBar from "./HRNavBar.vue"
+import { getAllJobListing } from '@/api/api';
+import axios from "axios";
+
 export default {
     components: {
         HRNavBar
@@ -55,13 +77,11 @@ export default {
         }
     },
     mounted() {
-        fetch('jobs.json')
-            .then(res => res.json())
-            .then(data => {
-                this.jobs = data;
-                this.jobCount = data.length
-                this.hover = new Array(data.length).fill(false);
-
+        axios.get(getAllJobListing)
+            .then((response) => {
+                this.jobs = response.data.data
+                this.hover = new Array(response.data.data.length).fill(false);
+                this.jobCount = this.jobs.length
             })
     },
 }
