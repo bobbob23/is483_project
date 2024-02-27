@@ -73,6 +73,9 @@ def new_job_listing():
             salary = data['salary'],
             job_description = data['description'],
             job_requirement = data['requirement'],
+            unprocessed_num = 0,
+            shortlisted_num = 0,
+            interview_num = 0,
             # NEED TO ENSURE WORK_PERMIT IS STORED AS JSON
             work_permit = data['work_permit']
         )

@@ -16,5 +16,8 @@ class Job_listing(db.Model):
     job_description = db.Column(db.String(5000))
     job_requirement = db.Column(db.String(5000))
     work_permit = db.Column(db.JSON)
+    unprocessed_num = db.Column(db.Integer)
+    shortlisted_num = db.Column(db.Integer)
+    interview_num = db.Column(db.Integer)
 
     application = relationship("Job_Application", back_populates="job_listing")

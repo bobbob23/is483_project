@@ -38,7 +38,10 @@ CREATE TABLE Job_listing (
     Salary VARCHAR(250),
     Job_description VARCHAR(5000),
     Job_requirement VARCHAR(5000),
-    Work_permit JSON
+    Work_permit JSON,
+    Unprocessed int,
+    Shortlisted int,
+    Interview int
 );
 
 ---------------------- Job_Application -----------------------
