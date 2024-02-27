@@ -19,6 +19,8 @@ def get_job_listings():
         job_dict['type'] = job.type
         job_dict['department'] = job.department
         job_dict['closing_date'] = job.closing_date
+        job_dict['description'] = job.job_description
+        job_dict['requirement'] = job.job_requirement
         job_list.append(job_dict)
 
     if len(job_list) != 0:
@@ -42,6 +44,8 @@ def get_job_listing(job_id):
         job_dict['type'] = query_job_listing.type
         job_dict['department'] = query_job_listing.department
         job_dict['closing_date'] = query_job_listing.closing_date
+        job_dict['description'] = query_job_listing.job_description
+        job_dict['requirement'] = query_job_listing.job_requirement
 
         return jsonify({
             "message": "Succesfully retrieved data from database!",
@@ -62,7 +66,15 @@ def new_job_listing():
             location = data['location'], 
             type = data['type'], 
             department = data['department'],
-            closing_date = data['closing_date']
+            opening_date = data['opening_date'],
+            closing_date = data['closing_date'],
+            job_status = data['job_status'],
+            hiring_manager = data['hiring_maanger'],
+            salary = data['salary'],
+            job_description = data['description'],
+            job_requirement = data['requirement'],
+            # NEED TO ENSURE WORK_PERMIT IS STORED AS JSON
+            work_permit = data['work_permit']
         )
 
         db.session.add(new_record)
@@ -90,7 +102,14 @@ def edit_job_listing(job_id):
         query_job_listing.location = edit_data['location'], 
         query_job_listing.type = edit_data['type'], 
         query_job_listing.department = edit_data['department'],
-        query_job_listing.closing_date = edit_data['closing_date']
+        query_job_listing.closing_date = edit_data['closing_date'],
+        query_job_listing.opening_date = edit_data['opening_date'],
+        query_job_listing.job_status = edit_data['job_status'],
+        query_job_listing.hiring_manager = edit_data['hiring_maanger'],
+        query_job_listing.salary = edit_data['salary'],
+        query_job_listing.job_description = edit_data['description'],
+        query_job_listing.job_requirement = edit_data['requirement'],
+        query_job_listing.work_permit = edit_data['work_permit']
 
         db.session.commit()
 
