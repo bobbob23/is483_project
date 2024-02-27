@@ -18,9 +18,14 @@ def get_job_listings():
         job_dict['location'] = job.location
         job_dict['type'] = job.type
         job_dict['department'] = job.department
+        job_dict['opening_date'] = job.opening_date
         job_dict['closing_date'] = job.closing_date
         job_dict['description'] = job.job_description
         job_dict['requirement'] = job.job_requirement
+        job_dict['unprocessed_num'] = job.unprocessed_num
+        job_dict['shortlisted_num'] = job.shortlisted_num
+        job_dict['interview_num'] = job.interview_num
+
         job_list.append(job_dict)
 
     if len(job_list) != 0:

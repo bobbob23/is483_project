@@ -3,9 +3,8 @@ import os
 import logging
 from botocore.exceptions import ClientError
 import uuid
-from flask import request, jsonify, make_response
+from flask import request, jsonify
 from models.applicantModel import Applicant
-import json
 from flask import Blueprint
 from __init__ import db
 
@@ -14,8 +13,6 @@ applicant_routes = Blueprint('applicant', __name__)
 @applicant_routes.route('/new_applicant', methods=['POST'])
 def new_applicant():
     data = request.get_json()
-    print("=====HELLO==========")
-    print(data)
 
     try:
         # Applicant schema
@@ -29,7 +26,9 @@ def new_applicant():
             GPA = data['gpa'], 
             grad_month = data['gradDate'],
             past_salary = data['pastSalary'],
-            work_permit = data['workPermit']
+            work_permit = data['workPermit'],
+            start_date = data['startDate'],
+            end_date = data['endDate']
         )
 
         db.session.add(new_record)
@@ -50,8 +49,7 @@ def new_applicant():
 @applicant_routes.route('/new_applicant_files', methods=['POST'])
 def new_applicant_files():
 
-    aws_access_key_id = 'AKIAQ3EGVT4KGSPT4YKR'
-    aws_secret_access_key = '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'
+
     s3_client = boto3.client(
         's3',
         aws_access_key_id=aws_access_key_id,
@@ -106,10 +104,10 @@ def new_applicant_files():
         })
 
 @applicant_routes.route('/applicant_details', methods=['GET'])
-def applicant_details(email):
+def applicant_details(email='ryanteo.2021@scis.smu.edu.sg'):
 
-    aws_access_key_id = 'AKIAQ3EGVT4KGSPT4YKR'
-    aws_secret_access_key = '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'
+    aws_access_key_id = 'AKIAQ3EGVT4KLZKIJGUM'
+    aws_secret_access_key = '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'
     s3_client = boto3.client(
         's3',
         aws_access_key_id=aws_access_key_id,
@@ -117,7 +115,7 @@ def applicant_details(email):
     )
 
     # data directory, INPUT YOUR OWN PATH
-    data_folder = r"DIRECTORY_PATH"
+    data_folder = r"C:\Users\ASUS\Desktop\is483_project\TSH_Application\data"
     if not os.path.exists(data_folder):
         os.makedirs(data_folder)
 
