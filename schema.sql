@@ -6,7 +6,6 @@ USE tsh_db;
 -- DROP TABLE Job_listing;
 
 ---------------------- Applicant -----------------------
-
 CREATE TABLE Applicant (
     Email VARCHAR(250) PRIMARY KEY,
     First_name VARCHAR(250),
@@ -20,7 +19,9 @@ CREATE TABLE Applicant (
     Work_permit VARCHAR(250),
     Resume VARCHAR(250),
     Transcript VARCHAR(250),
-    Reference_Letter VARCHAR(250)
+    Reference_Letter VARCHAR(250),
+    Start_date DATETIME,
+    End_date DATETIME
 );
 
 ---------------------- Job_listing -----------------------
@@ -30,5 +31,22 @@ CREATE TABLE Job_listing (
     Location VARCHAR(250),
     Type VARCHAR(250),
     Department VARCHAR(250),
-    Closing_date DATETIME
+    Opening_date DATETIME,
+    Closing_date DATETIME,
+    Job_status VARCHAR(250),
+    Hiring_manager VARCHAR(250),
+    Salary VARCHAR(250),
+    Job_description VARCHAR(250),
+    Job_requirement VARCHAR(250),
+    Work_permit JSON
+);
+
+---------------------- Job_Application -----------------------
+CREATE TABLE Job_Application (
+	Email VARCHAR(250),
+    Job_ID int,
+	Applicant_status VARCHAR(250),
+    Rank_number int,
+    FOREIGN KEY (Email) REFERENCES Applicant(Email),
+    FOREIGN KEY (Job_ID) REFERENCES Job_listing(Job_ID)
 );
