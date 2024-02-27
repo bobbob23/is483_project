@@ -1,4 +1,5 @@
 from __init__ import db
+from sqlalchemy.orm import relationship
 
 class Applicant(db.Model):
     __tablename__ = 'Applicant'
@@ -15,3 +16,7 @@ class Applicant(db.Model):
     resume = db.Column(db.String(250))
     transcript = db.Column(db.String(250))
     reference_letter = db.Column(db.String(250))
+    start_date = db.Column(db.DateTime(timezone=True))
+    end_date = db.Column(db.DateTime(timezone=True))
+
+    application = relationship("Job_Application", back_populates="applicant")

@@ -36,8 +36,8 @@ CREATE TABLE Job_listing (
     Job_status VARCHAR(250),
     Hiring_manager VARCHAR(250),
     Salary VARCHAR(250),
-    Job_description VARCHAR(250),
-    Job_requirement VARCHAR(250),
+    Job_description VARCHAR(5000),
+    Job_requirement VARCHAR(5000),
     Work_permit JSON
 );
 
