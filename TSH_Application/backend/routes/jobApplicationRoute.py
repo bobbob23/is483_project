@@ -28,10 +28,11 @@ def get_all_applicants_by_job_ID(job_ID=1):
             applicant_dict['rank_number'] = applicant.rank_number
             applicant_list.append(applicant_dict)
 
+        sorted_applicant_list = sorted(applicant_list, key=lambda x: x["rank_number"])
 
         return jsonify({
             'message': 'Succesfully retrieved data from database!',
-            "data": applicant_list,
+            "data": sorted_applicant_list,
             "applicant_num": len(applicant_list)
         })
 
