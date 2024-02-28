@@ -31,7 +31,8 @@ def get_job_listings():
     if len(job_list) != 0:
         return jsonify({
             "message": "Succesfully retrieved data from database!",
-            "data": job_list
+            "data": job_list,
+            "job_listing_num": len(job_list)
         })
 
     return ({
@@ -106,17 +107,17 @@ def edit_job_listing(job_id):
     query_job_listing = Job_listing.query.get(job_id)
 
     try:
-        query_job_listing.title = edit_data['title'], 
-        query_job_listing.location = edit_data['location'], 
-        query_job_listing.type = edit_data['type'], 
-        query_job_listing.department = edit_data['department'],
-        query_job_listing.closing_date = edit_data['closing_date'],
-        query_job_listing.opening_date = edit_data['opening_date'],
-        query_job_listing.job_status = edit_data['job_status'],
-        query_job_listing.hiring_manager = edit_data['hiring_manager'],
-        query_job_listing.salary = edit_data['salary'],
-        query_job_listing.job_description = edit_data['description'],
-        query_job_listing.job_requirement = edit_data['requirement'],
+        query_job_listing.title = edit_data['title']
+        query_job_listing.location = edit_data['location']
+        query_job_listing.type = edit_data['type']
+        query_job_listing.department = edit_data['department']
+        query_job_listing.closing_date = edit_data['closing_date']
+        query_job_listing.opening_date = edit_data['opening_date']
+        query_job_listing.job_status = edit_data['job_status']
+        query_job_listing.hiring_manager = edit_data['hiring_manager']
+        query_job_listing.salary = edit_data['salary']
+        query_job_listing.job_description = edit_data['description']
+        query_job_listing.job_requirement = edit_data['requirement']
         query_job_listing.work_permit = edit_data['work_permit']
 
         db.session.commit()

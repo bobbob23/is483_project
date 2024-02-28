@@ -41,3 +41,26 @@ def get_all_applicants_by_job_ID(job_ID=1):
             'message': 'Failed to receive applicants for the job_ID!',
             'error' : str(e)
         })
+    
+@job_application_routes.route('/edit_applicant_status', methods=['PUT'])
+def edit_applicant_status(email='ryan@water.com', job_ID=1, status="Reject"):
+
+    try:
+        queried_job_applicant = Job_Application.query.get((email, job_ID))
+        queried_job_applicant.applicant_status = status
+
+        db.session.commit()
+
+
+        return jsonify({
+            'isEdited': True,
+            'message': f'Applicant ({email}) status for Job id ({job_ID}) has been edited!'
+        })
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            'isEdited': True,
+            'message': f'Falied to edit Applicant ({email}) status for Job id ({job_ID})!',
+            'error' : str(e)
+        })
