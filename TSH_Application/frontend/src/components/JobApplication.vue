@@ -209,6 +209,7 @@ export default {
     submitForm(formValid) {
       if (formValid) {
         const formData = {
+          job_id: this.job_ID,
           fName: this.fName,
           lName: this.lName,
           email: this.email,
