@@ -26,6 +26,8 @@ def get_all_applicants_by_job_ID(job_ID=1):
             applicant_dict['job_ID'] = applicant.job_ID
             applicant_dict['applicant_status'] = applicant.applicant_status
             applicant_dict['rank_number'] = applicant.rank_number
+            applicant_dict['phone_number'] = Applicant.query.get(applicant_dict['email']).phone_number
+            applicant_dict['grad_month'] = Applicant.query.get(applicant_dict['email']).grad_month
             applicant_list.append(applicant_dict)
 
         sorted_applicant_list = sorted(applicant_list, key=lambda x: x["rank_number"])
