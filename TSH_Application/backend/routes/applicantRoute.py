@@ -55,7 +55,6 @@ def new_applicant():
 @applicant_routes.route('/new_applicant_files', methods=['POST'])
 def new_applicant_files():
 
-
     s3_client = boto3.client(
         's3',
         aws_access_key_id=ACCESS_KEY,
@@ -109,7 +108,7 @@ def new_applicant_files():
             'error' : str(e)
         })
 
-@applicant_routes.route('/applicant_details', methods=['GET'])
+@applicant_routes.route('/applicant_files', methods=['GET'])
 def applicant_details(email='ryanteo.2021@scis.smu.edu.sg'):
 
     aws_access_key_id = ACCESS_KEY

@@ -45,6 +45,35 @@ def get_all_applicants_by_job_ID(job_ID=1):
             'error' : str(e)
         })
     
+@job_application_routes.route('/applicant_details', methods=['GET'])
+def get_applicant_details(email='ryan@water.com', job_ID=1):
+    
+    try:
+        queried_applicant = Job_Application.query.get((email, job_ID))
+
+        applicant_dict = {}
+        applicant_dict['email'] = email
+        applicant_dict['first_name'] = Applicant.query.get(applicant_dict['email']).first_name
+        applicant_dict['last_name'] = Applicant.query.get(applicant_dict['email']).last_name
+        applicant_dict['phone_number'] = Applicant.query.get(applicant_dict['email']).phone_number
+        applicant_dict['school'] = Applicant.query.get(applicant_dict['email']).school
+        applicant_dict['course_of_study'] = Applicant.query.get(applicant_dict['email']).course_of_study
+        applicant_dict['grad_month'] = Applicant.query.get(applicant_dict['email']).grad_month
+        applicant_dict['GPA'] = Applicant.query.get(applicant_dict['email']).GPA
+        
+
+        return jsonify({
+            'message': 'Succesfully retrieved data from database!',
+            "data": applicant_dict
+        })
+
+    except Exception as e:
+        return jsonify({
+            'isApplied': False,
+            'message': 'Failed to receive applicants details for the job_ID!',
+            'error' : str(e)
+        })
+    
 @job_application_routes.route('/edit_applicant_status', methods=['PUT'])
 def edit_applicant_status(email='ryan@water.com', job_ID=1, status="Reject"):
 
@@ -67,3 +96,4 @@ def edit_applicant_status(email='ryan@water.com', job_ID=1, status="Reject"):
             'message': f'Falied to edit Applicant ({email}) status for Job id ({job_ID})!',
             'error' : str(e)
         })
+    
