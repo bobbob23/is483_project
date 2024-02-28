@@ -7,8 +7,14 @@ from flask import request, jsonify
 from models.applicantModel import Applicant
 from flask import Blueprint
 from __init__ import db
+from dotenv import load_dotenv
 
 applicant_routes = Blueprint('applicant', __name__)
+
+load_dotenv()
+
+ACCESS_KEY = os.environ["ACCESS_KEY"]
+SECRET_ACCESS_KEY = os.environ["SECRET_ACCESS_KEY"]
 
 @applicant_routes.route('/new_applicant', methods=['POST'])
 def new_applicant():
@@ -52,8 +58,8 @@ def new_applicant_files():
 
     s3_client = boto3.client(
         's3',
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
+        aws_access_key_id=ACCESS_KEY,
+        aws_secret_access_key=SECRET_ACCESS_KEY
     )
     resume_file = None
     transcript_file = None
@@ -106,8 +112,8 @@ def new_applicant_files():
 @applicant_routes.route('/applicant_details', methods=['GET'])
 def applicant_details(email='ryanteo.2021@scis.smu.edu.sg'):
 
-    aws_access_key_id = 'AKIAQ3EGVT4KLZKIJGUM'
-    aws_secret_access_key = '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'
+    aws_access_key_id = ACCESS_KEY
+    aws_secret_access_key = SECRET_ACCESS_KEY
     s3_client = boto3.client(
         's3',
         aws_access_key_id=aws_access_key_id,

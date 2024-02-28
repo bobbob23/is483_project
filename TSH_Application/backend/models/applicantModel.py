@@ -1,5 +1,6 @@
 from __init__ import db
 from sqlalchemy.orm import relationship
+from models.jobApplicationModel import Job_Application
 
 class Applicant(db.Model):
     __tablename__ = 'Applicant'

@@ -22,9 +22,9 @@ def get_job_listings():
         job_dict['closing_date'] = job.closing_date
         job_dict['description'] = job.job_description
         job_dict['requirement'] = job.job_requirement
-        job_dict['unprocessed_num'] = job.unprocessed_num
-        job_dict['shortlisted_num'] = job.shortlisted_num
-        job_dict['interview_num'] = job.interview_num
+        job_dict['unprocessed_num'] = job.unprocessed
+        job_dict['shortlisted_num'] = job.shortlisted
+        job_dict['interview_num'] = job.interview
 
         job_list.append(job_dict)
 

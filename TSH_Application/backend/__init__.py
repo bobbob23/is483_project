@@ -7,6 +7,7 @@ from decouple import config, UndefinedValueError
 import os
 from dotenv import load_dotenv
 from flask_cors import CORS, cross_origin
+from models import *
 
 load_dotenv()
 
