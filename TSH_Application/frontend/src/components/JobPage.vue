@@ -11,7 +11,6 @@
         @click="$router.go(-1)" />
       <div class="m-3 px-4">
         <h1 class="m-3">{{ jobData.title }}</h1>
-        <p>{{ jobData.description }}</p>
         <span class="m-3">
           <i class="pi pi-map-marker mx-2"></i>{{ jobData.location }}
         </span>
@@ -29,34 +28,13 @@
             Job Description
           </h2>
           <p class="mx-3">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis, dolorum! Velit aspernatur dolor libero fuga
-            optio, labore officiis sunt quas molestias cum dolore delectus eius impedit praesentium deserunt doloremque
-            nostrum.
+            {{ jobData.description }}
           </p>
           <h2 class="mx-3 mt-4">
             Job Requirements
           </h2>
           <p class="mx-3">
-          <ul>
-            <li>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus asperiores harum, quod dolorem cum
-              voluptatum natus. Officia, temporibus. Deserunt minus id officia, mollitia nobis repudiandae reiciendis
-              dolore
-              et ut iusto.
-            </li>
-            <li>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus asperiores harum, quod dolorem cum
-              voluptatum natus. Officia, temporibus. Deserunt minus id officia, mollitia nobis repudiandae reiciendis
-              dolore
-              et ut iusto.
-            </li>
-            <li>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus asperiores harum, quod dolorem cum
-              voluptatum natus. Officia, temporibus. Deserunt minus id officia, mollitia nobis repudiandae reiciendis
-              dolore
-              et ut iusto.
-            </li>
-          </ul>
+            {{ jobData.requirement }}
           </p>
         </span>
       </div>

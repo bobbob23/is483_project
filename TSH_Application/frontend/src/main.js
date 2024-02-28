@@ -20,6 +20,7 @@ import FileUpload from 'primevue/fileupload';
 import Dropdown from 'primevue/dropdown';
 import Menubar from 'primevue/menubar';
 import Message from 'primevue/message'
+import Calendar from 'primevue/calendar'
 
 
 /* use imported primevue components */
@@ -33,5 +34,6 @@ app.component("FileUpload", FileUpload)
 app.component("Dropdown", Dropdown)
 app.component("Menubar", Menubar)
 app.component("Message", Message)
+app.component("Calendar", Calendar)
 
 app.use(PrimeVue).mount('#app')

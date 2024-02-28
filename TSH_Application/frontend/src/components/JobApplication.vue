@@ -100,12 +100,24 @@
             <div class="col-3"></div>
             <div class="col">
               <label for="gradDate">Month of Graduation <span style="color: red;">*</span></label>
-              <InputText v-model="gradDate" id="gradMonth" style="width: 300px" />
+              <Calendar v-model="gradDate" id="gradMonth" dateFormat="mm/yy" style="width: 300px" />
             </div>
             <div class="col">
               <label for="course">GPA <span style="color: grey;">(Actual / Total) </span><span
                   style="color: red;">*</span></label>
               <InputText v-model="gpa" id="gpa" style="width: 300px" />
+            </div>
+            <div class="col-3"></div>
+          </div>
+          <div class="row" v-if="jobData.type == 'Internship'">
+            <div class="col-3"></div>
+            <div class="col">
+              <label for="startDate">Start Date <span style="color: red;">*</span></label>
+              <Calendar v-model="startDate" dateFormat="dd/mm/yy" style="width: 300px" />
+            </div>
+            <div class="col">
+              <label for="endDate">End Date <span style="color: red;">*</span></label>
+              <Calendar v-model="endDate" dateFormat="dd/mm/yy" style="width: 300px" />
             </div>
             <div class="col-3"></div>
           </div>
@@ -119,7 +131,8 @@
               <label for="course">Type of Work Permit <span style="color: red;">*</span></label>
               <Dropdown v-model="workPermit" :options="workPermitList" id="workPermit" style="width: 300px" />
             </div>
-            <div class="col-3"></div>
+            <div class="col-3">
+            </div>
           </div>
           <div class="row">
             <div class="col-5">
@@ -169,6 +182,8 @@ export default {
       gpa: "",
       pastSalary: "",
       workPermit: "",
+      startDate: "",
+      endDate: "",
       workPermitList: ["Singaporean", "Permanent Resident", "Work/Study Visa"],
       formValid: true,
       job_title: "",
@@ -204,6 +219,8 @@ export default {
           gpa: this.gpa,
           pastSalary: this.pastSalary,
           workPermit: this.workPermit,
+          startDate: this.startDate,
+          endDate: this.endDate
         };
         
         fetch('http://localhost:5000/new_applicant', {
