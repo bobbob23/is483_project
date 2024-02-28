@@ -20,6 +20,9 @@ except UndefinedValueError:
     app.config['SQLALCHEMY_DATABASE_URI'] = None
 
 
+ACCESS_KEY = os.environ["ACCESS_KEY"]
+SECRET_ACCESS_KEY = os.environ["SECRET_ACCESS_KEY"]
+
 app.secret_key = 'asdfghjkl'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -31,6 +34,8 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 from routes.applicantRoute import *
 from routes.jobListingRoute import *
+from routes.jobApplicationRoute import *
 # Register routes
 app.register_blueprint(applicant_routes)
 app.register_blueprint(job_listing_routes)
+app.register_blueprint(job_application_routes)
