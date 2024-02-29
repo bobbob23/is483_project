@@ -74,6 +74,38 @@ def get_applicant_details(email='ryan@water.com', job_ID=1):
             'error' : str(e)
         })
     
+@job_application_routes.route('/all_applicant_status', methods=['GET'])
+def get_all_applicant_status():
+
+    try:
+        listing_query_list = Job_Application.query.all()
+        unprocessed_num = 0
+        reject_num = 0
+        interview_num = 0
+
+        for applicant in listing_query_list:
+            if applicant.applicant_status == "Unprocessed":
+                unprocessed_num += 1
+            elif (applicant.applicant_status == "Reject"):
+                reject_num += 1
+            elif (applicant.applicant_status == "Interview"):
+                interview_num += 1
+
+
+
+        return jsonify({
+            'message': 'Succesfully retrieved data from database!',
+            "unprocessed": unprocessed_num,
+            "reject": reject_num,
+            "interview": interview_num
+        })
+
+    except Exception as e:
+        return jsonify({
+            'message': f'Falied to retrieve data from database!',
+            'error' : str(e)
+        })
+    
 @job_application_routes.route('/edit_applicant_status', methods=['PUT'])
 def edit_applicant_status(email='ryan@water.com', job_ID=1, status="Reject"):
 
