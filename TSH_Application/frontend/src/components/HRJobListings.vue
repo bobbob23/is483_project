@@ -31,15 +31,15 @@
                             </div>
                             <div class="d-flex">
                                 <div class="text-center mx-3">
-                                    <h3>0</h3>
+                                    <h3>{{ job.unprocessed_num }}</h3>
                                     <span class="d-block">Unprocessed</span>
                                 </div>
                                 <div class="text-center mx-3">
-                                    <h3>12</h3>
+                                    <h3>{{ job.shortlisted_num }}</h3>
                                     <span class="d-block">Shortlist</span>
                                 </div>
                                 <div class="text-center mx-3">
-                                    <h3>2</h3>
+                                    <h3> {{ job.interview_num }}</h3>
                                     <span class="d-block">Interview</span>
                                 </div>
                             </div>
