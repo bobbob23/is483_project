@@ -9,6 +9,7 @@ registerPlugins(app);
 import 'primevue/resources/primevue.min.css';
 import 'primevue/resources/themes/bootstrap4-light-blue/theme.css';
 import "@lottiefiles/lottie-player";
+import HighchartsVue from 'highcharts-vue'
 import PrimeVue from 'primevue/config';
 import Card from 'primevue/card';
 import Toolbar from 'primevue/toolbar';
@@ -36,4 +37,7 @@ app.component("Menubar", Menubar)
 app.component("Message", Message)
 app.component("Calendar", Calendar)
 
-app.use(PrimeVue).mount('#app')
+app.use(PrimeVue)
+app.use(HighchartsVue)
+
+app.mount('#app')
