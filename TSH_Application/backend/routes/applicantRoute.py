@@ -5,6 +5,7 @@ from botocore.exceptions import ClientError
 import uuid
 from flask import request, jsonify
 from models.applicantModel import Applicant
+from models.jobApplicationModel import Job_Application
 from flask import Blueprint
 from __init__ import db
 from dotenv import load_dotenv
@@ -37,7 +38,15 @@ def new_applicant():
             end_date = data['endDate']
         )
 
+        new_job_application_record = Job_Application(
+            email = data['email'],
+            job_ID = data['job_id'],
+            applicant_status = "Unprocessed",
+            rank_number = None
+        )
+
         db.session.add(new_record)
+        db.session.add(new_job_application_record)
         db.session.commit()
 
         return jsonify({
