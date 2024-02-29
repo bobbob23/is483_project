@@ -1,3 +1,4 @@
+import datetime
 from flask import request, jsonify, make_response
 from models.jobListingModel import Job_listing
 import json
@@ -8,59 +9,65 @@ job_listing_routes = Blueprint('job_listing', __name__)
 
 @job_listing_routes.route('/job_listing_list', methods=['GET'])
 def get_job_listings():
-    listing_query_list = Job_listing.query.all()
-    job_list = []
-    
-    for job in listing_query_list:
-        job_dict = {}
-        job_dict['job_ID'] = job.job_ID
-        job_dict['title'] = job.title
-        job_dict['location'] = job.location
-        job_dict['type'] = job.type
-        job_dict['department'] = job.department
-        job_dict['opening_date'] = job.opening_date
-        job_dict['closing_date'] = job.closing_date
-        job_dict['description'] = job.job_description
-        job_dict['requirement'] = job.job_requirement
-        job_dict['unprocessed_num'] = job.unprocessed_num
-        job_dict['shortlisted_num'] = job.shortlisted_num
-        job_dict['interview_num'] = job.interview_num
+    try:
+        listing_query_list = Job_listing.query.all()
+        job_list = []
+        
+        for job in listing_query_list:
+            job_dict = {}
+            job_dict['job_ID'] = job.job_ID
+            job_dict['title'] = job.title
+            job_dict['location'] = job.location
+            job_dict['type'] = job.type
+            job_dict['department'] = job.department
+            job_dict['opening_date'] = job.opening_date
+            job_dict['closing_date'] = job.closing_date
+            job_dict['description'] = job.job_description
+            job_dict['requirement'] = job.job_requirement
+            job_dict['unprocessed_num'] = job.unprocessed_num
+            job_dict['shortlisted_num'] = job.shortlisted_num
+            job_dict['interview_num'] = job.interview_num
 
-        job_list.append(job_dict)
+            job_list.append(job_dict)
 
-    if len(job_list) != 0:
         return jsonify({
             "message": "Succesfully retrieved data from database!",
             "data": job_list,
             "job_listing_num": len(job_list)
         })
 
-    return ({
-        "message": f"No data in database"
-    })
+    except Exception as e:
+        return jsonify({
+            "message": f"No data in database",
+            "error": str(e)
+        })
 
 @job_listing_routes.route('/job_listing/<int:job_id>', methods=['GET'])
 def get_job_listing(job_id):
-    query_job_listing = Job_listing.query.get(job_id)
+    
+    try:
+        query_job_listing = Job_listing.query.get(job_id)
 
-    if (query_job_listing != 'None'):
-        job_dict = {}
-        job_dict['title'] = query_job_listing.title
-        job_dict['location'] = query_job_listing.location
-        job_dict['type'] = query_job_listing.type
-        job_dict['department'] = query_job_listing.department
-        job_dict['closing_date'] = query_job_listing.closing_date
-        job_dict['description'] = query_job_listing.job_description
-        job_dict['requirement'] = query_job_listing.job_requirement
+        if (query_job_listing != 'None'):
+            job_dict = {}
+            job_dict['title'] = query_job_listing.title
+            job_dict['location'] = query_job_listing.location
+            job_dict['type'] = query_job_listing.type
+            job_dict['department'] = query_job_listing.department
+            job_dict['closing_date'] = query_job_listing.closing_date
+            job_dict['description'] = query_job_listing.job_description
+            job_dict['requirement'] = query_job_listing.job_requirement
 
+            return jsonify({
+                "message": "Succesfully retrieved data from database!",
+                "data": job_dict
+            })
+    
+    except Exception as e:
         return jsonify({
-            "message": "Succesfully retrieved data from database!",
-            "data": job_dict
+            "message": f'Failed to retrieve data from database!',
+            "error": str(e)
         })
-
-    return ({
-        "message": f"No data in database"
-    })
 
 @job_listing_routes.route('/new_job_listing', methods=['POST'])
 def new_job_listing():
@@ -155,3 +162,41 @@ def delete_job_listing(job_id):
             'message': f'Failed to delete job id {job_id}!',
             'error' : str(e)
         })
+    
+@job_listing_routes.route('/active_job_listing_list', methods=['GET'])
+def get_active_job_listings():
+    
+    try:
+        listing_query_list = Job_listing.query.all()
+        current_time = datetime.datetime.now()
+        job_list = []
+        
+        for job in listing_query_list:
+            job_dict = {}
+            if (current_time < job.closing_date):
+                job_dict['job_ID'] = job.job_ID
+                job_dict['title'] = job.title
+                job_dict['location'] = job.location
+                job_dict['type'] = job.type
+                job_dict['department'] = job.department
+                job_dict['opening_date'] = job.opening_date
+                job_dict['closing_date'] = job.closing_date
+                job_dict['description'] = job.job_description
+                job_dict['requirement'] = job.job_requirement
+                job_dict['unprocessed_num'] = job.unprocessed_num
+                job_dict['shortlisted_num'] = job.shortlisted_num
+                job_dict['interview_num'] = job.interview_num
+
+                job_list.append(job_dict)
+
+        return jsonify({
+            "message": "Succesfully retrieved data from database!",
+            "data": job_list,
+            "job_listing_num": len(job_list)
+        })
+    
+    except Exception as e:
+        return jsonify({
+            'message': f"No data in database",
+            'error' : str(e)
+            })
