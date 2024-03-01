@@ -17,6 +17,40 @@ load_dotenv()
 ACCESS_KEY = os.environ["ACCESS_KEY"]
 SECRET_ACCESS_KEY = os.environ["SECRET_ACCESS_KEY"]
 
+@applicant_routes.route("/all_applicant_details", methods=["GET"])
+def get_all_applicants():
+      try:
+        listing_query_list = Applicant.query.all()
+        applicant_list = []
+        for applicant in listing_query_list:
+            applicant_dict = {}
+            applicant_dict['email'] = applicant.email
+            applicant_dict['fName'] = applicant.first_name
+            applicant_dict['lName'] = applicant.last_name
+            applicant_dict['number'] = applicant.phone_number
+            applicant_dict['school'] = applicant.school
+            applicant_dict['course'] = applicant.course_of_study
+            applicant_dict['gpa'] = applicant.GPA
+            applicant_dict['gradDate'] = applicant.grad_month
+            applicant_dict['pastSalary'] = applicant.past_salary
+            applicant_dict['workPermit'] = applicant.work_permit
+            applicant_dict['startDate'] = applicant.start_date
+            applicant_dict['endDate'] = applicant.end_date
+            applicant_list.append(applicant_dict)
+        
+        applicant_list.reverse()
+        
+        return jsonify({
+            'message': "Successfully retrieved data from database",
+            "data": applicant_list
+        })
+      
+      except Exception as e:
+        return jsonify({
+            'message': 'Failed to retrieve applicants!',
+            'error' : str(e)
+        })
+
 @applicant_routes.route('/new_applicant', methods=['POST'])
 def new_applicant():
     data = request.get_json()
