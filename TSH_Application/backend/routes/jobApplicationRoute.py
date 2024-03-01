@@ -82,6 +82,7 @@ def get_all_applicant_status():
         unprocessed_num = 0
         reject_num = 0
         interview_num = 0
+        shortlisted_num = 0
 
         for applicant in listing_query_list:
             if applicant.applicant_status == "Unprocessed":
@@ -90,6 +91,8 @@ def get_all_applicant_status():
                 reject_num += 1
             elif (applicant.applicant_status == "Interview"):
                 interview_num += 1
+            elif (applicant.applicant_status == "Shortlisted"):
+                shortlisted_num += 1
 
 
 
@@ -97,7 +100,8 @@ def get_all_applicant_status():
             'message': 'Succesfully retrieved data from database!',
             "unprocessed": unprocessed_num,
             "reject": reject_num,
-            "interview": interview_num
+            "interview": interview_num,
+            "shortlisted": shortlisted_num
         })
 
     except Exception as e:
