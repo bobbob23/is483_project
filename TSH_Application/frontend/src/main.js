@@ -22,6 +22,7 @@ import Dropdown from 'primevue/dropdown';
 import Menubar from 'primevue/menubar';
 import Message from 'primevue/message'
 import Calendar from 'primevue/calendar'
+import VirtualScroller from 'primevue/virtualscroller';
 
 
 /* use imported primevue components */
@@ -36,6 +37,7 @@ app.component("Dropdown", Dropdown)
 app.component("Menubar", Menubar)
 app.component("Message", Message)
 app.component("Calendar", Calendar)
+app.component("VirtualScroller", VirtualScroller)
 
 app.use(PrimeVue)
 app.use(HighchartsVue)
