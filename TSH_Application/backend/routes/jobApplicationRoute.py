@@ -28,15 +28,15 @@ def get_all_applicants_by_job_ID(job_ID):
             applicant_dict['rank_number'] = applicant.rank_number
             applicant_dict['phone_number'] = Applicant.query.get(applicant_dict['email']).phone_number
             applicant_dict['grad_month'] = Applicant.query.get(applicant_dict['email']).grad_month
-            applicant_dict['first_name'] = Applicant.query.get(applicant_dict['first_name']).first_name
-            applicant_dict['last_name'] = Applicant.query.get(applicant_dict['last_name']).last_name
-            applicant_dict['school'] = Applicant.query.get(applicant_dict['school']).school
-            applicant_dict['course_of_study'] = Applicant.query.get(applicant_dict['course_of_study']).course_of_study
-            applicant_dict['GPA'] = Applicant.query.get(applicant_dict['GPA']).GPA
-            applicant_dict['past_salary'] = Applicant.query.get(applicant_dict['past_salary']).past_salary
-            applicant_dict['work_permit'] = Applicant.query.get(applicant_dict['work_permit']).work_permit
-            applicant_dict['start_date'] = Applicant.query.get(applicant_dict['start_date']).start_date
-            applicant_dict['end_date'] = Applicant.query.get(applicant_dict['end_date']).end_date
+            applicant_dict['first_name'] = Applicant.query.get(applicant_dict['email']).first_name
+            applicant_dict['last_name'] = Applicant.query.get(applicant_dict['email']).last_name
+            applicant_dict['school'] = Applicant.query.get(applicant_dict['email']).school
+            applicant_dict['course_of_study'] = Applicant.query.get(applicant_dict['email']).course_of_study
+            applicant_dict['GPA'] = Applicant.query.get(applicant_dict['email']).GPA
+            applicant_dict['past_salary'] = Applicant.query.get(applicant_dict['email']).past_salary
+            applicant_dict['work_permit'] = Applicant.query.get(applicant_dict['email']).work_permit
+            applicant_dict['start_date'] = Applicant.query.get(applicant_dict['email']).start_date
+            applicant_dict['end_date'] = Applicant.query.get(applicant_dict['email']).end_date
 
             applicant_list.append(applicant_dict)
 
