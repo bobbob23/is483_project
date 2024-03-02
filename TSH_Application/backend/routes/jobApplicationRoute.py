@@ -8,8 +8,8 @@ from __init__ import db
 
 job_application_routes = Blueprint('job_application', __name__)
 
-@job_application_routes.route('/all_applicants', methods=['GET'])
-def get_all_applicants_by_job_ID(job_ID=1):
+@job_application_routes.route('/all_applicants/<int:job_ID>', methods=['GET'])
+def get_all_applicants_by_job_ID(job_ID):
     
     try:
         listing_query_list = Job_Application.query.all()
