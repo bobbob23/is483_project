@@ -28,6 +28,16 @@ def get_all_applicants_by_job_ID(job_ID):
             applicant_dict['rank_number'] = applicant.rank_number
             applicant_dict['phone_number'] = Applicant.query.get(applicant_dict['email']).phone_number
             applicant_dict['grad_month'] = Applicant.query.get(applicant_dict['email']).grad_month
+            applicant_dict['first_name'] = Applicant.query.get(applicant_dict['first_name']).first_name
+            applicant_dict['last_name'] = Applicant.query.get(applicant_dict['last_name']).last_name
+            applicant_dict['school'] = Applicant.query.get(applicant_dict['school']).school
+            applicant_dict['course_of_study'] = Applicant.query.get(applicant_dict['course_of_study']).course_of_study
+            applicant_dict['GPA'] = Applicant.query.get(applicant_dict['GPA']).GPA
+            applicant_dict['past_salary'] = Applicant.query.get(applicant_dict['past_salary']).past_salary
+            applicant_dict['work_permit'] = Applicant.query.get(applicant_dict['work_permit']).work_permit
+            applicant_dict['start_date'] = Applicant.query.get(applicant_dict['start_date']).start_date
+            applicant_dict['end_date'] = Applicant.query.get(applicant_dict['end_date']).end_date
+
             applicant_list.append(applicant_dict)
 
         sorted_applicant_list = sorted(applicant_list, key=lambda x: x["rank_number"])
@@ -65,6 +75,41 @@ def get_applicant_details(email='ryan@water.com', job_ID=1):
         return jsonify({
             'message': 'Succesfully retrieved data from database!',
             "data": applicant_dict
+        })
+
+    except Exception as e:
+        return jsonify({
+            'isApplied': False,
+            'message': 'Failed to receive applicants details for the job_ID!',
+            'error' : str(e)
+        })
+    
+@job_application_routes.route('/unprocessed_applicant_details', methods=['GET'])
+def get_unprocessed_applicant_details():
+    
+    try:
+        queried_applicant_list = Job_Application.query.all()
+        unprocessed_list = []
+
+        for applicant in queried_applicant_list:
+            if (applicant.applicant_status == "Unprocessed"):
+                applicant_dict = {}
+                applicant_dict['email'] = applicant.email
+                applicant_dict['first_name'] = Applicant.query.get(applicant_dict['email']).first_name
+                applicant_dict['last_name'] = Applicant.query.get(applicant_dict['email']).last_name
+                applicant_dict['phone_number'] = Applicant.query.get(applicant_dict['email']).phone_number
+                applicant_dict['school'] = Applicant.query.get(applicant_dict['email']).school
+                applicant_dict['course_of_study'] = Applicant.query.get(applicant_dict['email']).course_of_study
+                applicant_dict['grad_month'] = Applicant.query.get(applicant_dict['email']).grad_month
+                applicant_dict['GPA'] = Applicant.query.get(applicant_dict['email']).GPA
+
+                unprocessed_list.append(applicant_dict)
+            
+
+        return jsonify({
+            'message': 'Succesfully retrieved data from database!',
+            "data": unprocessed_list,
+            "unprocessed_num": len(unprocessed_list)
         })
 
     except Exception as e:
