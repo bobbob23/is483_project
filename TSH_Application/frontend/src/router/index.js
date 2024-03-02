@@ -47,6 +47,15 @@ const routes = [
     name:"HRJobListings",
     component: () => import("@/components/HRJobListings.vue"),
   },
+  {
+    path:"/applicants/:job_ID/:job_title",
+    name:"HRJobApplicants",
+    component: () => import("@/components/HRJobApplicants.vue"),
+    props: (route) => ({
+      job_ID: route.params.job_ID,
+      job_title: route.params.job_title,
+    }),
+  }
 ];
 
 const router = createRouter({

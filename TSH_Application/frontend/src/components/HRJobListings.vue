@@ -22,7 +22,8 @@
             <div class="col-8">
                 <Card
                     style="width: 100%; margin-left: 13%; margin-bottom: 2%; margin-right: 3%" @mouseenter="hover[index] = true"
-                    @mouseleave="hover[index] = false" class="div" :class="{ 'div-hover': hover[index] }">
+                    @mouseleave="hover[index] = false" class="div" :class="{ 'div-hover': hover[index] }"
+                    @click="goToApplicantsPage(job.job_ID, job.title)">
                     <template #title>{{ job.title }}</template>
                     <template #content>
                         <div class="d-flex justify-content-between">
@@ -79,11 +80,23 @@ export default {
     mounted() {
         axios.get(getAllJobListing)
             .then((response) => {
+                console.log(response.data.data)
                 this.jobs = response.data.data
                 this.hover = new Array(response.data.data.length).fill(false);
                 this.jobCount = this.jobs.length
             })
     },
+    methods: {
+        goToApplicantsPage(job_ID, job_title){
+            this.$router.push({
+                name: "HRJobApplicants",
+                params: {
+                    job_ID: job_ID,
+                    job_title: job_title
+                }
+            })
+        }
+    }
 }
 
 

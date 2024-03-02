@@ -63,21 +63,24 @@
                 <div class="col-3" style="padding-top: 10%">
                     <h4>Overall Applicant Status</h4>
                     <p>Unprocessed: {{ unprocessed }}</p>
-                    <p>Shortlisted: 11</p>
+                    <p>Shortlisted: {{ shortlisted }}</p>
                     <p>Interview: {{ interview }}</p>
                 </div>
                 <div class="col-4 mt-4">
                     <highcharts class="hc" :options="chartOptions" :constructor-type="'chart'" ref="chart">
                     </highcharts>
                 </div>
-                <div class="col-4 mt-4">
+                <div class="col-5 mt-4">
                     <div class="card flex justify-content-center">
-                        <VirtualScroller :items="applicants" :itemSize="50" class="border-1 surface-border border-round"
-                            >
-                            <template v-slot:item="{ item, options }">
-                                <div :class="['flex align-items-center p-2', { 'surface-hover': options.odd }]"
-                                    style="height: 50px">{{ item.fName }}</div>
-                                    {{item}}
+                        <h4 class="px-2 pt-2">New Applicants</h4>
+                        <VirtualScroller :items="applicants" :itemSize="50" style="height: 350px; width: 100%"
+                        class="border-1 surface-border border-round"  >
+                            <template v-slot:item="{ item }">
+                                <div :class="['flex align-items-center p-2']"
+                                    style="height: 50px">
+                                    {{ item.fName }} {{ item.lName }}
+                                    <p style="color: rgb(130, 129, 129)">{{ item.email }}</p>
+                                </div>
                             </template>
                         </VirtualScroller>
                     </div>
@@ -107,6 +110,7 @@ export default {
         return {
             unprocessed: "",
             interview: "",
+            shortlisted: "",
             active: "",
             applicants: [],
             chartOptions: {
@@ -134,12 +138,13 @@ export default {
             }
         }
     },
-    created(){
-        this.getApplicants()
-    },
+    // created(){
+    //     this.getApplicants()
+    // },
     mounted() {
         this.getAppStatusCount()
         this.getAllActiveJobs()
+        this.getApplicants()
     },
     methods: {
         getAppStatusCount() {
@@ -147,6 +152,7 @@ export default {
                 .then((response) => {
                     this.unprocessed = response.data.unprocessed
                     this.interview = response.data.interview
+                    this.shortlisted = response.data.shortlisted
 
                     // Update the chart data here
                     this.chartOptions.series[0].data = [{
@@ -154,7 +160,7 @@ export default {
                         y: this.unprocessed
                     }, {
                         name: "Shortlist",
-                        y: 2
+                        y: this.shortlisted
                     }, {
                         name: "Interview",
                         y: this.interview

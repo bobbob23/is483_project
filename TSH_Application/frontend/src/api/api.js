@@ -10,3 +10,4 @@ export const createApplicantFiles = rootURL + "/new_applicant_files"
 
 export const getAllApplicantStatus = rootURL + "/all_applicant_status"
 export const getAllApplicant = rootURL + "/all_applicant_details"
+export const getAllApplicantByJobID = rootURL + "/all_applicants"
