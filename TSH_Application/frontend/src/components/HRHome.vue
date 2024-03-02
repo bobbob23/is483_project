@@ -138,9 +138,6 @@ export default {
             }
         }
     },
-    // created(){
-    //     this.getApplicants()
-    // },
     mounted() {
         this.getAppStatusCount()
         this.getAllActiveJobs()

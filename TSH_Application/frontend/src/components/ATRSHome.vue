@@ -149,12 +149,7 @@ export default {
         },
 
         retrieveListings(searchVar) {
-            axios.get(getAllJobListing, {
-                headers: {
-                    "Content-Type": "application/json",
-                    "Access-Control-Allow-Origin": "*",
-                }
-            })
+            axios.get(getAllJobListing)
                 .then((response) => {
                     console.log(response.data.data)
                     let jobTitleSearch = searchVar.toLowerCase()

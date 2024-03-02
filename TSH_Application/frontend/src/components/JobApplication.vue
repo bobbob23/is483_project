@@ -159,7 +159,7 @@ import Dropdown from 'primevue/dropdown';
 import NavBar from './NavBar.vue'
 import axios from 'axios'
 import Message from 'primevue/message';
-import { getJobListing } from '@/api/api';
+import { createApplicant, createApplicantFiles, getJobListing } from '@/api/api';
 
 
 export default {
@@ -224,7 +224,7 @@ export default {
           endDate: this.endDate
         };
         
-        fetch('http://localhost:5000/new_applicant', {
+        fetch(createApplicant, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -242,7 +242,7 @@ export default {
                 }
               })
               // Redirect to success page or perform other actions
-              fetch('http://localhost:5000/new_applicant_files', {
+              fetch(createApplicantFiles, {
                 method: 'POST',
                 body: this.filesData
               })
