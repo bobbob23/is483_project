@@ -19,10 +19,10 @@
         </div>
         <div class="row mt-3" v-for="(applicant, index) of applicants">
             <div class="col-3"></div>
-            <div class="col-6">
+            <div class="col-5">
                 <Card>
                     <template #title>
-                        {{ applicant.rank_number }} {{ applicant.first_name }} {{ applicant.last_name }}
+                        <span style="color: rgb(127, 126, 126);">{{ applicant.rank_number }}</span> {{ applicant.first_name }} {{ applicant.last_name }} 
                     </template>
                     <template #content>
                         <p class="my-0">
@@ -40,15 +40,25 @@
                     </template>
                 </Card>
             </div>
-            <div class="col-3"></div>
+            <div class="col-2 mt-5" style="display:block;">
+                <Button label="Shortlist" style="display: block; margin: -3% auto 3%; background-color: white; 
+                color: darkblue; border: darkblue 1px solid; width: 60%; border-radius: 100px;" @click="changeStatus(applicant.email, job_ID, 'Shortlisted')"/>
+                <Button label="Reject" style="display: block; margin: 0 auto; background-color: white; 
+                color: darkblue; border: darkblue 1px solid; width: 60%; border-radius: 100px;" @click="changeStatus(applicant.email, job_ID, 'Reject')"/>
+                <Button label="Invite for Interview" style="display: block; margin: 5% auto 3%; background-color: white; 
+                color: darkblue; border: darkblue 1px solid; width: 60%; border-radius: 100px;" @click="changeStatus(applicant.email, job_ID, 'Interview')"/>
+            </div>
+            <div class="col-1"></div>
         </div>
     </div>
 </template>
 <script>
 import axios from "axios"
 import HRNavBar from "./HRNavBar.vue"
-import { getAllApplicantByJobID } from "@/api/api.js"
+import { getAllApplicantByJobID, editApplicantStatus } from "@/api/api.js"
 import Card from "primevue/card"
+import Button from 'primevue/button';
+
 
 export default {
     components: {
@@ -72,6 +82,13 @@ export default {
                     console.log(response.data.data)
                     this.applicants = response.data.data
                 }))
+        },
+        changeStatus(email, job_ID, status){
+            axios.put(`${editApplicantStatus}/${email}/${job_ID}/${status}`)
+                .then((response) => {
+                    console.log(response)
+                    alert("You have successfully shortlisted!")
+                })
         }
     }
 }

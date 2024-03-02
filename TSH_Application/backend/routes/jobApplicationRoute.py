@@ -155,7 +155,7 @@ def get_all_applicant_status():
             'error' : str(e)
         })
     
-@job_application_routes.route('/edit_applicant_status', methods=['PUT'])
+@job_application_routes.route('/edit_applicant_status/<string:email>/<int:job_ID>/<string:status>', methods=['PUT'])
 def edit_applicant_status(email='ryan@water.com', job_ID=1, status="Reject"):
 
     try:
