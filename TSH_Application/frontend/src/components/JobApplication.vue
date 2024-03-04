@@ -12,13 +12,14 @@
       <div class="m-3 px-4">
         <h1 class="m-3">{{ jobData.title }}</h1>
         <hr>
-        <div class="row" style="width: 95%" v-if="errorMsg">
+        <!-- <div class="row" style="width: 95%" v-if="errorMsg">
               <div class="col-4"></div>
               <div class="col">
                 <Message severity="error">Please fill up all required fields! </Message>
               </div>
               <div class="col-4"></div>
-            </div>
+            </div> -->
+        <FormValidation :formValid="formValid" :errorMsg="errorMsg"/>
         <form @submit.prevent="submitForm">
           <div class="row">
             <div class="col"></div>
@@ -160,12 +161,14 @@ import NavBar from './NavBar.vue'
 import axios from 'axios'
 import Message from 'primevue/message';
 import { createApplicant, createApplicantFiles, getJobListing } from '@/api/api';
+import FormValidation from './FormValidation.vue';
 
 
 export default {
   components: {
     Banner,
-    NavBar
+    NavBar,
+    FormValidation
   },
   data() {
     return {
@@ -206,8 +209,25 @@ export default {
       console.log(file)
       this.filesData.append(name, file)
     },
-    submitForm(formValid) {
-      if (formValid) {
+    isFormValid() {
+      return (
+        this.job_ID &&
+        this.fName &&
+        this.lName &&
+        this.email &&
+        this.number &&
+        this.school &&
+        this.course &&
+        this.gradDate &&
+        this.gpa &&
+        this.pastSalary &&
+        this.workPermit &&
+        this.startDate &&
+        this.endDate
+      );
+    },
+    submitForm() {
+      if (this.isFormValid()) {
         const formData = {
           job_id: this.job_ID,
           fName: this.fName,
@@ -222,7 +242,7 @@ export default {
           workPermit: this.workPermit,
           startDate: this.startDate,
           endDate: this.endDate
-        };
+        }
         
         fetch(createApplicant, {
           method: 'POST',
@@ -269,6 +289,9 @@ export default {
             console.error('Error submitting form:', error);
             // Handle error
           });
+      } else {
+        this.errorMsg = "Please fill up all required fields!"
+        console.log(this.errorMsg)
       }
     }
   }
