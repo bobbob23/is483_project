@@ -1,10 +1,6 @@
 <template>
-  <div>
-    <template v-if="!formValid">
-      <div class="p-col-12">
-        <Message severity="error">{{ errorMsg }}</Message>
-      </div>
-    </template>
+  <div class="p-col-12" v-if="formValid == false">
+    <Message v-model="error" severity="error">{{ errorMsg }}</Message>
   </div>
 </template>
 
@@ -13,20 +9,10 @@ import Message from 'primevue/message';
 
 export default {
   props: {
-    formValid: {
-      type: Boolean,
-      required: true
-    },
-    errorMsg: {
-      type: String,
-      default: 'Please fill up all required fields!'
-    }
+    formValid: Boolean,
+    errorMsg: String,
   },
-  components: {
-    Message
-  }
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

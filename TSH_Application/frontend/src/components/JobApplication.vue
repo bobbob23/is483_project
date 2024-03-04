@@ -139,8 +139,8 @@
             <div class="col-5">
             </div>
             <div class="col-2 justify-content-centre">
-              <Button label="Submit" v-model="formValid" @click="submitForm(formValid)"
-                style="border-radius: 50px; background-color: darkblue; width: 150px" :disabled="!formValid" />
+              <Button label="Submit" @click="submitForm()"
+                style="border-radius: 50px; background-color: darkblue; width: 150px" />
             </div>
             <div class="col-5">
             </div>
@@ -188,7 +188,7 @@ export default {
       startDate: "",
       endDate: "",
       workPermitList: ["Singaporean", "Permanent Resident", "Work/Study Visa"],
-      formValid: true,
+      formValid: "",
       job_title: "",
       filesData: new FormData(),
     }
@@ -210,21 +210,19 @@ export default {
       this.filesData.append(name, file)
     },
     isFormValid() {
-      return (
-        this.job_ID &&
-        this.fName &&
-        this.lName &&
-        this.email &&
-        this.number &&
-        this.school &&
-        this.course &&
-        this.gradDate &&
-        this.gpa &&
-        this.pastSalary &&
-        this.workPermit &&
-        this.startDate &&
-        this.endDate
-      );
+      this.formValid = this.fName.length !== 0 &&
+        this.lName.length !== 0 &&
+        this.email.length !== 0 &&
+        this.number.length !== 0 &&
+        this.school.length !== 0 &&
+        this.course.length !== 0 &&
+        this.gradDate.length !== 0 &&
+        this.gpa.length !== 0 &&
+        this.pastSalary.length !== 0 &&
+        this.workPermit.length !== 0 &&
+        this.startDate.length !== 0 &&
+        this.endDate.length !== 0
+      return this.formValid
     },
     submitForm() {
       if (this.isFormValid()) {
@@ -243,7 +241,7 @@ export default {
           startDate: this.startDate,
           endDate: this.endDate
         }
-        
+
         fetch(createApplicant, {
           method: 'POST',
           headers: {
