@@ -55,11 +55,11 @@ def get_all_applicants_by_job_ID(job_ID):
             'error' : str(e)
         })
     
-@job_application_routes.route('/applicant_details', methods=['GET'])
-def get_applicant_details(email='ryan@water.com', job_ID=1):
+@job_application_routes.route('/applicant_details/<string:email>/<int:job_id>', methods=['GET'])
+def get_applicant_details(email, job_id):
     
     try:
-        queried_applicant = Job_Application.query.get((email, job_ID))
+        queried_applicant = Job_Application.query.get((email, job_id))
 
         applicant_dict = {}
         applicant_dict['email'] = email

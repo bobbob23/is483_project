@@ -50,12 +50,13 @@
             </div>
             <div class="col-1">
             </div>
-            <div class="col-2 mt-5" style="display:block;">
+            <div class="col-3 mt-5" style="display:block;">
                 <Button label="Edit" style="display: block; margin: -3% auto 3%; background-color: white; 
                 color: darkblue; border: darkblue 1px solid; width: 60%;" />
                 <Button label="Deactivate" style="display: block; margin: 0 auto; background-color: white; 
                 color: darkblue; border: darkblue 1px solid; width: 60%;" />
             </div>
+            <hr>
         </div>
 
 

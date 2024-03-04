@@ -20,7 +20,7 @@
         <div class="row mt-3" v-for="(applicant, index) of applicants">
             <div class="col-3"></div>
             <div class="col-5">
-                <Card>
+                <Card @click="goToApplicantDetails(applicant.email, job_ID)">
                     <template #title>
                         <span style="color: rgb(127, 126, 126);">{{ applicant.rank_number }}</span> {{ applicant.first_name }} {{ applicant.last_name }} 
                     </template>
@@ -37,10 +37,11 @@
                         <p class="mb-0 text-secondary secondary">
                             Graduation: {{ applicant.grad_month }}
                         </p>
+                        
                     </template>
                 </Card>
             </div>
-            <div class="col-2 mt-5" style="display:block;">
+            <div class="col-3 mt-5" style="display:block;">
                 <Button label="Shortlist" style="display: block; margin: -3% auto 3%; background-color: white; 
                 color: darkblue; border: darkblue 1px solid; width: 60%; border-radius: 100px;" @click="changeStatus(applicant.email, job_ID, 'Shortlisted')"/>
                 <Button label="Reject" style="display: block; margin: 0 auto; background-color: white; 
@@ -49,6 +50,7 @@
                 color: darkblue; border: darkblue 1px solid; width: 60%; border-radius: 100px;" @click="changeStatus(applicant.email, job_ID, 'Interview')"/>
             </div>
             <div class="col-1"></div>
+            <hr class="mt-3">
         </div>
     </div>
 </template>
@@ -87,8 +89,17 @@ export default {
             axios.put(`${editApplicantStatus}/${email}/${job_ID}/${status}`)
                 .then((response) => {
                     console.log(response)
-                    alert("You have successfully shortlisted!")
+                    alert(`You have successfully changed the status!`)
                 })
+        },
+        goToApplicantDetails(email,job_id){
+            this.$router.push({
+                name: "ViewApplicant",
+                params: {
+                    job_ID: job_id,
+                    email: email
+                }
+            })
         }
     }
 }

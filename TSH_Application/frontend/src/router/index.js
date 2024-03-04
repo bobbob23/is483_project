@@ -55,6 +55,15 @@ const routes = [
       job_ID: route.params.job_ID,
       job_title: route.params.job_title,
     }),
+  },
+  {
+    path: "/view/:email/:job_ID",
+    name:"ViewApplicant",
+    component: () => import("@/components/ViewApplicantPage.vue"),
+    props: (route) => ({
+      job_ID: route.params.job_ID,
+      email: route.params.email,
+    }),
   }
 ];
 
