@@ -18,8 +18,8 @@
                 <p>
                     <span class="text-secondary secondary">
                         <i class="pi pi-file"></i> Resume &nbsp;
-                        <i class="pi pi-file"></i>Transcript
-                        &nbsp;<i class="pi pi-file"></i> Reference Letter
+                        <i class="pi pi-file"></i>Transcript &nbsp;
+                        <span><i class="pi pi-file"></i> Reference Letter</span>
                     </span>
                     &nbsp;
                     <i class="pi pi-download" style="color: darkblue"></i> <Button label='Download all' class="mt-1 p-0"
@@ -82,7 +82,7 @@ export default {
                     this.school = response.data.data.school
                     this.school = response.data.data.school
                     this.course = response.data.data.course_of_study
-                    this.gradDate = response.data.data.grad_month
+                    this.gradDate = response.data.data.grad_month.slice(8,16)
                     this.gpa = response.data.data.GPA
                 })
         }
