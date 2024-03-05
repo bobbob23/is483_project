@@ -19,42 +19,41 @@
         <div class="row mt-3" v-for="(job, index) in jobs" :key="job.title">
             <!-- <div class="col-1">
             </div> -->
-            <div class="col-8">
-                <Card
-                    style="width: 100%; margin-left: 13%; margin-bottom: 2%; margin-right: 3%" @mouseenter="hover[index] = true"
-                    @mouseleave="hover[index] = false" class="div" :class="{ 'div-hover': hover[index] }"
-                    @click="goToApplicantsPage(job.job_ID, job.title)">
+            <div class="col-10">
+                <Card style="width: 100%; margin-left: 13%; margin-bottom: 2%; margin-right: 3%"
+                    @mouseenter="hover[index] = true" @mouseleave="hover[index] = false" class="div"
+                    :class="{ 'div-hover': hover[index] }" @click="goToApplicantsPage(job.job_ID, job.title)">
                     <template #title>{{ job.title }}</template>
                     <template #content>
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <span style="color: rgb(91, 91, 91);">Application Deadline: {{ job.closing_date }}</span>
-                            </div>
+                        <div class="content-container" style="display: flex;">
                             <div class="d-flex">
-                                <div class="text-center mx-3">
-                                    <h3>{{ job.unprocessed_num }}</h3>
-                                    <span class="d-block">Unprocessed</span>
+                                <div class="mt-4 w-100">
+                                    <p style="color: rgb(91, 91, 91); margin-right: 0;">Application Deadline: {{ job.closing_date.slice(6,16)}}</p>
                                 </div>
-                                <div class="text-center mx-3">
-                                    <h3>{{ job.shortlisted_num }}</h3>
-                                    <span class="d-block">Shortlist</span>
+                                <div class="d-flex" style="margin-left: 30%">
+                                    <div class="text-center mx-3">
+                                        <h3>{{ job.unprocessed_num }}</h3>
+                                        <span class="d-block">Unprocessed</span>
+                                    </div>
+                                    <div class="text-center mx-3">
+                                        <h3>{{ job.shortlisted_num }}</h3>
+                                        <span class="d-block">Shortlist</span>
+                                    </div>
+                                    <div class="text-center mx-3">
+                                        <h3> {{ job.interview_num }}</h3>
+                                        <span class="d-block">Interview</span>
+                                    </div>
                                 </div>
-                                <div class="text-center mx-3">
-                                    <h3> {{ job.interview_num }}</h3>
-                                    <span class="d-block">Interview</span>
-                                </div>
+                            </div>
+                            <div style="display:block; flex: 1;" class="ml-auto">
+                                <Button label="Edit" style="display: block; margin: -3% auto 3%; background-color: white; 
+                                    color: darkblue; border: darkblue 1px solid; width: 40%;" />
+                                <Button label="Deactivate" style="display: block; margin: 0 auto; background-color: white; 
+                                    color: darkblue; border: darkblue 1px solid; width: 40%;" />
                             </div>
                         </div>
                     </template>
                 </Card>
-            </div>
-            <div class="col-1">
-            </div>
-            <div class="col-3 mt-5" style="display:block;">
-                <Button label="Edit" style="display: block; margin: -3% auto 3%; background-color: white; 
-                color: darkblue; border: darkblue 1px solid; width: 60%;" />
-                <Button label="Deactivate" style="display: block; margin: 0 auto; background-color: white; 
-                color: darkblue; border: darkblue 1px solid; width: 60%;" />
             </div>
             <hr>
         </div>
@@ -88,7 +87,7 @@ export default {
             })
     },
     methods: {
-        goToApplicantsPage(job_ID, job_title){
+        goToApplicantsPage(job_ID, job_title) {
             this.$router.push({
                 name: "HRJobApplicants",
                 params: {
