@@ -105,6 +105,7 @@ export default {
         axios.get(getAllJobListing)
             .then((response) => {
                 this.jobs = response.data.data
+                console.log(this.jobs)
                 this.untouchedJobList = response.data.data
                 this.hover = new Array(response.data.data.length).fill(false);
             })
