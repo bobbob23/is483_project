@@ -19,7 +19,7 @@
         <div class="row mt-3" v-for="(job, index) in jobs" :key="job.title">
             <!-- <div class="col-1">
             </div> -->
-            <div class="col-10">
+            <div class="col-9">
                 <Card style="width: 100%; margin-left: 13%; margin-bottom: 2%; margin-right: 3%"
                     @mouseenter="hover[index] = true" @mouseleave="hover[index] = false" class="div"
                     :class="{ 'div-hover': hover[index] }" @click="goToApplicantsPage(job.job_ID, job.title)">
@@ -45,7 +45,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div style="display:block; flex: 1;" class="ml-auto">
+                            <div style="display:block; flex: 1;" class="mr-5">
                                 <Button label="Edit" style="display: block; margin: -3% auto 3%; background-color: white; 
                                     color: darkblue; border: darkblue 1px solid; width: 40%;" />
                                 <Button label="Deactivate" style="display: block; margin: 0 auto; background-color: white; 

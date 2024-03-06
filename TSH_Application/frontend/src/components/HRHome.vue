@@ -2,7 +2,7 @@
     <HRNavBar />
     <div class="container">
         <h3 class="p-5">Welcome Back, Anis</h3>
-        <div class="container text-center" v-if="unprocessed == '' || active == ''">
+        <div class="container text-center" v-if="unprocessed == '' || active == '' || applicants.length == 0">
             <i class="pi pi-spin pi-spinner" style="font-size: 3em;"></i> <!-- Progress spinner -->
         </div>
         <div class="container" v-else>
@@ -78,8 +78,8 @@
                             <template v-slot:item="{ item }">
                                 <div :class="['flex align-items-center p-2']"
                                     style="height: 50px">
-                                    {{ item.fName }} {{ item.lName }}
-                                    <p style="color: rgb(130, 129, 129)">{{ item.email }}</p>
+                                    {{ item.first_name }} {{ item.last_name }}
+                                    <p style="color: rgb(130, 129, 129)">{{ item.school }}</p>
                                 </div>
                             </template>
                         </VirtualScroller>
@@ -97,7 +97,7 @@ import Button from "primevue/button"
 import VirtualScroller from 'primevue/virtualscroller';
 import Highcharts from 'highcharts'
 import exportingInit from 'highcharts/modules/exporting'
-import { getAllApplicantStatus, getAllActiveJob, getAllApplicant } from '@/api/api'
+import { getAllApplicantStatus, getAllActiveJob, getAllUnprocessedApplicant } from '@/api/api'
 import axios from "axios"
 
 exportingInit(Highcharts)
@@ -171,7 +171,7 @@ export default {
                 })
         },
         getApplicants(){
-            axios.get(getAllApplicant)
+            axios.get(getAllUnprocessedApplicant)
                 .then((response) => {
                     console.log(response.data.data)
                     this.applicants = response.data.data
