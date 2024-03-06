@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@lottiefiles/lottie-player": "^2.0.4",
+    "axios": "^1.6.7",
+    "highcharts-vue": "^1.4.3",
+    "primeicons": "^6.0.1",
+    "vue-router": "^4.3.0"
+  }
+}

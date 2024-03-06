@@ -20,9 +20,11 @@ import AutoComplete from 'primevue/autocomplete';
 import FileUpload from 'primevue/fileupload';
 import Dropdown from 'primevue/dropdown';
 import Menubar from 'primevue/menubar';
-import Message from 'primevue/message'
-import Calendar from 'primevue/calendar'
+import Message from 'primevue/message';
+import Calendar from 'primevue/calendar';
 import VirtualScroller from 'primevue/virtualscroller';
+import MultiSelect from 'primevue/multiselect';
+import Textarea from 'primevue/textarea';
 
 
 /* use imported primevue components */
@@ -38,6 +40,8 @@ app.component("Menubar", Menubar)
 app.component("Message", Message)
 app.component("Calendar", Calendar)
 app.component("VirtualScroller", VirtualScroller)
+app.component("MultiSelect", MultiSelect)
+app.component("Textarea", Textarea)
 
 app.use(PrimeVue)
 app.use(HighchartsVue)

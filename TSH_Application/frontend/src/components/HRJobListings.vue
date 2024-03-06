@@ -12,7 +12,7 @@
             <div class="col-2"></div>
             <h3 class="col-2">Job Listings ({{ jobCount }})</h3>
             <div class="col-4"></div>
-            <Button class="col-1" label="+ New Job" style="background-color: darkblue;" />
+            <Button class="col-1" label="+ New Job" style="background-color: darkblue;" @click="$router.push('/hr_createjob')"/>
             <div class="col-2"></div>
         </div>
 
@@ -95,6 +95,11 @@ export default {
                     job_title: job_title
                 }
             })
+        }
+    },
+    methods: {
+        newJobPage() {
+            this.$router.push('/CreateJobPage.vue');
         }
     }
 }
