@@ -12,7 +12,8 @@
             <div class="col-2"></div>
             <h3 class="col-2">Job Listings ({{ jobCount }})</h3>
             <div class="col-4"></div>
-            <Button class="col-1" label="+ New Job" style="background-color: darkblue;" @click="$router.push('/hr_createjob')"/>
+            <Button class="col-1" label="+ New Job" style="background-color: darkblue;"
+                @click="$router.push('/hr_createjob')" />
             <div class="col-2"></div>
         </div>
 
@@ -21,14 +22,15 @@
             </div> -->
             <div class="col-9">
                 <Card style="width: 100%; margin-left: 13%; margin-bottom: 2%; margin-right: 3%"
-                    @mouseenter="hover[index] = true" @mouseleave="hover[index] = false" class="div"
+                    @mouseenter="hover[index] = true" @mouseleave="hover[index] = false"
                     :class="{ 'div-hover': hover[index] }" @click="goToApplicantsPage(job.job_ID, job.title)">
                     <template #title>{{ job.title }}</template>
                     <template #content>
                         <div class="content-container" style="display: flex;">
                             <div class="d-flex">
                                 <div class="mt-4 w-100">
-                                    <p style="color: rgb(91, 91, 91); margin-right: 0;">Application Deadline: {{ job.closing_date.slice(6,16)}}</p>
+                                    <p style="color: rgb(91, 91, 91); margin-right: 0;">Application Deadline: {{
+                                        job.closing_date.slice(6, 16) }}</p>
                                 </div>
                                 <div class="d-flex" style="margin-left: 30%">
                                     <div class="text-center mx-3">
@@ -97,10 +99,8 @@ export default {
             })
         }
     },
-    methods: {
-        newJobPage() {
-            this.$router.push('/CreateJobPage.vue');
-        }
+    newJobPage() {
+        this.$router.push('/CreateJobPage.vue');
     }
 }
 
