@@ -90,7 +90,7 @@
                  style="border-radius: 50px; background-color: gray; width: 150px" />
             </div>
             <div class="col-2 justify-content-centre">
-                <Button label="Preview Job" v-model="formValid""
+                <Button label="Preview Job" v-model="formValid"
                 style="border-radius: 50px; background-color: darkblue; width: 150px" />
             </div>
             <div class="col-4"></div>
