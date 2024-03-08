@@ -26,10 +26,13 @@
                 <Card @click="goToApplicantDetails(applicant.email, job_ID)" @mouseenter="hover[index] = true"
                     @mouseleave="hover[index] = false" :class="{ 'div-hover': hover[index] }">
                     <template #title>
-                        <span style="color: rgb(127, 126, 126);">{{ applicant.rank_number }}</span> 
-                        {{ applicant.first_name}} {{ applicant.last_name }} 
-                        <span style="font-size:15px; background-color: grey; color: white; border-radius: 1%; margin-left: 1%" class="p-2">{{ applicant.applicant_status }}</span>
+                        <span style="color: rgb(127, 126, 126);">{{ applicant.rank_number }}</span>
+                        {{ applicant.first_name }} {{ applicant.last_name }}
+                        <span :style="{ backgroundColor: getStatusColor(applicant.applicant_status) }"
+                            style="font-size:15px; color: white; border-radius: 5%; margin-left: 1%"
+                            class="p-2">{{ applicant.applicant_status }}</span>
                     </template>
+
                     <template #content>
                         <div class="content-container" style="display: flex">
                             <div class="text-container">
@@ -66,6 +69,7 @@
         </div>
     </div>
 </template>
+
 <script>
 import axios from "axios"
 import HRNavBar from "./HRNavBar.vue"
@@ -114,11 +118,26 @@ export default {
                     email: email
                 }
             })
+        },
+        getStatusColor(status) {
+            switch (status) {
+                case 'Unprocessed':
+                    return '#d3d3d3';
+                case 'Shortlisted':
+                    return 'grey';
+                case 'Interview':
+                    return 'darkblue';
+                case 'Reject':
+                    return '#ff6961';
+                default:
+                    return 'transparent'; 
+            }
         }
     }
 }
 
 </script>
+
 <style>
 .div-hover {
     background-color: lightgrey;
