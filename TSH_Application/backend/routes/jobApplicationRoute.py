@@ -154,16 +154,38 @@ def get_all_applicant_status():
             'message': f'Falied to retrieve data from database!',
             'error' : str(e)
         })
-    
 @job_application_routes.route('/edit_applicant_status/<string:email>/<int:job_ID>/<string:status>', methods=['PUT'])
-def edit_applicant_status(email='ryan@water.com', job_ID=1, status="Reject"):
+def edit_applicant_status(email, job_ID, status):
 
     try:
         queried_job_applicant = Job_Application.query.get((email, job_ID))
+        current_status = queried_job_applicant.applicant_status
+        query_job_listing = Job_listing.query.get(job_ID)
+
+        # same status update
+        if current_status == status:
+            return jsonify({
+                'isEdited': False,
+                'message': f'Applicant ({email}) current status is {status}!'
+            }) 
+                
+        if (current_status == "Unprocessed"):
+            query_job_listing.unprocessed_num -= 1
+
+        elif status != "Reject":
+            if current_status != "Reject":
+                current_status_num_str = current_status.lower() + '_num'
+                job_current_status_num = getattr(query_job_listing, current_status_num_str)
+                new_current_num = int(job_current_status_num) - 1
+                setattr(query_job_listing, current_status_num_str, str(new_current_num))
+
+            new_status_num_str = status.lower() + '_num'
+            job_new_status_num = getattr(query_job_listing, new_status_num_str)
+            new_num = int(job_new_status_num) + 1
+            setattr(query_job_listing, new_status_num_str, str(new_num))
+        
         queried_job_applicant.applicant_status = status
-
         db.session.commit()
-
 
         return jsonify({
             'isEdited': True,
@@ -173,7 +195,7 @@ def edit_applicant_status(email='ryan@water.com', job_ID=1, status="Reject"):
     except Exception as e:
         db.session.rollback()
         return jsonify({
-            'isEdited': True,
+            'isEdited': False,
             'message': f'Falied to edit Applicant ({email}) status for Job id ({job_ID})!',
             'error' : str(e)
         })

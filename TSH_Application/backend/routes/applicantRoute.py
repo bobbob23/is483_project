@@ -6,6 +6,7 @@ import uuid
 from flask import request, jsonify
 from models.applicantModel import Applicant
 from models.jobApplicationModel import Job_Application
+from models.jobListingModel import Job_listing
 from flask import Blueprint
 from __init__ import db
 from dotenv import load_dotenv
@@ -78,6 +79,9 @@ def new_applicant():
             applicant_status = "Unprocessed",
             rank_number = None
         )
+
+        query_job_listing = Job_listing.query.get(data['job_id'])
+        query_job_listing.unprocessed_num += 1
 
         db.session.add(new_record)
         db.session.add(new_job_application_record)
@@ -163,7 +167,7 @@ def applicant_details(email='ryanteo.2021@scis.smu.edu.sg'):
     )
 
     # data directory, INPUT YOUR OWN PATH
-    data_folder = r"C:\Users\ASUS\Desktop\is483_project\TSH_Application\data"
+    data_folder = r""
     if not os.path.exists(data_folder):
         os.makedirs(data_folder)
 
