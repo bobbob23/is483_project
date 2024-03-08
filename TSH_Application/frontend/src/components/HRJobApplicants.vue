@@ -17,16 +17,18 @@
             </div>
             <div class="col-3"></div>
         </div>
-        <div class="row mt-3 text-center" v-if="applicants == []">
+        <div class="row mt-3 text-center" v-if="applicants.length == 0">
             <i class="pi pi-spin pi-spinner" style="font-size: 3em;"></i> <!-- Progress spinner -->
-        </div>  
+        </div>
         <div class="row mt-3" v-for="(applicant, index) of applicants" v-else>
             <div class="col-3"></div>
             <div class="col-6">
-                <Card @click="goToApplicantDetails(applicant.email, job_ID)">
+                <Card @click="goToApplicantDetails(applicant.email, job_ID)" @mouseenter="hover[index] = true"
+                    @mouseleave="hover[index] = false" :class="{ 'div-hover': hover[index] }">
                     <template #title>
-                        <span style="color: rgb(127, 126, 126);">{{ applicant.rank_number }}</span> {{ applicant.first_name
-                        }} {{ applicant.last_name }}
+                        <span style="color: rgb(127, 126, 126);">{{ applicant.rank_number }}</span> 
+                        {{ applicant.first_name}} {{ applicant.last_name }} 
+                        <span style="font-size:15px; background-color: grey; color: white; border-radius: 1%; margin-left: 1%" class="p-2">{{ applicant.applicant_status }}</span>
                     </template>
                     <template #content>
                         <div class="content-container" style="display: flex">
@@ -81,6 +83,7 @@ export default {
             job_ID: this.$route.params.job_ID,
             job_title: this.$route.params.job_title,
             applicants: [],
+            hover: "",
         }
     },
     mounted() {
@@ -93,6 +96,7 @@ export default {
                     console.log(this.job_ID)
                     console.log(response.data.data)
                     this.applicants = response.data.data
+                    this.hover = new Array(response.data.data.length).fill(false);
                 }))
         },
         changeStatus(email, job_ID, status) {
@@ -115,3 +119,8 @@ export default {
 }
 
 </script>
+<style>
+.div-hover {
+    background-color: lightgrey;
+}
+</style>

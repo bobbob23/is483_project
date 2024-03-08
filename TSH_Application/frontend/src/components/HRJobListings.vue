@@ -17,6 +17,10 @@
             <div class="col-2"></div>
         </div>
 
+        <div class="container text-center mt-5" v-if="jobs.length == 0" >
+            <i class="pi pi-spin pi-spinner" style="font-size: 3em;"></i> <!-- Progress spinner -->
+        </div>
+        
         <div class="row mt-3" v-for="(job, index) in jobs" :key="job.title">
             <!-- <div class="col-1">
             </div> -->
@@ -74,7 +78,7 @@ export default {
     },
     data() {
         return {
-            jobs: "",
+            jobs: [],
             jobCount: "",
             hover: "",
         }

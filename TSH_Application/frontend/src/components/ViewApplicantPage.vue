@@ -7,13 +7,13 @@
                 @click="$router.go(-1)" />
         </div>
     </div>
-    <div class="row">
+    <div v-if="fName == ''" class="text-center mt-5">
+        <i class="pi pi-spin pi-spinner" style="font-size: 3em;"></i> <!-- Progress spinner -->
+    </div>
+    <div class="row" v-else>
         <div class="col-2"></div>
         <div class="col-8 mt-4">
-            <div v-if="fName == ''" class="text-center mt-5">
-                <i class="pi pi-spin pi-spinner" style="font-size: 3em;"></i> <!-- Progress spinner -->
-            </div>
-            <div class="" v-else>
+            <div class="">
                 <h3>{{ fName }} {{ lName }}</h3>
                 <p>
                     <span class="text-secondary secondary">
@@ -82,7 +82,7 @@ export default {
                     this.school = response.data.data.school
                     this.school = response.data.data.school
                     this.course = response.data.data.course_of_study
-                    this.gradDate = response.data.data.grad_month.slice(8,16)
+                    this.gradDate = response.data.data.grad_month.slice(8, 16)
                     this.gpa = response.data.data.GPA
                 })
         }
