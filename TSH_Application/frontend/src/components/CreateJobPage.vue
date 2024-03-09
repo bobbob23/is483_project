@@ -44,8 +44,8 @@
                     <Calendar v-model="jobAppDead" showIcon iconDisplay="input" dateFormat="dd/mm/yy" id="jobAppDead" style="width: 300px" />
                 </div>
                 <div class="col">
-                    <label for="jobExpSal" style="display: block">Expected Salary ($) <span style="color: red;">*</span></label>
-                    <InputText v-model="jobExpSal" id="jobExpSal" style="width: 300px" />
+                    <label for="jobSalary" style="display: block">Salary ($) <span style="color: red;">*</span></label>
+                    <InputText v-model="jobSalary" id="jobSalary" style="width: 300px" />
                 </div>
                 <div class="col-3"></div>
             </div>
@@ -90,10 +90,10 @@
                  style="border-radius: 50px; background-color: gray; width: 150px" />
             </div>
             <div class="col-2 justify-content-centre">
-                <Button label="Preview Job" v-model="formValid"
+                <Button label="Confirm" v-model="formValid" @click="submitForm(formValid)" 
                 style="border-radius: 50px; background-color: darkblue; width: 150px" />
             </div>
-            <div class="col-4"></div>
+            <div class="col-4"></div>   
           </div>
           <br>
 
@@ -105,6 +105,7 @@
 <script>
 import HRNavBar from './HRNavBar.vue';
 import axios from "axios";
+import { createJobListing } from '@/api/api';
 
 export default {
     components: {
@@ -114,16 +115,73 @@ export default {
         return{
             jobTitle: "",
             jobAppDead: "",
-            jobExpSal: "",
+            jobSalary: "",
             jobHM: "",
             jobDesc: "",
             jobReq: "",
+            jobType: "",
+            jobLocation: "",
+            jobDept: "",
+            jobWorkPermit: "",
             jobTypeList: ["Internship", "Full-Time"],
             jobLocationList: ["Singapore", "Malaysia"],
             jobDeptList: ["Engineering", "Technology", "Management"],
             jobWorkPermitList: ["Singaporean", "Permanent Resident", "Work/Study Visa"],
+            opening_date: new Date().toISOString().split('T')[0],
+            formValid: true,
         }
     },
+    methods: {
+        onUpload(event, name) {
+        const file = event.target.files[0];
+        console.log(name)
+        console.log(file)
+        this.filesData.append(name, file)
+    },
+    submitForm(formValid) {
+        if (formValid) {
+            const formData = {
+                title: this.jobTitle,
+                location: this.jobLocation,
+                type: this.jobType,
+                department: this.jobDept,
+                opening_date: this.opening_date, 
+                closing_date: this.jobAppDead,
+                job_status: 'Active', 
+                hiring_manager: this.jobHM,
+                salary: this.jobSalary,
+                job_description: this.jobDesc,
+                job_requirement: this.jobReq,
+                work_permit: this.jobWorkPermit
+            };
+
+            fetch(createJobListing, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData),
+            })
+            .then(response => {
+            if (response.ok) {
+                console.log('Form submitted successfully');
+                this.$router.push({
+                    name: "HRSuccess",
+                    params: {
+                    job_title: this.jobTitle,
+                    opening_date: this.opening_date
+                    }
+                })
+                } else {
+                console.error('Failed to submit form');
+                }
+            })
+            .catch(error => {
+                console.error('Error submitting form:', error);
+            });
+        }
+    }
+    }
 }
 </script>
 
@@ -132,3 +190,5 @@ export default {
   padding-top: 10px;
 }
 </style>
+
+
