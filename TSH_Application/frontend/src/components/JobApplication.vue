@@ -102,8 +102,7 @@
             <div class="col-3"></div>
             <div class="col">
               <label for="gradDate">Month of Graduation <span style="color: red;">*</span></label>
-              <Calendar v-model="gradDate" @input="gradDateInput" id="gradMonth" dateFormat="mm/yy" style="width: 300px" />
-              <small v-if="!validateFutureMonthYear(gradDate) && showGradDateError" style="color: red">Graduation date must be in the future</small>
+              <Calendar v-model="gradDate" :minDate="minDate" id="gradMonth" dateFormat="mm/yy" style="width: 300px" />
             </div>
             <div class="col">
               <label for="course">GPA <span style="color: grey;">(Actual / Total) </span><span
@@ -116,11 +115,11 @@
             <div class="col-3"></div>
             <div class="col">
               <label for="startDate">Start Date <span style="color: red;">*</span></label>
-              <Calendar v-model="startDate" dateFormat="dd/mm/yy" style="width: 300px" />
+              <Calendar v-model="startDate" :minDate="minDate" dateFormat="dd/mm/yy" style="width: 300px" />
             </div>
             <div class="col">
               <label for="endDate">End Date <span style="color: red;">*</span></label>
-              <Calendar v-model="endDate" dateFormat="dd/mm/yy" style="width: 300px" />
+              <Calendar v-model="endDate" :minDate="minDate" dateFormat="dd/mm/yy" style="width: 300px" />
             </div>
             <div class="col-3"></div>
           </div>
@@ -194,11 +193,11 @@ export default {
       formValid: "",
       job_title: "",
       filesData: new FormData(),
-      showGradDateError : false,
+      minDate: new Date(),
       showEmailError: false,
       showPastSalaryError: false,
       resumeUploaded: false,
-      transcriptUploaded: false
+      transcriptUploaded: false,
     }
   },
   mounted() {
@@ -326,31 +325,14 @@ export default {
     pastSalaryInput() {
       this.showPastSalaryError = this.pastSalary !== null;
     },
-    gradDateInput() {
-      this.showGradDateError = this.gradDate !== null;
-    },
     validateEmail(email) {
       const emailRegex = /\S+@\S+\.\S+/;
       return emailRegex.test(email);
     },
     validatePositiveSalary(salary) {
       return salary >= 0;
-    },
-    validateFutureMonthYear(date) { // value of input date
-      if (!date) {
-        return false;
-      }
-      const currentDate = new Date();
-      const currentYear = currentDate.getFullYear();
-      const currentMonth = currentDate.getMonth() + 1; // month is 0-indexed, so we add 1 to get the correct month
-
-      const inputYear = date.getFullYear();
-      const inputMonth = date.getMonth() + 1;
-
-      return inputYear > currentYear || (inputYear === currentYear && inputMonth + 1 >= currentMonth);
     }
-  
-  }
+  },
 }
 </script>
 <style scoped>
