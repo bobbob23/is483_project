@@ -14,7 +14,10 @@
         <div class="col-2"></div>
         <div class="col-8 mt-4">
             <div class="">
-                <h3>{{ fName }} {{ lName }}</h3>
+                <h3>{{ fName }} {{ lName }}</h3> 
+                <!-- <span :style="{ backgroundColor: getStatusColor(applicant.applicant_status) }"
+                            style="font-size:15px; color: white; border-radius: 5%; margin-left: 1%"
+                            class="p-2">{{ applicant.applicant_status }}</span> -->
                 <p>
                     <span class="text-secondary secondary">
                         <i class="pi pi-file"></i> Resume &nbsp;
@@ -85,6 +88,20 @@ export default {
                     this.gradDate = response.data.data.grad_month.slice(8, 16)
                     this.gpa = response.data.data.GPA
                 })
+        },
+        getStatusColor(status) {
+            switch (status) {
+                case 'Unprocessed':
+                    return '#d3d3d3';
+                case 'Shortlisted':
+                    return 'grey';
+                case 'Interview':
+                    return 'darkblue';
+                case 'Reject':
+                    return '#ff6961';
+                default:
+                    return 'transparent'; 
+            }
         }
     }
 }

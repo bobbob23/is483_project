@@ -19,7 +19,7 @@
                         </template>
                         <template #footer>
                             <Button class="w-100"
-                                style="border: 0; background-color: #ededed; color: #011B56; font-weight: 600;"
+                                style="border: 0; background-color: #ededed; color: #011B56; font-weight: 600; border-radius: 3%;"
                                 label="View More >" />
                         </template>
                     </Card>
@@ -36,7 +36,7 @@
                         </template>
                         <template #footer>
                             <Button class="w-100"
-                                style="border: 0; background-color: #ededed; color: #011B56; font-weight: 600;"
+                                style="border: 0; background-color: #ededed; color: #011B56; font-weight: 600; border-radius: 3%;"
                                 label="View More >" />
                         </template>
                     </Card>
@@ -53,7 +53,7 @@
                         </template>
                         <template #footer>
                             <Button class="w-100"
-                                style="border: 0; background-color: #ededed; color: #011B56; font-weight: 600;"
+                                style="border: 0; background-color: #ededed; color: #011B56; font-weight: 600; border-radius: 3%;"
                                 label="View More > " />
                         </template>
                     </Card>
@@ -73,7 +73,7 @@
                 <div class="col-5 mt-4">
                     <div class="card flex justify-content-center">
                         <h4 class="px-2 pt-2">New Applicants</h4>
-                        <VirtualScroller :items="applicants" :itemSize="50" style="height: 350px; width: 100%"
+                        <VirtualScroller :items="applicants" :itemSize="50" style="height: 250px; width: 100%"
                         class="border-1 surface-border border-round"  >
                             <template v-slot:item="{ item }">
                                 <div :class="['flex align-items-center p-2']"
