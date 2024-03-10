@@ -77,7 +77,8 @@
             <div class="col-3"></div>
             <div class="col">
               <label for="email">Email <span style="color: red;">*</span></label>
-              <InputText v-model="email" id="email" style="width: 300px" />
+              <InputText v-model="email" @input="emailInput" id="email" style="width: 300px" />
+              <small v-if="showEmailError && !validateEmail(email)" style="color: red">Invalid email address</small>
             </div>
             <div class="col">
               <label for="contact">Contact Number <span style="color: red;">*</span></label>
@@ -97,11 +98,12 @@
             </div>
             <div class="col-3"></div>
           </div>
-          <div class="row" v-if="jobData.type !== 'Entry-Level'">
+          <div class="row" v-if="jobData.type !== 'Full time'">
             <div class="col-3"></div>
             <div class="col">
               <label for="gradDate">Month of Graduation <span style="color: red;">*</span></label>
-              <Calendar v-model="gradDate" id="gradMonth" dateFormat="mm/yy" style="width: 300px" />
+              <Calendar v-model="gradDate" @input="gradDateInput" id="gradMonth" dateFormat="mm/yy" style="width: 300px" />
+              <small v-if="!validateFutureMonthYear(gradDate) && showGradDateError" style="color: red">Graduation date must be in the future</small>
             </div>
             <div class="col">
               <label for="course">GPA <span style="color: grey;">(Actual / Total) </span><span
@@ -126,7 +128,8 @@
             <div class="col-3"></div>
             <div class="col" v-if="jobData.type !== 'Internship'">
               <label for="pastSalary">Past Salary ($) <span style="color: red;">*</span></label>
-              <InputText v-model="pastSalary" id="pastSalary" style="width: 300px" />
+              <InputText v-model="pastSalary" @input="pastSalaryInput" id="pastSalary" style="width: 300px" />
+              <small v-if="showPastSalaryError && !validatePositiveSalary(pastSalary)" style="color: red">Past salary cannot be negative</small>
             </div>
             <div class="col">
               <label for="course">Type of Work Permit <span style="color: red;">*</span></label>
@@ -191,6 +194,11 @@ export default {
       formValid: "",
       job_title: "",
       filesData: new FormData(),
+      showGradDateError : false,
+      showEmailError: false,
+      showPastSalaryError: false,
+      resumeUploaded: false,
+      transcriptUploaded: false
     }
   },
   mounted() {
@@ -208,20 +216,40 @@ export default {
       console.log(name)
       console.log(file)
       this.filesData.append(name, file)
+
+      if (name === 'resume') {
+        this.resumeUploaded = true;
+      } else if (name === 'transcript') {
+        this.transcriptUploaded = true;
+      }
     },
     isFormValid() {
-      this.formValid = this.fName.length !== 0 &&
-        this.lName.length !== 0 &&
-        this.email.length !== 0 &&
-        this.number.length !== 0 &&
-        this.school.length !== 0 &&
-        this.course.length !== 0 &&
-        this.gradDate.length !== 0 &&
-        this.gpa.length !== 0 &&
-        this.pastSalary.length !== 0 &&
-        this.workPermit.length !== 0 &&
-        this.startDate.length !== 0 &&
-        this.endDate.length !== 0
+      if (this.jobData.type === 'Full time') {
+    this.formValid = this.fName.length !== 0 &&
+      this.lName.length !== 0 &&
+      this.email.length !== 0 &&
+      this.number.length !== 0 &&
+      this.school.length !== 0 &&
+      this.course.length !== 0 &&
+      this.resumeUploaded &&
+      this.transcriptUploaded &&
+      this.pastSalary.length !== 0 &&
+      this.workPermit.length !== 0;
+  } else if (this.jobData.type === 'Internship') {
+    this.formValid = this.fName.length !== 0 &&
+      this.lName.length !== 0 &&
+      this.email.length !== 0 &&
+      this.number.length !== 0 &&
+      this.school.length !== 0 &&
+      this.course.length !== 0 &&
+      this.gradDate.length !== 0 &&
+      this.gpa.length !== 0 &&
+      this.workPermit.length !== 0 &&
+      this.startDate.length !== 0 &&
+      this.endDate.length !== 0 &&
+      this.resumeUploaded &&
+      this.transcriptUploaded;
+  }
       return this.formValid
     },
     submitForm() {
@@ -291,7 +319,37 @@ export default {
         this.errorMsg = "Please fill up all required fields!"
         console.log(this.errorMsg)
       }
+    },
+    emailInput() {
+      this.showEmailError = this.email.length > 0;
+    },
+    pastSalaryInput() {
+      this.showPastSalaryError = this.pastSalary !== null;
+    },
+    gradDateInput() {
+      this.showGradDateError = this.gradDate !== null;
+    },
+    validateEmail(email) {
+      const emailRegex = /\S+@\S+\.\S+/;
+      return emailRegex.test(email);
+    },
+    validatePositiveSalary(salary) {
+      return salary >= 0;
+    },
+    validateFutureMonthYear(date) { // value of input date
+      if (!date) {
+        return false;
+      }
+      const currentDate = new Date();
+      const currentYear = currentDate.getFullYear();
+      const currentMonth = currentDate.getMonth() + 1; // month is 0-indexed, so we add 1 to get the correct month
+
+      const inputYear = date.getFullYear();
+      const inputMonth = date.getMonth() + 1;
+
+      return inputYear > currentYear || (inputYear === currentYear && inputMonth + 1 >= currentMonth);
     }
+  
   }
 }
 </script>
