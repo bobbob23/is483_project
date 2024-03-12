@@ -155,8 +155,8 @@ def new_applicant_files():
             'error' : str(e)
         })
 
-@applicant_routes.route('/applicant_files', methods=['GET'])
-def applicant_details(email='ryanteo.2021@scis.smu.edu.sg'):
+@applicant_routes.route('/applicant_files/<string:email>', methods=['GET'])
+def applicant_details(email):
 
     aws_access_key_id = ACCESS_KEY
     aws_secret_access_key = SECRET_ACCESS_KEY
@@ -167,7 +167,7 @@ def applicant_details(email='ryanteo.2021@scis.smu.edu.sg'):
     )
 
     # data directory, INPUT YOUR OWN PATH
-    data_folder = r""
+    data_folder = r"/Users/deborahhow/Documents/fypfiles"
     if not os.path.exists(data_folder):
         os.makedirs(data_folder)
 

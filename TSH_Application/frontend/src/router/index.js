@@ -52,7 +52,7 @@ const routes = [
   },
   {
     path:"/hr_createjob",
-    name:"CeateJobPage",
+    name:"CreateJobPage",
     component: () => import("@/components/CreateJobPage.vue"),
   },
   {

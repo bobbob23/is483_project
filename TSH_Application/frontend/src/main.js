@@ -25,6 +25,7 @@ import Calendar from 'primevue/calendar';
 import VirtualScroller from 'primevue/virtualscroller';
 import MultiSelect from 'primevue/multiselect';
 import Textarea from 'primevue/textarea';
+import Dialog from 'primevue/dialog';
 
 
 /* use imported primevue components */
@@ -42,6 +43,7 @@ app.component("Calendar", Calendar)
 app.component("VirtualScroller", VirtualScroller)
 app.component("MultiSelect", MultiSelect)
 app.component("Textarea", Textarea)
+app.component("Dialog", Dialog)
 
 app.use(PrimeVue)
 app.use(HighchartsVue)

@@ -26,7 +26,7 @@
                     </span>
                     &nbsp;
                     <i class="pi pi-download" style="color: darkblue"></i> <Button label='Download all' class="mt-1 p-0"
-                        style="color: darkblue" link />
+                        style="color: darkblue" link @click="getFiles()"/>
                 </p>
                 <hr>
                 <div>
@@ -49,7 +49,7 @@
 <script>
 import axios from "axios"
 import HRNavBar from "./HRNavBar.vue"
-import { getApplicantDetails } from "@/api/api";
+import { getApplicantDetails, getApplicantFiles } from "@/api/api";
 import Button from 'primevue/button';
 
 export default {
@@ -87,6 +87,12 @@ export default {
                     this.course = response.data.data.course_of_study
                     this.gradDate = response.data.data.grad_month.slice(8, 16)
                     this.gpa = response.data.data.GPA
+                })
+        },
+        getFiles(){
+            axios.get(`${getApplicantFiles}/${this.email}`)
+                .then(response => {
+                    alert("Files have been successfully downloaded")
                 })
         },
         getStatusColor(status) {
