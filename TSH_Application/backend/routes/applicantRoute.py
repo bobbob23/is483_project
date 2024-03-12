@@ -167,7 +167,7 @@ def applicant_details(email):
     )
 
     # data directory, INPUT YOUR OWN PATH
-    data_folder = r"/Users/deborahhow/Documents/fypfiles"
+    data_folder = r"applicantFiles"
     if not os.path.exists(data_folder):
         os.makedirs(data_folder)
 
