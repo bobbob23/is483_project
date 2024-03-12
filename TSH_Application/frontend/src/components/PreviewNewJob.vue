@@ -36,7 +36,7 @@
                         Job Requirements
                     </h2>
                     <p class="mx-3">
-                        {{ formData.job_requirement }}
+                        {{ formData.job_requirements }}
                     </p>
                 </span>
             </div>
@@ -47,7 +47,7 @@
                 <div class="col-4">
             </div>
             <div class="col-2 justify-content-centre">
-                <Button label="Edit" 
+                <Button label="Edit" @click="$router.go(-1)"
                  style="border-radius: 50px; background-color: gray; width: 150px" />
             </div>
             <div class="col-2 justify-content-centre">
@@ -79,7 +79,7 @@ export default {
                 salary: "",
                 hiring_manager: "",
                 job_description: "",
-                job_requirement: "",
+                job_requirements: "",
                 type: "",
                 location: "",
                 department: "",
@@ -89,18 +89,6 @@ export default {
             }
         };
     },
-    beforeMount() {
-        this.emitter.on('preview-job', data => {
-            this.formData.title = data.title;
-            this.formData.job_description = data.job_description;
-            console.log('expected: ', this.formData.title)
-        });
-    },
-    mounted() {
-        
-        console.log('actual: ', this.formData.title)
-        console.log('------------')
-    }
     // methods: {
     //     onUpload(event, name) {
     //     const file = event.target.files[0];

@@ -14,25 +14,12 @@
             <div class="row">
                 <div class="col-3"></div>
                 <div class="col">
-                    <label for="jobTitle" style="display: block">Job Title <span style="color: red;">*</span></label>
-                    <InputText id="jobTitle" v-model="jobTitle" style="width: 300px" />
+                    <label for="title" style="display: block">Job Title <span style="color: red;">*</span></label>
+                    <InputText id="title" v-model="title" style="width: 300px" />
                 </div>
                 <div class="col">
-                    <label for="jobType" style="display: block">Job Type <span style="color: red;">*</span></label>
-                    <Dropdown v-model="jobType" :options="jobTypeList" id="jobType" style="width: 300px" />
-                </div>
-                <div class="col-3"></div>
-            </div>
-
-            <div class="row">
-                <div class="col-3"></div>
-                <div class="col">
-                    <label for="jobLocation" style="display: block">Location <span style="color: red;">*</span></label>
-                    <Dropdown v-model="jobLocation" :options="jobLocationList" id="jobLocation" style="width: 300px" />
-                </div>
-                <div class="col">
-                    <label for="jobDept" style="display: block">Department <span style="color: red;">*</span></label>
-                    <Dropdown v-model="jobDept" :options="jobDeptList" id="jobDept" style="width: 300px" />
+                    <label for="type" style="display: block">Job Type <span style="color: red;">*</span></label>
+                    <Dropdown v-model="type" :options="typeList" id="type" style="width: 300px" />
                 </div>
                 <div class="col-3"></div>
             </div>
@@ -40,25 +27,12 @@
             <div class="row">
                 <div class="col-3"></div>
                 <div class="col">
-                    <label for="jobAppDead" style="display: block">Application Deadline <span style="color: red;">*</span></label>
-                    <Calendar v-model="jobAppDead" showIcon iconDisplay="input" dateFormat="dd/mm/yy" id="jobAppDead" style="width: 300px" />
+                    <label for="location" style="display: block">Location <span style="color: red;">*</span></label>
+                    <Dropdown v-model="location" :options="locationList" id="location" style="width: 300px" />
                 </div>
                 <div class="col">
-                    <label for="jobSalary" style="display: block">Salary ($) <span style="color: red;">*</span></label>
-                    <InputText v-model="jobSalary" id="jobSalary" style="width: 300px" />
-                </div>
-                <div class="col-3"></div>
-            </div>
-
-            <div class="row">
-                <div class="col-3"></div>
-                <div class="col">
-                    <label for="jobWorkPermit" style="display: block">Type of Work Permit(s) <span style="color: red;">*</span></label>
-                    <MultiSelect v-model="jobWorkPermit" display="chip" :options="jobWorkPermitList" id="jobWorkPermit" style="width: 300px" />
-                </div>
-                <div class="col">
-                    <label for="jobHM" style="display: block">Hiring Manager <span style="color: red;">*</span></label>
-                    <InputText v-model="jobHM" id="jobHM" style="width: 300px" />
+                    <label for="department" style="display: block">Department <span style="color: red;">*</span></label>
+                    <Dropdown v-model="department" :options="departmentList" id="department" style="width: 300px" />
                 </div>
                 <div class="col-3"></div>
             </div>
@@ -66,8 +40,12 @@
             <div class="row">
                 <div class="col-3"></div>
                 <div class="col">
-                    <label for="jobDesc" style="display: block">Job Description <span style="color: red;">*</span></label>
-                    <Textarea v-model="jobDesc" rows="5" id="jobDesc" style="width: 643px;" />
+                    <label for="closing_date" style="display: block">Application Deadline <span style="color: red;">*</span></label>
+                    <Calendar v-model="closing_date" showIcon iconDisplay="input" dateFormat="dd/mm/yy" id="closing_date" style="width: 300px" />
+                </div>
+                <div class="col">
+                    <label for="salary" style="display: block">Salary ($) <span style="color: red;">*</span></label>
+                    <InputText v-model="salary" id="salary" style="width: 300px" />
                 </div>
                 <div class="col-3"></div>
             </div>
@@ -75,8 +53,30 @@
             <div class="row">
                 <div class="col-3"></div>
                 <div class="col">
-                    <label for="jobReq" style="display: block">Job Requirements <span style="color: red;">*</span></label>
-                    <Textarea v-model="jobReq" rows="5" id="jobReq" style="width: 643px;" />
+                    <label for="work_permit" style="display: block">Type of Work Permit(s) <span style="color: red;">*</span></label>
+                    <MultiSelect v-model="work_permit" display="chip" :options="work_permitList" id="work_permit" style="width: 300px" />
+                </div>
+                <div class="col">
+                    <label for="hiring_manager" style="display: block">Hiring Manager <span style="color: red;">*</span></label>
+                    <InputText v-model="hiring_manager" id="hiring_manager" style="width: 300px" />
+                </div>
+                <div class="col-3"></div>
+            </div>
+
+            <div class="row">
+                <div class="col-3"></div>
+                <div class="col">
+                    <label for="job_description" style="display: block">Job Description <span style="color: red;">*</span></label>
+                    <Textarea v-model="job_description" rows="5" id="job_description" style="width: 643px;" />
+                </div>
+                <div class="col-3"></div>
+            </div>
+
+            <div class="row">
+                <div class="col-3"></div>
+                <div class="col">
+                    <label for="job_requirements" style="display: block">Job Requirements <span style="color: red;">*</span></label>
+                    <Textarea v-model="job_requirements" rows="5" id="job_requirements" style="width: 643px;" />
                 </div>
                 <div class="col-3"></div>
             </div>
@@ -110,24 +110,25 @@ import PreviewNewJob from '@/components/PreviewNewJob.vue';
 
 export default {
     components: {
-        HRNavBar
+        HRNavBar,
+        PreviewNewJob
     },
     data() {
         return{
-            jobTitle: "",
-            jobAppDead: "",
-            jobSalary: "",
-            jobHM: "",
-            jobDesc: "",
-            jobReq: "",
-            jobType: "",
-            jobLocation: "",
-            jobDept: "",
-            jobWorkPermit: "",
-            jobTypeList: ["Internship", "Full-Time"],
-            jobLocationList: ["Singapore", "Malaysia"],
-            jobDeptList: ["Engineering", "Technology", "Management"],
-            jobWorkPermitList: ["Singaporean", "Permanent Resident", "Work/Study Visa"],
+            title: "",
+            closing_date: "",
+            salary: "",
+            hiring_manager: "",
+            job_description: "",
+            job_requirements: "",
+            type: "",
+            location: "",
+            department: "",
+            work_permit: "",
+            typeList: ["Internship", "Full-Time"],
+            locationList: ["Singapore", "Malaysia"],
+            departmentList: ["Engineering", "Technology", "Management"],
+            work_permitList: ["Singaporean", "Permanent Resident", "Work/Study Visa"],
             opening_date: new Date().toISOString().split('T')[0],
             formValid: true,
         }
@@ -142,18 +143,18 @@ export default {
     previewJob(formValid) {
         if (formValid) {
             const formData = {
-                title: this.jobTitle,
-                location: this.jobLocation,
-                type: this.jobType,
-                department: this.jobDept,
+                title: this.title,
+                location: this.location,
+                type: this.type,
+                department: this.department,
                 opening_date: this.opening_date, 
-                closing_date: this.jobAppDead,
+                closing_date: this.closing_date,
                 job_status: 'Active', 
-                hiring_manager: this.jobHM,
-                salary: this.jobSalary,
-                job_description: this.jobDesc,
-                job_requirement: this.jobReq,
-                work_permit: this.jobWorkPermit
+                hiring_manager: this.hiring_manager,
+                salary: this.salary,
+                job_description: this.job_description,
+                job_requirement: this.job_requirements,
+                work_permit: this.work_permit
             };
 
             // fetch(createJobListing, {
@@ -170,11 +171,9 @@ export default {
             this.$router.push({
                 name: 'PreviewNewJob',
                 params: {
-                    jobTitle: this.jobTitle
+                    jobTitle: this.title
                 }
             })
-
-            this.emitter.emit('preview-job', formData);
 
         } else {
         console.error('ERROR: creating formData');
