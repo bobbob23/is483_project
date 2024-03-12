@@ -23,6 +23,7 @@
     "highcharts": "^11.3.0",
     "highcharts-vue": "^1.4.3",
     "json-server": "^1.0.0-alpha.23",
+    "mitt": "^3.0.1",
     "primeicons": "^6.0.1",
     "primevue": "^3.47.2",
     "vue": "^3.4.15",

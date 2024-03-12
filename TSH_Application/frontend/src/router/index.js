@@ -40,13 +40,13 @@ const routes = [
     path: "/hr_success/:job_title",
     name: "HRSuccess",
     component: () => import("@/components/CreateSuccess.vue"),
-    props: (route) => ({
-      job_title: route.params.job_title,
-      opening_date: route.params.opening_date
-    }),
+    // props: (route) => ({
+    //   job_title: route.params.job_title,
+    //   opening_date: route.params.opening_date
+    // }),
   },
   {
-    path:"/hr_previewjob",
+    path:"/hr_previewjob/:jobTitle",
     name:"PreviewNewJob",
     component: () => import("@/components/PreviewNewJob.vue"),
   },

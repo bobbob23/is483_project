@@ -1,8 +1,10 @@
 import './assets/main.css'
 import { createApp } from 'vue';
 import App from './App.vue';
-import { registerPlugins } from '@/plugins'
+import { registerPlugins } from '@/plugins';
+import mitt from 'mitt';
 const app = createApp(App);
+const emitter = mitt();
 registerPlugins(app);
 
 /* import primevue ui components */
@@ -45,5 +47,7 @@ app.component("Textarea", Textarea)
 
 app.use(PrimeVue)
 app.use(HighchartsVue)
+
+app.config.globalProperties.emitter = emitter;
 
 app.mount('#app')

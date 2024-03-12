@@ -4,7 +4,7 @@
         <div class="col-1">
             <Button label="< Back" class="my-2 mx-2 flex-start"
                 style="border-radius: 20%; border: rgb(230, 230, 230); height: 35px; background-color: rgb(230, 230, 230); color: black "
-                @click="$router.go(-1)" />
+                @click="$router.push('/hr')" />
         </div>
     </div>
     <div class="container mt-4">

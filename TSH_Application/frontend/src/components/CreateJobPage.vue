@@ -86,11 +86,11 @@
                 <div class="col-4">
             </div>
             <div class="col-2 justify-content-centre">
-                <Button label="Cancel" @click="cancelForm"
+                <Button label="Cancel" 
                  style="border-radius: 50px; background-color: gray; width: 150px" />
             </div>
             <div class="col-2 justify-content-centre">
-                <Button label="Confirm" v-model="formValid" @click="submitForm(formValid)" 
+                <Button label="Preview" v-model="formValid" @click="previewJob(formValid)" 
                 style="border-radius: 50px; background-color: darkblue; width: 150px" />
             </div>
             <div class="col-4"></div>   
@@ -106,6 +106,7 @@
 import HRNavBar from './HRNavBar.vue';
 import axios from "axios";
 import { createJobListing } from '@/api/api';
+import PreviewNewJob from '@/components/PreviewNewJob.vue';
 
 export default {
     components: {
@@ -132,13 +133,13 @@ export default {
         }
     },
     methods: {
-        onUpload(event, name) {
-        const file = event.target.files[0];
-        console.log(name)
-        console.log(file)
-        this.filesData.append(name, file)
-    },
-    submitForm(formValid) {
+    //     onUpload(event, name) {
+    //     const file = event.target.files[0];
+    //     console.log(name)
+    //     console.log(file)
+    //     this.filesData.append(name, file)
+    // },
+    previewJob(formValid) {
         if (formValid) {
             const formData = {
                 title: this.jobTitle,
@@ -155,32 +156,35 @@ export default {
                 work_permit: this.jobWorkPermit
             };
 
-            fetch(createJobListing, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData),
-            })
-            .then(response => {
-            if (response.ok) {
-                console.log('Form submitted successfully');
-                this.$router.push({
-                    name: "HRSuccess",
-                    params: {
-                    job_title: this.jobTitle,
-                    opening_date: this.opening_date
-                    }
-                })
-                } else {
-                console.error('Failed to submit form');
+            // fetch(createJobListing, {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     },
+            //     body: JSON.stringify(formData),
+            // })
+            // .then(response => {
+            // if (response.ok) {
+            //     console.log('SUCCESS: previewing job');
+
+            this.$router.push({
+                name: 'PreviewNewJob',
+                params: {
+                    jobTitle: this.jobTitle
                 }
             })
-            .catch(error => {
-                console.error('Error submitting form:', error);
-            });
+
+            this.emitter.emit('preview-job', formData);
+
+        } else {
+        console.error('ERROR: creating formData');
         }
-    }
+            // })
+            // .catch(error => {
+            //     console.error('Error submitting form:', error);
+            // });
+        }
+    
     }
 }
 </script>
