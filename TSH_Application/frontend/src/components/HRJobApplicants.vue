@@ -71,12 +71,12 @@
                     </template>
 
                     <template v-else-if="status === 'Reject'">
-                        <h4>Reject Applicant</h4>
+                        <h4 class="text-center">Reject Applicant</h4>
                         <p class="text-center">Are you sure that you would like to reject {{ applicantSelected.first_name }} {{ applicantSelected.last_name }} for {{ job_title}} role? </p>
                     </template>
 
                     <template v-else-if="status === 'Interview'">
-                        <h4>Invite Applicant for Interview</h4>
+                        <h4 class="text-center">Invite Applicant for Interview</h4>
                         <p class="text-center">Are you sure that you would like to invite {{ applicantSelected.first_name }} {{ applicantSelected.last_name }} for an interview for {{ job_title}} role? </p>
                     </template>
                     <div class="text-center">
