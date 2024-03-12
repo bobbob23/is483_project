@@ -29,8 +29,8 @@
                         <span style="color: rgb(127, 126, 126);">{{ applicant.rank_number }}</span>
                         {{ applicant.first_name }} {{ applicant.last_name }}
                         <span :style="{ backgroundColor: getStatusColor(applicant.applicant_status) }"
-                            style="font-size:15px; color: white; border-radius: 5%; margin-left: 1%"
-                            class="p-2">{{ applicant.applicant_status }}</span>
+                            style="font-size:15px; color: white; border-radius: 5%; margin-left: 0%" class="p-2">{{
+                        applicant.applicant_status }}</span>
                     </template>
 
                     <template #content>
@@ -49,23 +49,43 @@
                                     Graduation: {{ applicant.grad_month.slice(8, 16) }}
                                 </p>
                             </div>
-                            <div class="mt-5" style="display: block;  flex: 1; margin-left: 40%; ">
-                                <Button label="Shortlist" style="display: block; margin: -40% auto 3%; background-color: white; 
-                color: darkblue; border: darkblue 1px solid; width: 90%; border-radius: 100px;"
-                                    @click="changeStatus(applicant.email, job_ID, 'Shortlisted')" />
-                                <Button label="Reject" style="display: block; margin: 0 auto; background-color: white; 
-                color: darkblue; border: darkblue 1px solid; width: 90%; border-radius: 100px;"
-                                    @click="changeStatus(applicant.email, job_ID, 'Reject')" />
-                                <Button label="Invite for Interview" style="display: block; margin: 3% auto 3%; background-color: white; 
-                color: darkblue; border: darkblue 1px solid; width: 90%; border-radius: 100px;"
-                                    @click="changeStatus(applicant.email, job_ID, 'Interview')" />
-                            </div>
                         </div>
                     </template>
                 </Card>
+                <div style="display: block; flex: 1; margin-left: 45%; ">
+                    <Button label="Shortlist" style="display: block; margin: -40% auto 3%; background-color: white; 
+                color: darkblue; border: darkblue 1px solid; width: 90%; border-radius: 100px;"
+                        @click="showDialog('Shortlisted', applicant)" />
+                    <Button label="Reject" style="display: block; margin: 0 auto; background-color: white; 
+                color: darkblue; border: darkblue 1px solid; width: 90%; border-radius: 100px;"
+                        @click="showDialog('Reject', applicant)" />
+                    <Button label="Invite for Interview" style="display: block; margin: 3% auto 3%; background-color: white; 
+                color: darkblue; border: darkblue 1px solid; width: 90%; border-radius: 100px;"
+                        @click="showDialog('Shortlisted', applicant)" />
+                </div>
+                <Dialog v-model:visible="openDialog"  modal :style="{ width: '25rem' }">
+
+                    <template v-if="status === 'Shortlisted'">
+                        <h4 class="text-center">Shortlist Applicant</h4>
+                        <p class="text-center">Are you sure that you would like to shortlist <strong>{{ applicantSelected.first_name }} {{ applicantSelected.last_name }}</strong> for {{ job_title}} role? </p>
+                    </template>
+
+                    <template v-else-if="status === 'Reject'">
+                        <h4 class="text-center">Reject Applicant</h4>
+                        <p class="text-center">Are you sure that you would like to reject {{ applicantSelected.first_name }} {{ applicantSelected.last_name }} for {{ job_title}} role? </p>
+                    </template>
+
+                    <template v-else-if="status === 'Interview'">
+                        <h4 class="text-center">Invite Applicant for Interview</h4>
+                        <p class="text-center">Are you sure that you would like to invite {{ applicantSelected.first_name }} {{ applicantSelected.last_name }} for an interview for {{ job_title}} role? </p>
+                    </template>
+                    <div class="text-center">
+                        <Button style="margin-right: 5%" label="Cancel" @click="openDialog = false" link/>
+                        <Button style="border-radius: 20px; background-color: darkblue; border: darkblue" label="Yes" @click="changeStatus(applicantSelected.email, job_ID, status)" />
+                    </div>
+                </Dialog>
             </div>
             <div class="col-1"></div>
-            <hr class="mt-3">
         </div>
     </div>
 </template>
@@ -75,7 +95,8 @@ import axios from "axios"
 import HRNavBar from "./HRNavBar.vue"
 import { getAllApplicantByJobID, editApplicantStatus } from "@/api/api.js"
 import Card from "primevue/card"
-import Button from 'primevue/button';
+import Button from 'primevue/button'
+import Dialog from "primevue/dialog"
 
 
 export default {
@@ -88,6 +109,9 @@ export default {
             job_title: this.$route.params.job_title,
             applicants: [],
             hover: "",
+            openDialog: false,
+            applicantSelected: "",
+            status: "",
         }
     },
     mounted() {
@@ -106,8 +130,7 @@ export default {
         changeStatus(email, job_ID, status) {
             axios.put(`${editApplicantStatus}/${email}/${job_ID}/${status}`)
                 .then((response) => {
-                    console.log(response)
-                    alert(`You have successfully changed the status!`)
+                    this.$router.go()
                 })
         },
         goToApplicantDetails(email, job_id) {
@@ -130,9 +153,14 @@ export default {
                 case 'Reject':
                     return '#ff6961';
                 default:
-                    return 'transparent'; 
+                    return 'transparent';
             }
-        }
+        },
+        showDialog(status, applicant) {
+            this.openDialog = true
+            this.status = status
+            this.applicantSelected = applicant
+        },
     }
 }
 

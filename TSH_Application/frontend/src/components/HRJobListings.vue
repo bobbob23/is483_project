@@ -10,8 +10,8 @@
     <div class="container mt-4">
         <div class="row">
             <div class="col-2"></div>
-            <h3 class="col-2">Job Listings ({{ jobCount }})</h3>
-            <div class="col-4"></div>
+            <h3 class="col-3">Job Listings ({{ jobCount }})</h3>
+            <div class="col-3"></div>
             <Button class="col-1" label="+ New Job" style="background-color: darkblue;"
                 @click="$router.push('/hr_createjob')" />
             <div class="col-2"></div>

@@ -14,7 +14,10 @@
         <div class="col-2"></div>
         <div class="col-8 mt-4">
             <div class="">
-                <h3>{{ fName }} {{ lName }}</h3>
+                <h3>{{ fName }} {{ lName }}</h3> 
+                <!-- <span :style="{ backgroundColor: getStatusColor(applicant.applicant_status) }"
+                            style="font-size:15px; color: white; border-radius: 5%; margin-left: 1%"
+                            class="p-2">{{ applicant.applicant_status }}</span> -->
                 <p>
                     <span class="text-secondary secondary">
                         <i class="pi pi-file"></i> Resume &nbsp;
@@ -23,7 +26,7 @@
                     </span>
                     &nbsp;
                     <i class="pi pi-download" style="color: darkblue"></i> <Button label='Download all' class="mt-1 p-0"
-                        style="color: darkblue" link />
+                        style="color: darkblue" link @click="getFiles()"/>
                 </p>
                 <hr>
                 <div>
@@ -46,7 +49,7 @@
 <script>
 import axios from "axios"
 import HRNavBar from "./HRNavBar.vue"
-import { getApplicantDetails } from "@/api/api";
+import { getApplicantDetails, getApplicantFiles } from "@/api/api";
 import Button from 'primevue/button';
 
 export default {
@@ -85,6 +88,26 @@ export default {
                     this.gradDate = response.data.data.grad_month.slice(8, 16)
                     this.gpa = response.data.data.GPA
                 })
+        },
+        getFiles(){
+            axios.get(`${getApplicantFiles}/${this.email}`)
+                .then(response => {
+                    alert("Files have been successfully downloaded")
+                })
+        },
+        getStatusColor(status) {
+            switch (status) {
+                case 'Unprocessed':
+                    return '#d3d3d3';
+                case 'Shortlisted':
+                    return 'grey';
+                case 'Interview':
+                    return 'darkblue';
+                case 'Reject':
+                    return '#ff6961';
+                default:
+                    return 'transparent'; 
+            }
         }
     }
 }
