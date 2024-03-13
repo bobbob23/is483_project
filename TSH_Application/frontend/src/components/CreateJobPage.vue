@@ -104,14 +104,11 @@
 
 <script>
 import HRNavBar from './HRNavBar.vue';
-import axios from "axios";
-import { createJobListing } from '@/api/api';
-import PreviewNewJob from '@/components/PreviewNewJob.vue';
 
 export default {
     components: {
         HRNavBar,
-        PreviewNewJob
+        
     },
     data() {
         return{
@@ -134,57 +131,51 @@ export default {
         }
     },
     methods: {
-    //     onUpload(event, name) {
-    //     const file = event.target.files[0];
-    //     console.log(name)
-    //     console.log(file)
-    //     this.filesData.append(name, file)
-    // },
-    previewJob(formValid) {
-        if (formValid) {
-            const formData = {
-                title: this.title,
-                location: this.location,
-                type: this.type,
-                department: this.department,
-                opening_date: this.opening_date, 
-                closing_date: this.closing_date,
-                job_status: 'Active', 
-                hiring_manager: this.hiring_manager,
-                salary: this.salary,
-                job_description: this.job_description,
-                job_requirement: this.job_requirements,
-                work_permit: this.work_permit
-            };
+        updateFormData(formData) {
+            this.$store.dispatch('updateFormData', formData);
+        },
 
-            // fetch(createJobListing, {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     },
-            //     body: JSON.stringify(formData),
-            // })
-            // .then(response => {
-            // if (response.ok) {
-            //     console.log('SUCCESS: previewing job');
+        previewJob(formValid) {
+            if (formValid) {
+                const formData = {
+                    title: this.title,
+                    location: this.location,
+                    type: this.type,
+                    department: this.department,
+                    opening_date: this.opening_date, 
+                    closing_date: this.closing_date,
+                    job_status: 'Active', 
+                    hiring_manager: this.hiring_manager,
+                    salary: this.salary,
+                    job_description: this.job_description,
+                    job_requirement: this.job_requirements,
+                    work_permit: this.work_permit
+                };
 
-            this.$router.push({
-                name: 'PreviewNewJob',
-                params: {
-                    jobTitle: this.title
-                }
-            })
+                this.updateFormData(formData);
+                console.log(this.$store.state.formData)
 
-        } else {
-        console.error('ERROR: creating formData');
+                this.$router.push({
+                    name: 'PreviewNewJob',
+                    params: {
+                        jobTitle: this.title
+                    }
+                })
+
+            } else {
+            console.error('ERROR: creating formData');
+            }
+        },
+
+        created() {
+            const formData = this.$store.getters.formData;
+            if (formData) {
+                this.title = formData.title;
+                this.location = formData.location;
+            }
         }
-            // })
-            // .catch(error => {
-            //     console.error('Error submitting form:', error);
-            // });
-        }
+    },
     
-    }
 }
 </script>
 

@@ -2,9 +2,8 @@ import './assets/main.css'
 import { createApp } from 'vue';
 import App from './App.vue';
 import { registerPlugins } from '@/plugins';
-import mitt from 'mitt';
+import { createStore } from 'vuex';
 const app = createApp(App);
-const emitter = mitt();
 registerPlugins(app);
 
 /* import primevue ui components */
@@ -29,6 +28,28 @@ import MultiSelect from 'primevue/multiselect';
 import Textarea from 'primevue/textarea';
 import Dialog from 'primevue/dialog';
 
+const store = createStore({
+    state () {
+        return {
+            formData: {}
+        }
+    },
+    mutations: {
+        setFormData(state, formData) {
+            state.formData = formData;
+        }
+    },
+    actions: {
+        updateFormData({commit}, formData) {
+            commit('setFormData', formData);
+        }
+    },
+    getters: {
+        formData(state) {
+            return state.formData;
+        }
+    }
+});
 
 /* use imported primevue components */
 app.component('Card', Card);
@@ -49,7 +70,7 @@ app.component("Dialog", Dialog)
 
 app.use(PrimeVue)
 app.use(HighchartsVue)
-
-app.config.globalProperties.emitter = emitter;
+app.use(store)
 
 app.mount('#app')
+
