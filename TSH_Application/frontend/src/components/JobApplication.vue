@@ -12,13 +12,14 @@
       <div class="m-3 px-4">
         <h1 class="m-3">{{ jobData.title }}</h1>
         <hr>
-        <div class="row" style="width: 95%" v-if="errorMsg">
+        <!-- <div class="row" style="width: 95%" v-if="errorMsg">
               <div class="col-4"></div>
               <div class="col">
                 <Message severity="error">Please fill up all required fields! </Message>
               </div>
               <div class="col-4"></div>
-            </div>
+            </div> -->
+        <FormValidation :formValid="formValid" :errorMsg="errorMsg"/>
         <form @submit.prevent="submitForm">
           <div class="row">
             <div class="col"></div>
@@ -76,7 +77,8 @@
             <div class="col-3"></div>
             <div class="col">
               <label for="email">Email <span style="color: red;">*</span></label>
-              <InputText v-model="email" id="email" style="width: 300px" />
+              <InputText v-model="email" @input="emailInput" id="email" style="width: 300px" />
+              <small v-if="showEmailError && !validateEmail(email)" style="color: red">Invalid email address</small>
             </div>
             <div class="col">
               <label for="contact">Contact Number <span style="color: red;">*</span></label>
@@ -96,11 +98,11 @@
             </div>
             <div class="col-3"></div>
           </div>
-          <div class="row" v-if="jobData.type !== 'Entry-Level'">
+          <div class="row" v-if="jobData.type !== 'Full time'">
             <div class="col-3"></div>
             <div class="col">
               <label for="gradDate">Month of Graduation <span style="color: red;">*</span></label>
-              <Calendar v-model="gradDate" id="gradMonth" dateFormat="mm/yy" style="width: 300px" />
+              <Calendar v-model="gradDate" :minDate="minDate" id="gradMonth" dateFormat="mm/yy" style="width: 300px" />
             </div>
             <div class="col">
               <label for="course">GPA <span style="color: grey;">(Actual / Total) </span><span
@@ -113,11 +115,11 @@
             <div class="col-3"></div>
             <div class="col">
               <label for="startDate">Start Date <span style="color: red;">*</span></label>
-              <Calendar v-model="startDate" dateFormat="dd/mm/yy" style="width: 300px" />
+              <Calendar v-model="startDate" :minDate="minDate" dateFormat="dd/mm/yy" style="width: 300px" />
             </div>
             <div class="col">
               <label for="endDate">End Date <span style="color: red;">*</span></label>
-              <Calendar v-model="endDate" dateFormat="dd/mm/yy" style="width: 300px" />
+              <Calendar v-model="endDate" :minDate="minDate" dateFormat="dd/mm/yy" style="width: 300px" />
             </div>
             <div class="col-3"></div>
           </div>
@@ -125,7 +127,8 @@
             <div class="col-3"></div>
             <div class="col" v-if="jobData.type !== 'Internship'">
               <label for="pastSalary">Past Salary ($) <span style="color: red;">*</span></label>
-              <InputText v-model="pastSalary" id="pastSalary" style="width: 300px" />
+              <InputText v-model="pastSalary" @input="pastSalaryInput" id="pastSalary" style="width: 300px" />
+              <small v-if="showPastSalaryError && !validatePositiveSalary(pastSalary)" style="color: red">Past salary cannot be negative</small>
             </div>
             <div class="col">
               <label for="course">Type of Work Permit <span style="color: red;">*</span></label>
@@ -138,8 +141,8 @@
             <div class="col-5">
             </div>
             <div class="col-2 justify-content-centre">
-              <Button label="Submit" v-model="formValid" @click="submitForm(formValid)"
-                style="border-radius: 50px; background-color: darkblue; width: 150px" :disabled="!formValid" />
+              <Button label="Submit" @click="submitForm()"
+                style="border-radius: 50px; background-color: darkblue; width: 150px" />
             </div>
             <div class="col-5">
             </div>
@@ -160,12 +163,14 @@ import NavBar from './NavBar.vue'
 import axios from 'axios'
 import Message from 'primevue/message';
 import { createApplicant, createApplicantFiles, getJobListing } from '@/api/api';
+import FormValidation from './FormValidation.vue';
 
 
 export default {
   components: {
     Banner,
-    NavBar
+    NavBar,
+    FormValidation
   },
   data() {
     return {
@@ -185,9 +190,14 @@ export default {
       startDate: "",
       endDate: "",
       workPermitList: ["Singaporean", "Permanent Resident", "Work/Study Visa"],
-      formValid: true,
+      formValid: "",
       job_title: "",
       filesData: new FormData(),
+      minDate: new Date(),
+      showEmailError: false,
+      showPastSalaryError: false,
+      resumeUploaded: false,
+      transcriptUploaded: false,
     }
   },
   mounted() {
@@ -205,9 +215,44 @@ export default {
       console.log(name)
       console.log(file)
       this.filesData.append(name, file)
+
+      if (name === 'resume') {
+        this.resumeUploaded = true;
+      } else if (name === 'transcript') {
+        this.transcriptUploaded = true;
+      }
     },
-    submitForm(formValid) {
-      if (formValid) {
+    isFormValid() {
+      if (this.jobData.type === 'Full time') {
+    this.formValid = this.fName.length !== 0 &&
+      this.lName.length !== 0 &&
+      this.email.length !== 0 &&
+      this.number.length !== 0 &&
+      this.school.length !== 0 &&
+      this.course.length !== 0 &&
+      this.resumeUploaded &&
+      this.transcriptUploaded &&
+      this.pastSalary.length !== 0 &&
+      this.workPermit.length !== 0;
+  } else if (this.jobData.type === 'Internship') {
+    this.formValid = this.fName.length !== 0 &&
+      this.lName.length !== 0 &&
+      this.email.length !== 0 &&
+      this.number.length !== 0 &&
+      this.school.length !== 0 &&
+      this.course.length !== 0 &&
+      this.gradDate.length !== 0 &&
+      this.gpa.length !== 0 &&
+      this.workPermit.length !== 0 &&
+      this.startDate.length !== 0 &&
+      this.endDate.length !== 0 &&
+      this.resumeUploaded &&
+      this.transcriptUploaded;
+  }
+      return this.formValid
+    },
+    submitForm() {
+      if (this.isFormValid()) {
         const formData = {
           job_id: this.job_ID,
           fName: this.fName,
@@ -222,8 +267,8 @@ export default {
           workPermit: this.workPermit,
           startDate: this.startDate,
           endDate: this.endDate
-        };
-        
+        }
+
         fetch(createApplicant, {
           method: 'POST',
           headers: {
@@ -269,9 +314,25 @@ export default {
             console.error('Error submitting form:', error);
             // Handle error
           });
+      } else {
+        this.errorMsg = "Please fill up all required fields!"
+        console.log(this.errorMsg)
       }
+    },
+    emailInput() {
+      this.showEmailError = this.email.length > 0;
+    },
+    pastSalaryInput() {
+      this.showPastSalaryError = this.pastSalary !== null;
+    },
+    validateEmail(email) {
+      const emailRegex = /\S+@\S+\.\S+/;
+      return emailRegex.test(email);
+    },
+    validatePositiveSalary(salary) {
+      return salary >= 0;
     }
-  }
+  },
 }
 </script>
 <style scoped>
