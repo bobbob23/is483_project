@@ -8,7 +8,12 @@
             @click="$router.go(-1)" />
         </div>
         
-        <Card>
+        <div class="m-1 px-2">
+            <Message severity="info">You are viewing the job in Preview mode.</Message>
+        </div>
+        
+
+        <div class="previewBox m-1 px-2">
             <div class="m-3 px-4">
                 <h1 class="m-3">{{ this.$store.state.formData.title }}</h1>
                 <span class="m-3">
@@ -40,7 +45,7 @@
                     </p>
                 </span>
             </div>
-        </Card>
+        </div>
 
         <div class="m-3 px-4">
             <div class="row">
@@ -144,5 +149,13 @@ export default {
 <style>
 .row {
   padding-top: 10px;
+}
+.p-message .p-message-wrapper {
+    padding: 0.25rem 0.5rem; /* Adjust the padding as needed to make the message shorter in width */
+}
+.previewBox {
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 1px 1px 1px 1px #888888;
 }
 </style>
