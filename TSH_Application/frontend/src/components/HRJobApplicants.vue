@@ -53,38 +53,37 @@
                             </div>
                         </template>
                     </Card>
-                    <div style="display: block; flex: 1; margin-left: 45%; ">
+                    <div style="display: block; flex: 1; margin-left: 45%; " :key="applicant">
                         <Button label="Shortlist" style="display: block; margin: -40% auto 3%; background-color: white; 
-                color: darkblue; border: darkblue 1px solid; width: 90%; border-radius: 100px;"
+                color: darkblue; border: darkblue 1px solid; width: 90%; border-radius: 100px;" :disabled="applicant.applicant_status == 'Shortlisted'"
                             @click="showDialog('Shortlisted', applicant)" />
                         <Button label="Reject" style="display: block; margin: 0 auto; background-color: white; 
-                color: darkblue; border: darkblue 1px solid; width: 90%; border-radius: 100px;"
+                color: darkblue; border: darkblue 1px solid; width: 90%; border-radius: 100px;" :disabled="applicant.applicant_status == 'Reject'"
                             @click="showDialog('Reject', applicant)" />
                         <Button label="Invite for Interview" style="display: block; margin: 3% auto 3%; background-color: white; 
-                color: darkblue; border: darkblue 1px solid; width: 90%; border-radius: 100px;"
-                            @click="showDialog('Shortlisted', applicant)" />
+                color: darkblue; border: darkblue 1px solid; width: 90%; border-radius: 100px;" :disabled="applicant.applicant_status == 'Interview'"
+                            @click="showDialog('Interview', applicant)" />
                     </div>
                     <Dialog v-model:visible="openDialog" modal :style="{ width: '25rem' }">
 
                         <template v-if="status === 'Shortlisted'">
                             <h4 class="text-center">Shortlist Applicant</h4>
                             <p class="text-center">Are you sure that you would like to shortlist <strong>{{
-                            applicantSelected.first_name }} {{ applicantSelected.last_name }}</strong> for {{
-                            job_title }} role? </p>
+                            applicantSelected.first_name }} {{ applicantSelected.last_name }}</strong> for <strong> {{ job_title}} </strong> role? </p>
                         </template>
 
                         <template v-else-if="status === 'Reject'">
                             <h4 class="text-center">Reject Applicant</h4>
                             <p class="text-center">Are you sure that you would like to reject {{
-                            applicantSelected.first_name }} {{ applicantSelected.last_name }} for {{ job_title }}
+                            applicantSelected.first_name }} {{ applicantSelected.last_name }} for <strong> {{ job_title}} </strong>
                                 role? </p>
                         </template>
 
                         <template v-else-if="status === 'Interview'">
                             <h4 class="text-center">Invite Applicant for Interview</h4>
-                            <p class="text-center">Are you sure that you would like to invite {{
-                            applicantSelected.first_name }} {{ applicantSelected.last_name }} for an interview for
-                                {{ job_title}} role? </p>
+                            <p class="text-center">Are you sure that you would like to invite 
+                                <strong> {{ applicantSelected.first_name }} {{ applicantSelected.last_name }} </strong> for an interview for
+                                <strong> {{ job_title}} </strong> role? </p>
                         </template>
                         <div class="text-center">
                             <Button style="margin-right: 5%" label="Cancel" @click="openDialog = false" link />
