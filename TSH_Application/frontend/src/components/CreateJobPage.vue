@@ -166,14 +166,6 @@ export default {
             console.error('ERROR: creating formData');
             }
         },
-
-        created() {
-            const formData = this.$store.getters.formData;
-            if (formData) {
-                this.title = formData.title;
-                this.location = formData.location;
-            }
-        }
     },
     
 }

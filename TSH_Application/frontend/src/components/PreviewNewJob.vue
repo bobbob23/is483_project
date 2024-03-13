@@ -26,7 +26,7 @@
                     <i class="pi pi-briefcase mx-2"></i>{{ this.$store.state.formData.department }}
                 </span>
                 <Button label="Apply Now"
-                style="border-radius: 50px; background-color: grey; margin-left: 700px; padding: 10px 30px" />
+                style="border-radius: 50px; background-color: lightgray; border-color: lightgrey; margin-left: 700px; padding: 10px 30px" />
                 
                 <hr>
                 
@@ -56,7 +56,7 @@
                  style="border-radius: 50px; background-color: gray; width: 150px" />
             </div>
             <div class="col-2 justify-content-centre">
-                <Button label="Confirm" v-model="formValid"  
+                <Button label="Confirm" v-model="formValid" @click="postJob()"
                 style="border-radius: 50px; background-color: darkblue; width: 150px" />
             </div>
             <div class="col-4"></div>   
@@ -69,37 +69,46 @@
 
 <script>
 import HRNavBar from './HRNavBar.vue';
-import axios from "axios";
 import { createJobListing } from '@/api/api';
 
 export default {
     components: {
         HRNavBar
     },
-    // data() {
-    //     return {
-    //         formData: {
-    //             title: "error",
-    //             closing_date: "",
-    //             salary: "",
-    //             hiring_manager: "",
-    //             job_description: "",
-    //             job_requirements: "",
-    //             type: "",
-    //             location: "",
-    //             department: "",
-    //             work_permit: "",
-    //             opening_date: "",
-    //             job_status: "",
-    //         }
-    //     };
-    // },
     computed: {
         formData() {
             return this.$store.getters.formData;
         }
+    },
+    methods: {
+        postJob() {
+            fetch(createJobListing, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(this.$store.state.formData),
+            })
+            .then(response => {
+            if (response.ok) {
+                console.log('Form submitted successfully');
+                this.$router.push({
+                    name: "HRSuccess",
+                    params: {
+                    job_title: this.$store.state.formData.title,
+                    opening_date: this.opening_date
+                    }
+                })
+                } else {
+                console.error('Failed to submit form');
+                }
+            })
+            .catch(error => {
+                console.error('Error submitting form:', error);
+            });
+        }
     }
-    // submitForm(formValid) {
+    // postJob(formValid) {
     //     if (formValid) {
     //         // const formData = {
     //         //     title: this.jobTitle,
