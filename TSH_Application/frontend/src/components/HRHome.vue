@@ -2,7 +2,7 @@
     <HRNavBar />
     <div class="container">
         <h3 class="p-5">Welcome Back, Anis</h3>
-        <div class="container text-center" v-if="unprocessed == '' || active == '' || applicants.length == 0">
+        <div class="container text-center" v-if="active == 0">
             <i class="pi pi-spin pi-spinner" style="font-size: 3em;"></i> <!-- Progress spinner -->
         </div>
         <div class="container" v-else>
