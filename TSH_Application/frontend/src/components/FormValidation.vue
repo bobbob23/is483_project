@@ -15,4 +15,8 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style>
+.p-message .p-message-wrapper {
+    padding: 0.25rem 0.5rem; 
+}
+</style>

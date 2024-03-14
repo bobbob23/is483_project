@@ -11,6 +11,8 @@
             <h1 class="m-3">New Job</h1>
             <hr>
 
+            <FormValidation :formValid="formValid" :errorMsg="errorMsg"/>
+
             <div class="row">
                 <div class="col-3"></div>
                 <div class="col">
@@ -104,11 +106,12 @@
 
 <script>
 import HRNavBar from './HRNavBar.vue';
+import FormValidation from './FormValidation.vue';
 
 export default {
     components: {
         HRNavBar,
-        
+        FormValidation
     },
     data() {
         return{

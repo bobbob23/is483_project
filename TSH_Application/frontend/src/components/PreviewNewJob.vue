@@ -12,7 +12,6 @@
             <Message severity="info">You are viewing the job in Preview mode.</Message>
         </div>
         
-
         <div class="previewBox m-1 px-2">
             <div class="m-3 px-4">
                 <h1 class="m-3">{{ this.$store.state.formData.title }}</h1>
@@ -108,50 +107,6 @@ export default {
             });
         }
     }
-    // postJob(formValid) {
-    //     if (formValid) {
-    //         // const formData = {
-    //         //     title: this.jobTitle,
-    //         //     location: this.jobLocation,
-    //         //     type: this.jobType,
-    //         //     department: this.jobDept,
-    //         //     opening_date: this.opening_date, 
-    //         //     closing_date: this.jobAppDead,
-    //         //     job_status: 'Active', 
-    //         //     hiring_manager: this.jobHM,
-    //         //     salary: this.jobSalary,
-    //         //     job_description: this.jobDesc,
-    //         //     job_requirement: this.jobReq,
-    //         //     work_permit: this.jobWorkPermit
-    //         // };
-
-    //         fetch(createJobListing, {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json'
-    //             },
-    //             body: JSON.stringify(formData),
-    //         })
-    //         .then(response => {
-    //         if (response.ok) {
-    //             console.log('Form submitted successfully');
-    //             this.$router.push({
-    //                 name: "HRSuccess",
-    //                 params: {
-    //                 job_title: this.jobTitle,
-    //                 opening_date: this.opening_date
-    //                 }
-    //             })
-    //             } else {
-    //             console.error('Failed to submit form');
-    //             }
-    //         })
-    //         .catch(error => {
-    //             console.error('Error submitting form:', error);
-    //         });
-    //     }
-    // }
-    // }
 }
 </script>
 
@@ -160,7 +115,7 @@ export default {
   padding-top: 10px;
 }
 .p-message .p-message-wrapper {
-    padding: 0.25rem 0.5rem; /* Adjust the padding as needed to make the message shorter in width */
+    padding: 0.25rem 0.5rem; 
 }
 .previewBox {
     padding: 1rem;
