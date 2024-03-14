@@ -17,11 +17,11 @@
                         <template #content>
                             <h1>{{ active }}</h1>
                         </template>
-                        <template #footer>
+                        <!-- <template #footer>
                             <Button class="w-100"
                                 style="border: 0; background-color: #ededed; color: #011B56; font-weight: 600; border-radius: 3%;"
                                 label="View More >" />
-                        </template>
+                        </template> -->
                     </Card>
                 </div>
                 <div class="col-4 ">
@@ -34,11 +34,11 @@
                         <template #content>
                             <h1>{{ unprocessed }}</h1>
                         </template>
-                        <template #footer>
+                        <!-- <template #footer>
                             <Button class="w-100"
                                 style="border: 0; background-color: #ededed; color: #011B56; font-weight: 600; border-radius: 3%;"
                                 label="View More >" />
-                        </template>
+                        </template> -->
                     </Card>
                 </div>
                 <div class="col-4">
@@ -51,11 +51,11 @@
                         <template #content>
                             <h1>{{ interview }}</h1>
                         </template>
-                        <template #footer>
+                        <!-- <template #footer>
                             <Button class="w-100"
                                 style="border: 0; background-color: #ededed; color: #011B56; font-weight: 600; border-radius: 3%;"
                                 label="View More > " />
-                        </template>
+                        </template> -->
                     </Card>
                 </div>
             </div>
