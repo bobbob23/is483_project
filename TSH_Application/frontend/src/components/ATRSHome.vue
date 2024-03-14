@@ -79,7 +79,7 @@ import AutoComplete from 'primevue/autocomplete'
 import Banner from './Banner.vue'
 import NavBar from './NavBar.vue'
 import axios from "axios";
-import { getAllJobListing } from "@/api/api.js";
+import { getAllActiveJob } from "@/api/api.js";
 
 
 export default {
@@ -102,7 +102,7 @@ export default {
         };
     },
     mounted() {
-        axios.get(getAllJobListing)
+        axios.get(getAllActiveJob)
             .then((response) => {
                 this.jobs = response.data.data
                 console.log(this.jobs)
