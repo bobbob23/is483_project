@@ -27,6 +27,7 @@ import VirtualScroller from 'primevue/virtualscroller';
 import MultiSelect from 'primevue/multiselect';
 import Textarea from 'primevue/textarea';
 import Dialog from 'primevue/dialog';
+import Editor from 'primevue/editor';
 
 const store = createStore({
     state () {
@@ -67,6 +68,7 @@ app.component("VirtualScroller", VirtualScroller)
 app.component("MultiSelect", MultiSelect)
 app.component("Textarea", Textarea)
 app.component("Dialog", Dialog)
+app.component("Editor", Editor)
 
 app.use(PrimeVue)
 app.use(HighchartsVue)

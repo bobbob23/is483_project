@@ -8,11 +8,11 @@
             @click="$router.go(-1)" />
         </div>
         
-        <div class="m-1 px-2">
-            <Message severity="info">You are viewing the job in Preview mode.</Message>
+        <div class="m-2 px-2">
+            <Message severity="info" :closable="false">You are viewing the job in Preview mode.</Message>
         </div>
         
-        <div class="previewBox m-1 px-2">
+        <div class="previewBox m-4 px-2">
             <div class="m-3 px-4">
                 <h1 class="m-3">{{ this.$store.state.formData.title }}</h1>
                 <span class="m-3">
@@ -55,7 +55,7 @@
                  style="border-radius: 50px; background-color: gray; width: 150px" />
             </div>
             <div class="col-2 justify-content-centre">
-                <Button label="Confirm" v-model="formValid" @click="postJob()"
+                <Button label="Confirm" @click="postJob()"
                 style="border-radius: 50px; background-color: darkblue; width: 150px" />
             </div>
             <div class="col-4"></div>   

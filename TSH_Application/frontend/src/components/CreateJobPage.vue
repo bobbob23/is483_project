@@ -13,11 +13,19 @@
 
             <FormValidation :formValid="formValid" :errorMsg="errorMsg"/>
 
+            <Dialog v-model:visible="cancelDialog" modal header="Are you sure?" :style="{ width: '25rem' }">
+                <span class="p-text-secondary block mb-5">Your changes will not be saved.</span>
+                <div class="text-center m-2">
+                    <Button type="button" label="Cancel" severity="secondary" @click="cancelJob()"/>
+                    <Button type="button" label="Go Back" @click="cancelDialog = false"/>
+                </div>
+            </Dialog>
+
             <div class="row">
                 <div class="col-3"></div>
                 <div class="col">
                     <label for="title" style="display: block">Job Title <span style="color: red;">*</span></label>
-                    <InputText id="title" v-model="title" style="width: 300px" />
+                    <InputText id="title" v-model="title" style="width: 300px"/>
                 </div>
                 <div class="col">
                     <label for="type" style="display: block">Job Type <span style="color: red;">*</span></label>
@@ -69,7 +77,8 @@
                 <div class="col-3"></div>
                 <div class="col">
                     <label for="job_description" style="display: block">Job Description <span style="color: red;">*</span></label>
-                    <Textarea v-model="job_description" rows="5" id="job_description" style="width: 643px;" />
+                    <Textarea v-model="job_description" rows="5" id="job_description" style="width: 643px;">
+                    </Textarea>
                 </div>
                 <div class="col-3"></div>
             </div>
@@ -88,11 +97,11 @@
                 <div class="col-4">
             </div>
             <div class="col-2 justify-content-centre">
-                <Button label="Cancel" 
+                <Button label="Cancel" @click="showCancelDialog"
                  style="border-radius: 50px; background-color: gray; width: 150px" />
             </div>
             <div class="col-2 justify-content-centre">
-                <Button label="Preview" v-model="formValid" @click="previewJob(formValid)" 
+                <Button label="Preview" v-model="formValid" @click="previewJob" 
                 style="border-radius: 50px; background-color: darkblue; width: 150px" />
             </div>
             <div class="col-4"></div>   
@@ -111,7 +120,7 @@ import FormValidation from './FormValidation.vue';
 export default {
     components: {
         HRNavBar,
-        FormValidation
+        FormValidation,
     },
     data() {
         return{
@@ -130,16 +139,43 @@ export default {
             departmentList: ["Engineering", "Technology", "Management"],
             work_permitList: ["Singaporean", "Permanent Resident", "Work/Study Visa"],
             opening_date: new Date().toISOString().split('T')[0],
-            formValid: true,
+            formValid: "",
+            errorMsg: "",
+            cancelDialog: false
         }
     },
     methods: {
+        isFormValid() {
+            this.formValid =
+            this.title.length !== 0 &&
+            this.salary.length !== 0 &&
+            this.hiring_manager.length !== 0 &&
+            this.job_description.length !== 0 &&
+            this.job_requirements.length !== 0 &&
+            this.type.length !== 0 &&
+            this.location.length !== 0 &&
+            this.department.length !== 0 &&
+            this.work_permit.length !== 0 &&
+            this.opening_date.length !== 0 &&
+            this.closing_date.length !== 0 
+
+            return this.formValid
+        },
+        
+        showCancelDialog() {
+            this.cancelDialog = true
+        },
+
+        cancelJob() {
+            this.$router.go(-1)
+        },
+
         updateFormData(formData) {
             this.$store.dispatch('updateFormData', formData);
         },
 
-        previewJob(formValid) {
-            if (formValid) {
+        previewJob() {
+            if (this.isFormValid() !== false) {
                 const formData = {
                     title: this.title,
                     location: this.location,
@@ -166,7 +202,8 @@ export default {
                 })
 
             } else {
-            console.error('ERROR: creating formData');
+                this.errorMsg = "Please fill up all required fields!"
+                console.log(this.errorMsg)
             }
         },
     },
