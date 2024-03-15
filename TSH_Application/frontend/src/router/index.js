@@ -82,6 +82,11 @@ const routes = [
       job_ID: route.params.job_ID,
       email: route.params.email,
     }),
+  },
+  {
+    path: "/manager",
+    name:"Manager",
+    component: () => import("@/components/ManagerDashboard.vue"),
   }
 ];
 

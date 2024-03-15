@@ -40,7 +40,15 @@ export default {
                             name: "Home"
                         })
                     }
-                }
+                },
+                {
+                    label: "Manager",
+                    command:() => {
+                        this.$router.push({
+                            name: "Manager"
+                        })
+                    }
+                },
             ]
         }
     }
