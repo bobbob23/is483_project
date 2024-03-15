@@ -120,7 +120,7 @@ export default {
             })
         },
         reloadListings(selectedExperience, selectedLocation) {
-            axios.get(getAllJobListing)
+            axios.get(getAllActiveJob)
                 .then((response) => {
                     if (!selectedExperience && !selectedLocation) {
                         this.jobs = response.data.data;
@@ -150,7 +150,7 @@ export default {
         },
 
         retrieveListings(searchVar) {
-            axios.get(getAllJobListing)
+            axios.get(getAllActiveJob)
                 .then((response) => {
                     console.log(response.data.data)
                     let jobTitleSearch = searchVar.toLowerCase()
