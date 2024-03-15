@@ -24,7 +24,7 @@ export default {
         return {
             funnelChartOptions: {
                 chart: {
-                    type: 'pyramid'
+                    type: 'funnel'
                 },
                 title: {
                     text: "Candidate Pipeline Chart"
@@ -39,9 +39,9 @@ export default {
                             format: '<b>{point.name}</b> ({point.y:,.0f})',
                             softConnector: true
                         },
-                        // center: ['40%', '60%'],
-                        // neckWidth: '30%',
-                        // neckHeight: '25%',
+                        center: ['50%', '60%'],
+                        neckWidth: '30%',
+                        neckHeight: '25%',
                         width: '80%'
                     }
                 },
