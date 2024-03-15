@@ -27,8 +27,11 @@ export default {
                     type: 'pyramid'
                 },
                 title: {
-                    text: ""
-                }, 
+                    text: "Candidate Pipeline Chart"
+                },
+                subtitle: {
+                    text: 'Provides an overview of the number of candidates at each stage of the hiring process for positions'
+                },
                 plotOptions: {
                     series: {
                         dataLabels: {
