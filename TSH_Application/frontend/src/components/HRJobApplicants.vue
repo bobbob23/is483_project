@@ -15,6 +15,8 @@
                     <h3>
                         {{ job_title }} - Applicants
                     </h3>
+                    <hr>
+                    <Message severity="info">The applicants have been ranked by algorithm. 👩🏽‍💻</Message>
                 </div>
                 <div class="col-3"></div>
             </div>
@@ -177,5 +179,8 @@ export default {
 <style>
 .div-hover {
     background-color: lightgrey;
+}
+.p-message .p-message-wrapper {
+    padding: 0.25rem 0.5rem; 
 }
 </style>
