@@ -96,6 +96,11 @@ const routes = [
     path: "/manager",
     name:"Manager",
     component: () => import("@/components/ManagerDashboard.vue"),
+  },
+  {
+    path: "/hr_dashboard",
+    name:"HRDashboard",
+    component: () => import("@/components/HRDashboard.vue"),
   }
 ];
 
