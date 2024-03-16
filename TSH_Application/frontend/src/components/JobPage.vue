@@ -10,18 +10,26 @@
         style="border-radius: 20%; border: lightgrey; height: 35px; background-color: white; color: black "
         @click="$router.go(-1)" />
       <div class="m-3 px-4">
-        <h1 class="m-3">{{ jobData.title }}</h1>
-        <span class="m-3">
-          <i class="pi pi-map-marker mx-2"></i>{{ jobData.location }}
-        </span>
-        <span class="m-3">
-          <i class="pi pi-users mx-2"></i>{{ jobData.type }}
-        </span>
-        <span class="m-3">
-          <i class="pi pi-briefcase mx-2"></i>{{ jobData.department }}
-        </span>
-        <Button label="Apply Now" @click="applyNow(jobData.job_ID)"
-          style="border-radius: 50px; background-color: darkblue; margin-left: 700px; padding: 10px 30px" />
+        <div class="job-info flex align-items-center">
+          <h1 class="m-3" style="display: inline">{{ jobData.title }}</h1>
+          <Button label="Apply with Resume" @click="applyNow(jobData.job_ID)"
+            class="resume-button" />
+        </div>
+        <div class="job-details">
+          <div>
+            <span class="m-3">
+              <i class="pi pi-map-marker mx-2"></i>{{ jobData.location }}
+            </span>
+            <span class="m-3">
+              <i class="pi pi-users mx-2"></i>{{ jobData.type }}
+            </span>
+            <span class="m-3">
+              <i class="pi pi-briefcase mx-2"></i>{{ jobData.department }}
+            </span>
+          </div>
+          <Button label="Apply Manually" @click="applyNow(jobData.job_ID)"
+            class="manual-button" />
+        </div>
         <hr>
         <span>
           <h2 class="mx-3 mt-4">
@@ -79,3 +87,44 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.job-info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.job-details {
+  display: flex;
+  justify-content: space-between;
+}
+
+.resume-button{
+  border-radius: 50px;
+  padding: 10px 30px;
+}
+
+.manual-button{
+  border-radius: 50px;
+  padding: 10px 43px;
+}
+
+.resume-button {
+  background-color: whitesmoke;
+  color: darkblue;
+  border-color: darkblue;
+}
+
+.manual-button {
+  background-color: darkblue;
+  color: white;
+}
+
+@media screen and (max-width: 768px) {
+  .resume-button,
+  .manual-button {
+    margin-left: auto;
+  }
+}
+
+</style scoped>

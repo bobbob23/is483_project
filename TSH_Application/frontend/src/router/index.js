@@ -20,6 +20,15 @@ const routes = [
   },
 
   {
+    path: "/autofill",
+    name: "AutofillForm",
+    component: () => import("@/components/AutofillYesNo.vue"),
+    // props: (route) => ({
+    //   job_ID: route.params.job_ID,
+    // }),
+  },
+
+  {
     path: "/apply/:job_ID",
     name: "ApplyForm",
     component: () => import("@/components/JobApplication.vue"),
