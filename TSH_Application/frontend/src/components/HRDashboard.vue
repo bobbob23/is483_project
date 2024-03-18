@@ -2,27 +2,27 @@
     <HRNavBar />
     <div class="container">
         <h3 class="p-5">Welcome Back, Anis</h3>
-        <div class="row" style="margin-bottom: 40px; padding: 10px;">
-            <div class="col-6">
+        <div class="row" style="margin-bottom: 40px;">
+            <div class="col chartBox">
                 <highcharts class="hc" :options="GPAchartOptions" :constructor-type="'chart'" ref="chart">
                 </highcharts>
             </div>
-            <div class="col-6">
+            <div class="col chartBox">
                 <highcharts class="hc" :options="SchoolchartOptions" :constructor-type="'chart'" ref="chart">
                 </highcharts>
             </div>
         </div>
-        <div class="row" style="margin-bottom: 40px; padding: 10px;">
-            <div class="col-6">
+        <div class="row" style="margin-bottom: 40px; ">
+            <div class="col chartBox">
                 <highcharts class="hc" :options="CoursechartOptions" :constructor-type="'chart'" ref="chart">
                 </highcharts>
             </div>
-            <div class="col-6">
+            <div class="col chartBox">
                 <highcharts class="hc" :options="PastSalarychartOptions" :constructor-type="'chart'" ref="chart">
                 </highcharts>
             </div>
         </div>
-        <div class="row" style="margin-bottom: 40px; padding: 10px;">
+        <div class="row chartBox" style="margin-bottom: 40px;">
             <div>
                 <highcharts class="hc" :options="WorkPermitchartOptions" :constructor-type="'chart'" ref="chart">
                 </highcharts>
@@ -201,3 +201,12 @@ export default {
 
 
 </script>
+
+<style>
+.chartBox {
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 1px 1px 1px 1px #888888;
+    margin: 0.5rem
+}
+</style>

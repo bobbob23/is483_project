@@ -3,7 +3,7 @@
         <NavBar />
         <Button label="< Back" class="mt-2 mx-2"
         style="border-radius: 20%; border: lightgrey; height: 35px; background-color: white; color: black "
-        @click="$router.go(-1)" />
+        @click="$router.go('/')" />
 
         <div class="m-3 px-4">
 
@@ -12,8 +12,8 @@
 
             <div class="import-resume row" >
                 <div class="col">
-                    <h5 style="font-weight: 600;">🪄 Autofill Application</h5>
-                    <p class="m-0" style="color: gray; padding: 4px 0">Save time by importing your resume.</p>
+                    <h5 style="font-weight: 600; padding: 4px 0 0 0">🪄 Autofill Application</h5>
+                    <p class="m-0" style="color: gray; padding: 2px 0">Save time by importing your resume.</p>
                 </div>
 
                 <div class="col" style="align-self: center; text-align: right;">
