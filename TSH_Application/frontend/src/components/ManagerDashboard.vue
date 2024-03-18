@@ -3,8 +3,14 @@
     <div class="container">
         <h3 class="p-5">Welcome Back, Manager</h3>
         <div class="d-flex justify-content-center">
-            <highcharts class="hc" :options="funnelChartOptions" style="width: 60%">
-            </highcharts>
+            <div class="row">
+                <Card>
+                    <template #content>
+                        <highcharts class="hc" :options="funnelChartOptions" style="width: 100%">
+                        </highcharts>
+                    </template>
+                </Card>
+            </div>
         </div>
     </div>
 </template>
@@ -36,13 +42,14 @@ export default {
                     series: {
                         dataLabels: {
                             enabled: true,
-                            format: '<b>{point.name}</b> ({point.y:,.0f})',
+                            format: '<b>{point.name}</b> \n ({point.y:,.0f})',
                             softConnector: true
                         },
                         center: ['50%', '60%'],
-                        neckWidth: '30%',
+                        neckWidth: '20%',
                         neckHeight: '25%',
-                        width: '80%'
+                        width: '70%',
+                        height: '80%'
                     }
                 },
                 series: [{
@@ -53,7 +60,7 @@ export default {
                         ['Interviewing', 1987],
                         ['Successful', 900],
                     ]
-                }],
+                }]
             }
         }
     }
