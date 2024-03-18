@@ -125,7 +125,7 @@ def get_HR():
         })
 
 @dashboard_routes.route('/manager', methods=['GET'])
-def get_manager_department(department='Technology'):
+def get_manager_department(department):
     try:
         data_list = applicant_details_con(filter)
         return jsonify({
@@ -140,7 +140,7 @@ def get_manager_department(department='Technology'):
         })
 
 @dashboard_routes.route('/job_listing', methods=['GET'])
-def get_job_id(job_id=1):
+def get_job_id(job_id):
     try:
         data_list = applicant_details_con(job_id)
         return jsonify({
