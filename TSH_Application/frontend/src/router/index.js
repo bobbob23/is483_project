@@ -10,6 +10,7 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () => import("@/components/ATRSHome.vue"),
   },
+  
   {
     path: "/job/:job_ID",
     name: "JobDetails",
@@ -20,21 +21,21 @@ const routes = [
   },
 
   {
-    path: "/autofill",
-    name: "AutofillForm",
-    component: () => import("@/components/AutofillYesNo.vue"),
-    // props: (route) => ({
-    //   job_ID: route.params.job_ID,
-    // }),
-  },
-
-  {
     path: "/apply/:job_ID",
     name: "ApplyForm",
     component: () => import("@/components/JobApplication.vue"),
     props: (route) => ({
       job_ID: route.params.job_ID,
     }),
+  },
+
+  {
+    path: "/apply2",
+    name: "ApplyForm2",
+    component: () => import("@/components/JobApplication2.vue"),
+    // props: (route) => ({
+    //   job_ID: route.params.job_ID,
+    // }),
   },
 
   {

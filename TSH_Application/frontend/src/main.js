@@ -28,6 +28,8 @@ import MultiSelect from 'primevue/multiselect';
 import Textarea from 'primevue/textarea';
 import Dialog from 'primevue/dialog';
 import Editor from 'primevue/editor';
+import ProgressSpinner from 'primevue/progressspinner';
+
 
 const store = createStore({
     state () {
@@ -69,6 +71,7 @@ app.component("MultiSelect", MultiSelect)
 app.component("Textarea", Textarea)
 app.component("Dialog", Dialog)
 app.component("Editor", Editor)
+app.component("ProgressSpinner", ProgressSpinner)
 
 app.use(PrimeVue)
 app.use(HighchartsVue)

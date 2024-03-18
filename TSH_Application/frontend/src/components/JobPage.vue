@@ -12,8 +12,6 @@
       <div class="m-3 px-4">
         <div class="job-info flex align-items-center">
           <h1 class="m-3" style="display: inline">{{ jobData.title }}</h1>
-          <Button label="Apply with Resume" @click="applyNow(jobData.job_ID)"
-            class="resume-button" />
         </div>
         <div class="job-details">
           <div>
@@ -27,8 +25,8 @@
               <i class="pi pi-briefcase mx-2"></i>{{ jobData.department }}
             </span>
           </div>
-          <Button label="Apply Manually" @click="applyNow(jobData.job_ID)"
-            class="manual-button" />
+          <Button label="Apply Now" @click="applyNow(jobData.job_ID)"
+            class="apply-button" />
         </div>
         <hr>
         <span>
@@ -99,23 +97,9 @@ export default {
   justify-content: space-between;
 }
 
-.resume-button{
-  border-radius: 50px;
-  padding: 10px 30px;
-}
-
-.manual-button{
+.apply-button{
   border-radius: 50px;
   padding: 10px 43px;
-}
-
-.resume-button {
-  background-color: whitesmoke;
-  color: darkblue;
-  border-color: darkblue;
-}
-
-.manual-button {
   background-color: darkblue;
   color: white;
 }
