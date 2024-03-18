@@ -23,7 +23,12 @@ export default {
                     }
                 },
                 {
-                    label: 'Dashboard'
+                    label: 'Dashboard',
+                    command:() => {
+                        this.$router.push({
+                            name: "HRDashboard"
+                        })
+                    }
                 }, 
                 {
                     label: 'Job Listings',
