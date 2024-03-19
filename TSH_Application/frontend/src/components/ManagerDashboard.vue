@@ -3,10 +3,10 @@
     <div class="container">
         <h3 class="p-5">Welcome Back, Manager</h3>
         <div class="d-flex justify-content-center">
-            <div class="row">
-                <Card>
+            <div class="row" style="width: 50%">
+                <Card class="chartBox" >
                     <template #content>
-                        <highcharts class="hc" :options="funnelChartOptions" style="width: 100%">
+                        <highcharts class="hc" :options="funnelChartOptions" style="width: 100%;">
                         </highcharts>
                     </template>
                 </Card>
@@ -69,3 +69,11 @@ export default {
 
 
 </script>
+<style>
+.chartBox {
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 1px 1px 1px 1px #888888;
+    margin: 0.5rem
+}
+</style>
