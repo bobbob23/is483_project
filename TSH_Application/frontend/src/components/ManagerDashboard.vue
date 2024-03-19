@@ -3,13 +3,15 @@
     <div class="container">
         <h3 class="p-5">Welcome Back, Manager</h3>
         <div class="d-flex justify-content-center">
-            <div class="row" style="width: 50%">
-                <Card class="chartBox" >
-                    <template #content>
-                        <highcharts class="hc" :options="funnelChartOptions" style="width: 100%;">
-                        </highcharts>
-                    </template>
-                </Card>
+            <div class="row">
+                <div class="col">
+                    <Card class="chartBox">
+                        <template #content>
+                            <highcharts class="hc" :options="funnelChartOptions" style="width: 100%;">
+                            </highcharts>
+                        </template>
+                    </Card>
+                </div>
             </div>
         </div>
     </div>
@@ -69,6 +71,7 @@ export default {
 
 
 </script>
+
 <style>
 .chartBox {
     padding: 1rem;
