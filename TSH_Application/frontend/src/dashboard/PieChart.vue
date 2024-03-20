@@ -22,7 +22,6 @@ export default {
     methods: {
         renderChart() {
             const dataArr = this.data;
-            console.log(dataArr)
 
             Highcharts.chart(this.$refs.chart, {
                 chart: {
