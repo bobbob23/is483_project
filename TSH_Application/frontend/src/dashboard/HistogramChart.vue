@@ -59,6 +59,9 @@ export default {
                 },
                 plotOptions:{
                     column: {
+                        dataLabels: {
+                            enabled: true
+                        },
                         pointPadding: 0,
                         borderWidth: 0,
                         groupPadding: 0,

@@ -47,12 +47,13 @@ export default {
                     title: {
                         text: this.xAxisTitle
                     },
-                    categories: yArr,
+                    categories: yArr
                 },
                 yAxis: {
                     title: {
                         text: this.yAxisTitle
-                    }
+                    },
+                    allowDecimals: false
                 },
                 plotOptions: {
                     bar: {

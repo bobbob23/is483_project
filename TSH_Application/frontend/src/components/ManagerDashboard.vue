@@ -2,6 +2,7 @@
     <HRNavBar />
     <div v-if="!isLoading" class="container">
         <h3 class="p-5">Welcome Back, Manager</h3>
+        <!-- Row 1 -->
         <div class="d-flex justify-content-center">
             <div class="row">
                 <div class="col">
@@ -14,29 +15,44 @@
                 </div>
             </div>
         </div>
+        <!-- Row 2 -->
         <div class="row" style="margin-bottom: 40px;">
             <div class="col chartBox">
-                <div>
-                    <histogram-chart 
-                        :data="GPAhistogramData" 
-                        :bins="GPAhistorgramBins" 
-                        title="GPA" 
-                        x-axis-title="GPA Score"
-                        y-axis-title="Number of Applicants" 
-                        seriesName="GPA Distribution"
-                    />
-                </div>
+                <histogram-chart 
+                    :data="GPAhistogramData" 
+                    :bins="GPAhistorgramBins" 
+                    title="GPA"
+                    x-axis-title="GPA Score" 
+                    y-axis-title="Number of Applicants"
+                    seriesName="GPA Distribution" 
+                />
             </div>
             <div class="col chartBox">
                 <bar-chart 
-                        :data="schoolData"  
-                        title="School" 
-                        x-axis-title="School"
-                        y-axis-title="Number of Applicants"
-                        seriesName="School Distribution"
+                    :data="schoolData" 
+                    title="School" 
+                    x-axis-title="School" 
+                    y-axis-title="Number of Applicants"
+                    seriesName="School Distribution" 
+                />
+            </div>          
+        </div>
+        <!-- Row 3 -->
+        <div class="row" style="margin-bottom: 40px;">
+            <div class="col chartBox">
+                <bar-chart 
+                    :data="courseData" 
+                    title="Course of Study" 
+                    x-axis-title="Course of Study" 
+                    y-axis-title="Number of Applicants"
+                    seriesName="Course of Study Distribution" 
                 />
             </div>
+            <div class="col chartBox">
+                
+            </div>          
         </div>
+
     </div>
 </template>
 
@@ -63,7 +79,7 @@ export default {
             apiData: null,
             // DEPARTMENT IS HARDCODED FOR NOW!
             department: 'technology',
-            colors : ["#C2272D", "#F8931F", "#E6E600", "#009245", "#0193D9", "#0C04ED", "#612F90"],
+            colors: ["#C2272D", "#F8931F", "#E6E600", "#009245", "#0193D9", "#0C04ED", "#612F90"],
             funnelChartOptions: {
                 chart: {
                     type: 'funnel'
@@ -142,7 +158,7 @@ export default {
             const numList = []
             for (let i = 0; i < nameList.length; i++) {
                 var colorNum = i
-                if (i > 6){
+                if (i > 6) {
                     colorNum = Math.floor(Math.random() * 4);
                 }
                 const schoolArr = {
@@ -153,8 +169,28 @@ export default {
             }
             returnList.push(numList)
             return returnList
+        },
+        courseData() {
+            const returnList = []
+            const nameList = Object.keys(this.apiData.courses)
+            returnList.push(nameList)
+
+            const numList = []
+            for (let i = 0; i < nameList.length; i++) {
+                var colorNum = i
+                if (i > 6) {
+                    colorNum = Math.floor(Math.random() * 4);
+                }
+                const courseArr = {
+                    y: this.apiData.courses[nameList[i]],
+                    color: this.colors[colorNum]
+                }
+                numList.push(courseArr)
+            }
+            returnList.push(numList)
+            return returnList
         }
-        
+
     },
     mounted() {
         this.getData();
