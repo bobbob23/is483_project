@@ -23,8 +23,8 @@ def field_conditions(field, field_dict, con1, con2, con3):
     else:
         field_dict[f'> {con3}'] += 1
 
-def applicant_details_con(filter):
-    query_job_listing = Job_listing.query.filter(Job_listing.job_ID == filter).all()
+def applicant_details_con(filter_column, filter_value):
+    query_job_listing = Job_listing.query.filter(getattr(Job_listing, filter_column) == filter_value).all()
     gpa_dict = {'< 3.0': 0, '< 3.5': 0, '< 4.0': 0, '> 4.0': 0}
     school_dict = {}
     course_dict = {}
@@ -124,10 +124,10 @@ def get_HR():
             'error' : str(e)
         })
 
-@dashboard_routes.route('/manager', methods=['GET'])
-def get_manager_department(department):
+@dashboard_routes.route('/manager/<specific_department>', methods=['GET'])
+def dashboard_manager_department(specific_department):
     try:
-        data_list = applicant_details_con(filter)
+        data_list = applicant_details_con('department', specific_department)
         return jsonify({
             'data': data_list,
             'message': f'Consolidated department data is returned'
@@ -139,10 +139,10 @@ def get_manager_department(department):
             'error' : str(e)
         })
 
-@dashboard_routes.route('/job_listing', methods=['GET'])
-def get_job_id(job_id):
+@dashboard_routes.route('/dashboard/<job_id>', methods=['GET'])
+def dashboard_job_id(job_id):
     try:
-        data_list = applicant_details_con(job_id)
+        data_list = applicant_details_con('job_ID', job_id)
         return jsonify({
             'data': data_list,
             'message': f'Consolidated department data is returned'
