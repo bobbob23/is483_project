@@ -58,6 +58,18 @@
                 />
             </div>          
         </div>
+        <!-- Row 4 -->
+        <div class="row" style="margin-bottom: 40px;">
+            <div class="col chartBox">
+                <pie-chart 
+                    :data="workPermitData" 
+                    title="Work Permit"
+                />
+            </div>
+            <div class="col chartBox">
+
+            </div>          
+        </div>
 
     </div>
 </template>
@@ -70,6 +82,7 @@ import loadFunnel from 'highcharts/modules/funnel';
 import HistogramChart from '../dashboard/HistogramChart.vue';
 import BarChart from '../dashboard/BarChart.vue';
 import BoxPlotChart from '../dashboard/BoxPlotChart.vue';
+import PieChart from '../dashboard/PieChart.vue';
 import { getDashboardDepartment, getDashboardJobID } from "@/api/api.js";
 
 loadFunnel(Highcharts);
@@ -79,7 +92,8 @@ export default {
         HRNavBar,
         HistogramChart,
         BarChart,
-        BoxPlotChart
+        BoxPlotChart,
+        PieChart
     },
     data() {
         return {
@@ -202,6 +216,20 @@ export default {
             const returnList = []
             returnList.push(this.department)
             returnList.push(this.apiData.past_salary)
+            return returnList
+        },
+        workPermitData() {
+            const returnList = []
+            const nameList = Object.keys(this.apiData.work_permit)
+
+            for (let i = 0; i < nameList.length; i++) {
+                const courseArr = {
+                    name: nameList[i],
+                    y: this.apiData.work_permit[nameList[i]]
+                }
+
+                returnList.push(courseArr)
+            }
             return returnList
         }
 
