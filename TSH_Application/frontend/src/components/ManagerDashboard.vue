@@ -23,12 +23,18 @@
                         title="GPA" 
                         x-axis-title="GPA Score"
                         y-axis-title="Number of Applicants" 
+                        seriesName="GPA Distribution"
                     />
                 </div>
             </div>
             <div class="col chartBox">
-                <highcharts class="hc" :options="SchoolchartOptions" :constructor-type="'chart'" ref="chart">
-                </highcharts>
+                <bar-chart 
+                        :data="schoolData"  
+                        title="School" 
+                        x-axis-title="School"
+                        y-axis-title="Number of Applicants"
+                        seriesName="School Distribution"
+                />
             </div>
         </div>
     </div>
@@ -40,6 +46,7 @@ import HRNavBar from "./HRNavBar.vue"
 import Highcharts from 'highcharts'
 import loadFunnel from 'highcharts/modules/funnel';
 import HistogramChart from '../dashboard/HistogramChart.vue';
+import BarChart from '../dashboard/BarChart.vue';
 import { getDashboardDepartment, getDashboardJobID } from "@/api/api.js";
 
 loadFunnel(Highcharts);
@@ -47,13 +54,16 @@ loadFunnel(Highcharts);
 export default {
     components: {
         HRNavBar,
-        HistogramChart
+        HistogramChart,
+        BarChart
     },
     data() {
         return {
             isLoading: true,
             apiData: null,
-            department: 'Technology',
+            // DEPARTMENT IS HARDCODED FOR NOW!
+            department: 'technology',
+            colors : ["#C2272D", "#F8931F", "#E6E600", "#009245", "#0193D9", "#0C04ED", "#612F90"],
             funnelChartOptions: {
                 chart: {
                     type: 'funnel'
@@ -94,12 +104,57 @@ export default {
     computed: {
         GPAhistogramData() {
             return [
-                { category: '< 3.0', value: this.apiData.GPA['< 3.0'] },
-                { category: '< 3.5', value: this.apiData.GPA['< 3.5'] },
-                { category: '< 4.0', value: this.apiData.GPA['< 4.0'] },
-                { category: '> 4.0', value: this.apiData.GPA['> 4.0'] }
+                {
+                    category: '< 3.5',
+                    value: {
+                        y: this.apiData.GPA['< 3.5'],
+                        color: this.colors[0]
+                    }
+                },
+                {
+                    category: '< 3.0',
+                    value: {
+                        y: this.apiData.GPA['< 3.0'],
+                        color: this.colors[1]
+                    }
+                },
+                {
+                    category: '< 4.0',
+                    value: {
+                        y: this.apiData.GPA['< 4.0'],
+                        color: this.colors[2]
+                    }
+                },
+                {
+                    category: '> 4.0',
+                    value: {
+                        y: this.apiData.GPA['> 4.0'],
+                        color: this.colors[3]
+                    }
+                }
             ];
+        },
+        schoolData() {
+            const returnList = []
+            const nameList = Object.keys(this.apiData.school)
+            returnList.push(nameList)
+
+            const numList = []
+            for (let i = 0; i < nameList.length; i++) {
+                var colorNum = i
+                if (i > 6){
+                    colorNum = Math.floor(Math.random() * 4);
+                }
+                const schoolArr = {
+                    y: this.apiData.school[nameList[i]],
+                    color: this.colors[colorNum]
+                }
+                numList.push(schoolArr)
+            }
+            returnList.push(numList)
+            return returnList
         }
+        
     },
     mounted() {
         this.getData();
@@ -110,6 +165,9 @@ export default {
                 .then(response => {
                     this.apiData = response.data.data
                     this.isLoading = false
+                    // ==============
+
+
                 })
                 .catch(error => {
                     console.error('Error fetching data!', error);

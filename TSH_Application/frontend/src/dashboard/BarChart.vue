@@ -11,13 +11,9 @@ export default {
             type: Array,
             required: true
         },
-        bins: {
-            type: Array,
-            required: true
-        },
         title: {
             type: String,
-            default: 'Histogram'
+            default: 'Bar Chart'
         },
         xAxisTitle: {
             type: String,
@@ -37,11 +33,12 @@ export default {
     },
     methods: {
         renderChart() {
-            const frequencies = this.data.map(item => item.value);
+            const dataArr = this.data[1]
+            const yArr = this.data[0]
 
             Highcharts.chart(this.$refs.chart, {
                 chart: {
-                    type: 'column'
+                    type: 'bar'
                 },
                 title: {
                     text: this.title
@@ -50,33 +47,32 @@ export default {
                     title: {
                         text: this.xAxisTitle
                     },
-                    categories: this.bins
+                    categories: yArr,
                 },
                 yAxis: {
                     title: {
                         text: this.yAxisTitle
                     }
                 },
-                plotOptions:{
-                    column: {
-                        pointPadding: 0,
-                        borderWidth: 0,
-                        groupPadding: 0,
-                        shadow: false
+                plotOptions: {
+                    bar: {
+                        borderRadius: '50%',
+                        dataLabels:{
+                            enabled: true
+                        },
+                        groupPadding: 0.1
                     }
                 },
                 tooltip:{
                     formatter: function (){
-                        return '<b>GPA '+ this.x + ': ' + this.y + '</b>';
+                        return '<b>'+ this.x + ': ' + this.y + '</b>';
                     }
                 },
-                series: [
-                    {
-                        name: this.seriesName,
-                        data: frequencies
-                    }
-                ]
-            });
+                series: [{
+                    name: this.seriesName,
+                    data: dataArr
+                }]
+            })
         }
     }
 }
