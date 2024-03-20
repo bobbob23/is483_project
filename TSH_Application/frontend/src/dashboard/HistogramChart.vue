@@ -53,10 +53,12 @@ export default {
                         text: this.yAxisTitle
                     }
                 },
-                series: [{
-                    name: 'Frequency',
-                    data: frequencies
-                }]
+                series: [
+                    {
+                        name: 'GPA Distribution',
+                        data: frequencies
+                    }
+                ]
             });
         }
     }

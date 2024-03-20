@@ -1,6 +1,6 @@
 <template>
     <HRNavBar />
-    <div class="container">
+    <div v-if="!isLoading" class="container">
         <h3 class="p-5">Welcome Back, Manager</h3>
         <div class="d-flex justify-content-center">
             <div class="row">
@@ -14,22 +14,46 @@
                 </div>
             </div>
         </div>
+        <div class="row" style="margin-bottom: 40px;">
+            <div class="col chartBox">
+                <div>
+                    <histogram-chart 
+                        :data="GPAhistogramData" 
+                        :bins="GPAhistorgramBins" 
+                        title="GPA" 
+                        x-axis-title="GPA Score"
+                        y-axis-title="Number of Applicants" 
+                    />
+                </div>
+            </div>
+            <div class="col chartBox">
+                <highcharts class="hc" :options="SchoolchartOptions" :constructor-type="'chart'" ref="chart">
+                </highcharts>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
+import axios from "axios";
 import HRNavBar from "./HRNavBar.vue"
 import Highcharts from 'highcharts'
 import loadFunnel from 'highcharts/modules/funnel';
+import HistogramChart from '../dashboard/HistogramChart.vue';
+import { getDashboardDepartment, getDashboardJobID } from "@/api/api.js";
 
 loadFunnel(Highcharts);
 
 export default {
     components: {
-        HRNavBar
+        HRNavBar,
+        HistogramChart
     },
     data() {
         return {
+            isLoading: true,
+            apiData: null,
+            department: 'Technology',
             funnelChartOptions: {
                 chart: {
                     type: 'funnel'
@@ -63,13 +87,36 @@ export default {
                         ['Successful', 900],
                     ]
                 }]
-            }
+            },
+            GPAhistorgramBins: ['< 3.0', '< 3.5', '< 4.0', '> 4.0']
+        };
+    },
+    computed: {
+        GPAhistogramData() {
+            return [
+                { category: '< 3.0', value: this.apiData.GPA['< 3.0'] },
+                { category: '< 3.5', value: this.apiData.GPA['< 3.5'] },
+                { category: '< 4.0', value: this.apiData.GPA['< 4.0'] },
+                { category: '> 4.0', value: this.apiData.GPA['> 4.0'] }
+            ];
+        }
+    },
+    mounted() {
+        this.getData();
+    },
+    methods: {
+        getData() {
+            axios.get(getDashboardDepartment + this.department.toString())
+                .then(response => {
+                    this.apiData = response.data.data
+                    this.isLoading = false
+                })
+                .catch(error => {
+                    console.error('Error fetching data!', error);
+                });
         }
     }
-
 }
-
-
 </script>
 
 <style>
