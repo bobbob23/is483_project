@@ -15,3 +15,7 @@ export const editApplicantStatus = rootURL + "/edit_applicant_status"
 export const getApplicantDetails = rootURL + "/applicant_details"
 export const getApplicantFiles = rootURL + "/applicant_files"
 export const getAllUnprocessedApplicant = rootURL + "/unprocessed_applicant_details"
+
+// dashboard APIs
+export const getDashboardDepartment = rootURL + "/manager/"
+export const getDashboardJobID = rootURL + "/dashboard/"
