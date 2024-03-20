@@ -26,6 +26,10 @@ export default {
         yAxisTitle: {
             type: String,
             default: 'Frequency'
+        },
+        seriesName: {
+            type: String,
+            default: 'Distribution'
         }
     },
     mounted() {
@@ -53,9 +57,17 @@ export default {
                         text: this.yAxisTitle
                     }
                 },
+                plotOptions:{
+                    column: {
+                        pointPadding: 0,
+                        borderWidth: 0,
+                        groupPadding: 0,
+                        shadow: false
+                    }
+                },
                 series: [
                     {
-                        name: 'GPA Distribution',
+                        name: this.seriesName,
                         data: frequencies
                     }
                 ]
