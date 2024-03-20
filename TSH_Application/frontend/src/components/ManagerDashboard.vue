@@ -49,7 +49,13 @@
                 />
             </div>
             <div class="col chartBox">
-                
+                <box-plot-chart 
+                    :data="pastSalaryData" 
+                    title="Past Salary" 
+                    x-axis-title="" 
+                    y-axis-title="Salary ($)"
+                    seriesName="Salary" 
+                />
             </div>          
         </div>
 
@@ -63,6 +69,7 @@ import Highcharts from 'highcharts'
 import loadFunnel from 'highcharts/modules/funnel';
 import HistogramChart from '../dashboard/HistogramChart.vue';
 import BarChart from '../dashboard/BarChart.vue';
+import BoxPlotChart from '../dashboard/BoxPlotChart.vue';
 import { getDashboardDepartment, getDashboardJobID } from "@/api/api.js";
 
 loadFunnel(Highcharts);
@@ -71,7 +78,8 @@ export default {
     components: {
         HRNavBar,
         HistogramChart,
-        BarChart
+        BarChart,
+        BoxPlotChart
     },
     data() {
         return {
@@ -189,6 +197,12 @@ export default {
             }
             returnList.push(numList)
             return returnList
+        },
+        pastSalaryData() {
+            const returnList = []
+            returnList.push(this.department)
+            returnList.push(this.apiData.past_salary)
+            return returnList
         }
 
     },
@@ -201,9 +215,6 @@ export default {
                 .then(response => {
                     this.apiData = response.data.data
                     this.isLoading = false
-                    // ==============
-
-
                 })
                 .catch(error => {
                     console.error('Error fetching data!', error);
