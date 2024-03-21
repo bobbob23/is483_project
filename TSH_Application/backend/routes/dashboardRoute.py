@@ -87,13 +87,13 @@ def get_HR():
         gpa_dict = {'< 3.0': 0, '< 3.5': 0, '< 4.0': 0, '> 4.0': 0}
         school_dict = {}
         course_dict = {}
-        past_salary_dict = {'< 3000': 0, '< 5000' : 0, '< 7000' : 0, '> 7000' : 0}
+        past_salary_list = []
         permit_dict = {}
         data_list = {
             'GPA': gpa_dict,
             'school' : school_dict,
             'courses' : course_dict,
-            'past_salary' : past_salary_dict,
+            'past_salary' : past_salary_list,
             'work_permit' : permit_dict
         }
 
@@ -107,7 +107,7 @@ def get_HR():
             field_conditions(GPA, gpa_dict, 3.0, 3.5, 4.0)
             if past_salary != '':
                 past_salary = int(past_salary)
-                field_conditions(past_salary, past_salary_dict, 3000, 5000, 7000)
+                past_salary_list.append(past_salary)
 
             field_sum(school, school_dict)
             field_sum(course, course_dict)
