@@ -1,7 +1,43 @@
 <template>
     <HRNavBar />
     <div v-if="!isLoading" class="container">
-        <h3 class="p-5">Welcome Back, Manager</h3>
+        <!-- Display heading -->
+        <div class="row" style="margin-top: 40px; display: flex; align-items: center; position: sticky; top: 0; z-index: 999; background-color: white; border-bottom: 1px solid #000; padding-bottom: 1px; margin-bottom: 15px;">
+            <div class="col">
+                <h2 class="p" v-if="capitalizedDepartment && jobID">
+                    <span class="job-info bold-text">
+                        Job ID: {{ jobID }}
+                        ({{ capitalizedDepartment }})
+                    </span>
+                </h2>
+                <h2 class="p job-info bold-text" v-else>Dashboard</h2>
+            </div>
+            <!-- Filter search bars -->
+            <div class="col" style="margin-top: 13px; display: flex; justify-content: flex-end; align-items: center; flex: 1;">
+                <select
+                    class="form-select mb-3"
+                    aria-label="Default select example"
+                    style="width: 15rem; margin-right: 15px;"
+                    
+                >
+                    <option value="" disabled selected hidden>Filter by Department</option>
+                    <option>Technology</option>
+                    <option>Game</option>
+                </select>
+            </div>
+            <div class="col" style="margin-top: 13px; display: flex; justify-content: flex-end; align-items: center; flex: 0;">
+                <select
+                    class="form-select mb-3"
+                    aria-label="Default select example"
+                    style="width: 11rem"
+
+                >
+                    <option value="" disabled selected hidden>Filter by Job ID</option>
+                    <option>1</option>
+                    <option>2</option>
+                </select>
+            </div>
+        </div>
         <!-- Row 1 -->
         <div class="row" style="margin-bottom: 40px;">
             <div class="col chartBox">
@@ -63,6 +99,8 @@ export default {
             apiData: null,
             // DEPARTMENT IS HARDCODED FOR NOW!
             department: 'technology',
+            // jobID IS HARDCODED FOR NOW!
+            jobID: '1',
             colors: ["#C2272D", "#F8931F", "#E6E600", "#009245", "#0193D9", "#0C04ED", "#612F90"],
             funnelChartOptions: {
                 chart: {
@@ -102,6 +140,9 @@ export default {
         };
     },
     computed: {
+        capitalizedDepartment() {
+            return this.department.charAt(0).toUpperCase() + this.department.slice(1);
+        },
         GPAhistogramData() {
             return [
                 {
@@ -225,5 +266,18 @@ export default {
     border-radius: 5px;
     box-shadow: 1px 1px 1px 1px #888888;
     margin: 0.5rem
+}
+.job-info {
+    display: flex;
+    align-items: baseline;
+}
+.bold-text {
+    font-size: 30px;
+    font-weight: bold;
+    margin-right: 10px;
+    vertical-align: bottom;
+}
+.select-wrapper {
+  display: inline-block;
 }
 </style>
