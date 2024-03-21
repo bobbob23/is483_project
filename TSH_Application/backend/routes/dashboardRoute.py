@@ -124,6 +124,29 @@ def get_HR():
             'error' : str(e)
         })
 
+@dashboard_routes.route('/department', methods=['GET'])
+def dashboard_all_department():
+    try:
+        query_list = Job_listing.query.all()
+        data_list = {}
+
+        for listing in query_list:
+            if listing.department not in data_list:
+                data_list[listing.department] = [listing.job_ID]
+            else:
+                data_list[listing.department].append(listing.job_ID)
+
+        return jsonify({
+            'data': data_list,
+            'message': f'Consolidated department data is returned'
+        })
+
+    except Exception as e:
+        return jsonify({
+            'message': f'Failed to retrieve data!',
+            'error' : str(e)
+        })
+
 @dashboard_routes.route('/manager/<specific_department>', methods=['GET'])
 def dashboard_manager_department(specific_department):
     try:

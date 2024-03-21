@@ -18,11 +18,13 @@
                     class="form-select mb-3"
                     aria-label="Default select example"
                     style="width: 15rem; margin-right: 15px;"
-                    
+                    v-model="department"
+                    @change="updateJobID"
                 >
                     <option value="" disabled selected hidden>Filter by Department</option>
-                    <option>Technology</option>
-                    <option>Game</option>
+                    <template v-for="(value, key) in filterData">
+                        <option :value="key">{{ key }}</option>
+                    </template>
                 </select>
             </div>
             <div class="col" style="margin-top: 13px; display: flex; justify-content: flex-end; align-items: center; flex: 0;">
@@ -30,11 +32,9 @@
                     class="form-select mb-3"
                     aria-label="Default select example"
                     style="width: 11rem"
-
                 >
                     <option value="" disabled selected hidden>Filter by Job ID</option>
-                    <option>1</option>
-                    <option>2</option>
+                    <option v-for="jobID in jobID_list" :key="jobID" :value="jobID">{{ jobID }}</option>
                 </select>
             </div>
         </div>
@@ -81,7 +81,7 @@ import HistogramChart from '../dashboard/HistogramChart.vue';
 import BarChart from '../dashboard/BarChart.vue';
 import BoxPlotChart from '../dashboard/BoxPlotChart.vue';
 import PieChart from '../dashboard/PieChart.vue';
-import { getDashboardDepartment, getDashboardJobID } from "@/api/api.js";
+import { getDashboardDepartmentJobID, getDashboardDepartment, getDashboardJobID } from "@/api/api.js";
 
 loadFunnel(Highcharts);
 
@@ -96,9 +96,11 @@ export default {
     data() {
         return {
             isLoading: true,
+            filterData: null,
             apiData: null,
             // DEPARTMENT IS HARDCODED FOR NOW!
             department: 'technology',
+            jobID_list: [],
             // jobID IS HARDCODED FOR NOW!
             jobID: '1',
             colors: ["#C2272D", "#F8931F", "#E6E600", "#009245", "#0193D9", "#0C04ED", "#612F90"],
@@ -237,9 +239,19 @@ export default {
         },
     },
     mounted() {
+        this.getFilterData();
         this.getData();
     },
     methods: {
+        getFilterData() {
+            axios.get(getDashboardDepartmentJobID)
+                .then(response => {
+                    this.filterData = response.data.data
+                })
+                .catch(error => {
+                    console.error('Error fetching data!', error);
+                });
+        },
         getData() {
             axios.get(getDashboardDepartment + this.department.toString())
                 .then(response => {
@@ -255,6 +267,9 @@ export default {
                 .catch(error => {
                     console.error('Error fetching data!', error);
                 });
+        },
+        updateJobID() {
+            this.jobID_list = this.filterData[this.department]
         }
     }
 }
