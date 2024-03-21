@@ -32,6 +32,7 @@
                     class="form-select mb-3"
                     aria-label="Default select example"
                     style="width: 11rem"
+                    v-model="jobID"
                 >
                     <option value="" disabled selected hidden>Filter by Job ID</option>
                     <option v-for="jobID in jobID_list" :key="jobID" :value="jobID">{{ jobID }}</option>
