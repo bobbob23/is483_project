@@ -14,6 +14,7 @@
                                 Active Jobs <i class="pi pi-briefcase" style="height: 100%"></i>
                             </span>
                         </template>
+
                         <template #content>
                             <h1>{{ active }}</h1>
                         </template>
@@ -26,11 +27,13 @@
                 </div>
                 <div class="col-4 ">
                     <Card>
+
                         <template #subtitle>
                             <span style="font-weight: 600;">
                                 Unprocessed Applicants <i class="pi pi-users" style="height: 100%"></i>
                             </span>
                         </template>
+
                         <template #content>
                             <h1>{{ unprocessed }}</h1>
                         </template>
@@ -43,11 +46,13 @@
                 </div>
                 <div class="col-4">
                     <Card>
+
                         <template #subtitle>
                             <span style="font-weight: 600;">
                                 Scheduled Interviews <i class="pi pi-calendar" style="height: 100%"></i>
                             </span>
                         </template>
+
                         <template #content>
                             <h1>{{ interview }}</h1>
                         </template>
@@ -74,10 +79,10 @@
                     <div class="card flex justify-content-center">
                         <h4 class="px-2 pt-2">New Applicants</h4>
                         <VirtualScroller :items="applicants" :itemSize="50" style="height: 250px; width: 100%"
-                        class="border-1 surface-border border-round"  >
+                            class="border-1 surface-border border-round">
+
                             <template v-slot:item="{ item }">
-                                <div :class="['flex align-items-center p-2']"
-                                    style="height: 50px">
+                                <div :class="['flex align-items-center p-2']" style="height: 50px">
                                     {{ item.first_name }} {{ item.last_name }}
                                     <p style="color: rgb(130, 129, 129)">{{ item.school }}</p>
                                 </div>
@@ -170,7 +175,7 @@ export default {
                     this.active = response.data.job_listing_num
                 })
         },
-        getApplicants(){
+        getApplicants() {
             axios.get(getAllUnprocessedApplicant)
                 .then((response) => {
                     console.log(response.data.data)

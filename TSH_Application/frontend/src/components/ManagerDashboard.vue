@@ -5,61 +5,33 @@
         <!-- Row 1 -->
         <div class="row" style="margin-bottom: 40px;">
             <div class="col chartBox">
-                <highcharts 
-                    class="hc" 
-                    :options="funnelChartOptions" 
-                    style="width: 100%;"
-                />
+                <highcharts class="hc" :options="funnelChartOptions" style="width: 100%;" />
             </div>
             <div class="col chartBox">
-                <pie-chart 
-                    :data="workPermitData" 
-                    title="Work Permit"
-                />
+                <pie-chart :data="workPermitData" title="Work Permit" />
             </div>
         </div>
         <!-- Row 2 -->
         <div class="row" style="margin-bottom: 40px;">
             <div class="col chartBox">
-                <histogram-chart 
-                    :data="GPAhistogramData" 
-                    :bins="GPAhistorgramBins" 
-                    title="GPA"
-                    x-axis-title="GPA Score" 
-                    y-axis-title="Number of Applicants"
-                    seriesName="GPA Distribution" 
-                />
+                <histogram-chart :data="GPAhistogramData" :bins="GPAhistorgramBins" title="GPA" x-axis-title="GPA Score"
+                    y-axis-title="Number of Applicants" seriesName="GPA Distribution" />
             </div>
             <div class="col chartBox">
-                <bar-chart 
-                    :data="schoolData" 
-                    title="School" 
-                    x-axis-title="School" 
-                    y-axis-title="Number of Applicants"
-                    seriesName="School Distribution" 
-                />
-            </div>          
+                <bar-chart :data="schoolData" title="School" x-axis-title="School" y-axis-title="Number of Applicants"
+                    seriesName="School Distribution" />
+            </div>
         </div>
         <!-- Row 3 -->
         <div class="row" style="margin-bottom: 40px;">
             <div class="col chartBox">
-                <bar-chart 
-                    :data="courseData" 
-                    title="Course of Study" 
-                    x-axis-title="Course of Study" 
-                    y-axis-title="Number of Applicants"
-                    seriesName="Course of Study Distribution" 
-                />
+                <bar-chart :data="courseData" title="Course of Study" x-axis-title="Course of Study"
+                    y-axis-title="Number of Applicants" seriesName="Course of Study Distribution" />
             </div>
             <div class="col chartBox">
-                <box-plot-chart 
-                    :data="pastSalaryData" 
-                    title="Past Salary" 
-                    x-axis-title="" 
-                    y-axis-title="Salary ($)"
-                    seriesName="Salary" 
-                />
-            </div>          
+                <box-plot-chart :data="pastSalaryData" title="Past Salary" x-axis-title="" y-axis-title="Salary ($)"
+                    seriesName="Salary" />
+            </div>
         </div>
     </div>
 </template>
@@ -221,8 +193,7 @@ export default {
                 returnList.push(courseArr)
             }
             return returnList
-        }
-
+        },
     },
     mounted() {
         this.getData();
@@ -232,6 +203,12 @@ export default {
             axios.get(getDashboardDepartment + this.department.toString())
                 .then(response => {
                     this.apiData = response.data.data
+                    this.funnelChartOptions.series[0].data = [
+                        ['Unprocessed', this.apiData.status['unprocessed']],
+                        ['Shortlisted', this.apiData.status['shortlisted']],
+                        ['Interviewing', this.apiData.status['interview']],
+                        ['Successful', this.apiData.status['hired']]
+                    ]
                     this.isLoading = false
                 })
                 .catch(error => {
