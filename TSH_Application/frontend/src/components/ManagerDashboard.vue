@@ -2,7 +2,8 @@
     <HRNavBar />
     <div v-if="!isLoading" class="container">
         <!-- Display heading -->
-        <div class="row" style="margin-top: 40px; display: flex; align-items: center; position: sticky; top: 0; z-index: 999; background-color: white; border-bottom: 1px solid #000; padding-bottom: 1px; margin-bottom: 15px;">
+        <div class="row"
+            style="margin-top: 40px; display: flex; align-items: center; position: sticky; top: 0; z-index: 999; background-color: white; border-bottom: 1px solid #000; padding-bottom: 1px; margin-bottom: 15px;">
             <div class="col">
                 <h2 class="p" v-if="capitalizedDepartment && jobID">
                     <span class="job-info bold-text">
@@ -10,64 +11,68 @@
                         ({{ capitalizedDepartment }})
                     </span>
                 </h2>
+                <h2 class="p" v-else-if="capitalizedDepartment">
+                    <span class="job-info bold-text">
+                        {{ capitalizedDepartment }} Department
+                    </span>
+                </h2>
                 <h2 class="p job-info bold-text" v-else>Dashboard</h2>
             </div>
             <!-- Filter search bars -->
-            <div class="col" style="margin-top: 13px; display: flex; justify-content: flex-end; align-items: center; flex: 1;">
-                <select
-                    class="form-select mb-3"
-                    aria-label="Default select example"
-                    style="width: 15rem; margin-right: 15px;"
-                    v-model="department"
-                    @change="updateJobID"
-                >
+            <div class="col"
+                style="margin-top: 13px; display: flex; justify-content: flex-end; align-items: center; flex: 1;">
+                <select class="form-select mb-3" aria-label="Default select example"
+                    style="width: 15rem; margin-right: 15px;" v-model="selectedDepartment" @change="updateJobID">
                     <option value="" disabled selected hidden>Filter by Department</option>
                     <template v-for="(value, key) in filterData">
                         <option :value="key">{{ key }}</option>
                     </template>
                 </select>
             </div>
-            <div class="col" style="margin-top: 13px; display: flex; justify-content: flex-end; align-items: center; flex: 0;">
-                <select
-                    class="form-select mb-3"
-                    aria-label="Default select example"
-                    style="width: 11rem"
-                    v-model="jobID"
-                >
+            <div class="col"
+                style="margin-top: 13px; display: flex; justify-content: flex-end; align-items: center; flex: 0;">
+                <select class="form-select mb-3" aria-label="Default select example" style="width: 11rem"
+                    v-model="selectedJobID">
                     <option value="" disabled selected hidden>Filter by Job ID</option>
                     <option v-for="jobID in jobID_list" :key="jobID" :value="jobID">{{ jobID }}</option>
                 </select>
             </div>
-        </div>
-        <!-- Row 1 -->
-        <div class="row" style="margin-bottom: 40px;">
-            <div class="col chartBox">
-                <highcharts class="hc" :options="funnelChartOptions" style="width: 100%;" />
-            </div>
-            <div class="col chartBox">
-                <pie-chart :data="workPermitData" title="Work Permit" />
+            <div class="col" style="display: flex; justify-content: flex-end; align-items: center; flex: 0;">
+                <button class="btn btn-primary btn-md rounded-2" style="margin-top: -5px;"
+                    @click="updatePage">Filter</button>
             </div>
         </div>
-        <!-- Row 2 -->
-        <div class="row" style="margin-bottom: 40px;">
-            <div class="col chartBox">
-                <histogram-chart :data="GPAhistogramData" :bins="GPAhistorgramBins" title="GPA" x-axis-title="GPA Score"
-                    y-axis-title="Number of Applicants" seriesName="GPA Distribution" />
+        <div v-if="!nextLoad" class="container">
+            <!-- Row 1 -->
+            <div class="row" style="margin-bottom: 40px;">
+                <div class="col chartBox">
+                    <highcharts class="hc" :options="funnelChartOptions" style="width: 100%;" />
+                </div>
+                <div class="col chartBox">
+                    <pie-chart :data="workPermitData" title="Work Permit" />
+                </div>
             </div>
-            <div class="col chartBox">
-                <bar-chart :data="schoolData" title="School" x-axis-title="School" y-axis-title="Number of Applicants"
-                    seriesName="School Distribution" />
+            <!-- Row 2 -->
+            <div class="row" style="margin-bottom: 40px;">
+                <div class="col chartBox">
+                    <histogram-chart :data="GPAhistogramData" :bins="GPAhistorgramBins" title="GPA"
+                        x-axis-title="GPA Score" y-axis-title="Number of Applicants" seriesName="GPA Distribution" />
+                </div>
+                <div class="col chartBox">
+                    <bar-chart :data="schoolData" title="School" x-axis-title="School"
+                        y-axis-title="Number of Applicants" seriesName="School Distribution" />
+                </div>
             </div>
-        </div>
-        <!-- Row 3 -->
-        <div class="row" style="margin-bottom: 40px;">
-            <div class="col chartBox">
-                <bar-chart :data="courseData" title="Course of Study" x-axis-title="Course of Study"
-                    y-axis-title="Number of Applicants" seriesName="Course of Study Distribution" />
-            </div>
-            <div class="col chartBox">
-                <box-plot-chart :data="pastSalaryData" title="Past Salary" x-axis-title="" y-axis-title="Salary ($)"
-                    seriesName="Salary" />
+            <!-- Row 3 -->
+            <div class="row" style="margin-bottom: 40px;">
+                <div class="col chartBox">
+                    <bar-chart :data="courseData" title="Course of Study" x-axis-title="Course of Study"
+                        y-axis-title="Number of Applicants" seriesName="Course of Study Distribution" />
+                </div>
+                <div class="col chartBox">
+                    <box-plot-chart :data="pastSalaryData" title="Past Salary" x-axis-title="" y-axis-title="Salary ($)"
+                        seriesName="Salary" />
+                </div>
             </div>
         </div>
     </div>
@@ -97,13 +102,16 @@ export default {
     data() {
         return {
             isLoading: true,
+            nextLoad: true,
             filterData: null,
             apiData: null,
+            selectedDepartment: '',
+            selectedJobID: '',
             // DEPARTMENT IS HARDCODED FOR NOW!
-            department: 'technology',
+            department: '',
             jobID_list: [],
             // jobID IS HARDCODED FOR NOW!
-            jobID: '1',
+            jobID: '',
             colors: ["#C2272D", "#F8931F", "#E6E600", "#009245", "#0193D9", "#0C04ED", "#612F90"],
             funnelChartOptions: {
                 chart: {
@@ -241,20 +249,20 @@ export default {
     },
     mounted() {
         this.getFilterData();
-        this.getData();
     },
     methods: {
         getFilterData() {
             axios.get(getDashboardDepartmentJobID)
                 .then(response => {
                     this.filterData = response.data.data
+                    this.isLoading = false
                 })
                 .catch(error => {
                     console.error('Error fetching data!', error);
                 });
         },
         getData() {
-            axios.get(getDashboardDepartment + this.department.toString())
+            axios.get(getDashboardDepartment + this.selectedDepartment.toString())
                 .then(response => {
                     this.apiData = response.data.data
                     this.funnelChartOptions.series[0].data = [
@@ -263,14 +271,43 @@ export default {
                         ['Interviewing', this.apiData.status['interview']],
                         ['Successful', this.apiData.status['hired']]
                     ]
-                    this.isLoading = false
+                    this.nextLoad = false
+                })
+                .catch(error => {
+                    console.error('Error fetching data!', error);
+                });
+        },
+        getData2() {
+            axios.get(getDashboardJobID + this.selectedJobID.toString())
+                .then(response => {
+                    this.apiData = response.data.data
+                    this.funnelChartOptions.series[0].data = [
+                        ['Unprocessed', this.apiData.status['unprocessed']],
+                        ['Shortlisted', this.apiData.status['shortlisted']],
+                        ['Interviewing', this.apiData.status['interview']],
+                        ['Successful', this.apiData.status['hired']]
+                    ]
+                    this.nextLoad = false
                 })
                 .catch(error => {
                     console.error('Error fetching data!', error);
                 });
         },
         updateJobID() {
-            this.jobID_list = this.filterData[this.department]
+            this.jobID_list = this.filterData[this.selectedDepartment];
+        },
+        updatePage() {
+            this.nextLoad = true
+            this.department = this.selectedDepartment
+
+            if (this.selectedJobID == "") {
+                this.getData()
+            }
+
+            else {
+                this.getData2()
+                this.jobID = this.selectedJobID
+            }
         }
     }
 }
@@ -283,17 +320,20 @@ export default {
     box-shadow: 1px 1px 1px 1px #888888;
     margin: 0.5rem
 }
+
 .job-info {
     display: flex;
     align-items: baseline;
 }
+
 .bold-text {
     font-size: 30px;
     font-weight: bold;
     margin-right: 10px;
     vertical-align: bottom;
 }
+
 .select-wrapper {
-  display: inline-block;
+    display: inline-block;
 }
 </style>
