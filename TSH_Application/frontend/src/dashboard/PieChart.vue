@@ -37,7 +37,8 @@ export default {
                         dataLabels: [{
                             enabled: true,
                             distance: 20
-                        }, {
+                        }, 
+                        {
                             enabled: true,
                             distance: -50,
                             format: '{point.percentage:.1f}%',

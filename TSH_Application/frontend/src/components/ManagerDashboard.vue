@@ -3,16 +3,19 @@
     <div v-if="!isLoading" class="container">
         <h3 class="p-5">Welcome Back, Manager</h3>
         <!-- Row 1 -->
-        <div class="d-flex justify-content-center">
-            <div class="row">
-                <div class="col">
-                    <Card class="chartBox">
-                        <template #content>
-                            <highcharts class="hc" :options="funnelChartOptions" style="width: 100%;">
-                            </highcharts>
-                        </template>
-                    </Card>
-                </div>
+        <div class="row" style="margin-bottom: 40px;">
+            <div class="col chartBox">
+                <highcharts 
+                    class="hc" 
+                    :options="funnelChartOptions" 
+                    style="width: 100%;"
+                />
+            </div>
+            <div class="col chartBox">
+                <pie-chart 
+                    :data="workPermitData" 
+                    title="Work Permit"
+                />
             </div>
         </div>
         <!-- Row 2 -->
@@ -58,19 +61,6 @@
                 />
             </div>          
         </div>
-        <!-- Row 4 -->
-        <div class="row" style="margin-bottom: 40px;">
-            <div class="col chartBox">
-                <pie-chart 
-                    :data="workPermitData" 
-                    title="Work Permit"
-                />
-            </div>
-            <div class="col chartBox">
-
-            </div>          
-        </div>
-
     </div>
 </template>
 
