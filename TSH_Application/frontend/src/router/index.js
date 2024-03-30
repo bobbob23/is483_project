@@ -10,6 +10,7 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () => import("@/components/ATRSHome.vue"),
   },
+  
   {
     path: "/job/:job_ID",
     name: "JobDetails",
@@ -26,6 +27,15 @@ const routes = [
     props: (route) => ({
       job_ID: route.params.job_ID,
     }),
+  },
+
+  {
+    path: "/apply2",
+    name: "ApplyForm2",
+    component: () => import("@/components/JobApplication2.vue"),
+    // props: (route) => ({
+    //   job_ID: route.params.job_ID,
+    // }),
   },
 
   {
@@ -82,6 +92,16 @@ const routes = [
       job_ID: route.params.job_ID,
       email: route.params.email,
     }),
+  },
+  {
+    path: "/manager",
+    name:"Manager",
+    component: () => import("@/components/ManagerDashboard.vue"),
+  },
+  {
+    path: "/hr_dashboard",
+    name:"HRDashboard",
+    component: () => import("@/components/HRDashboard.vue"),
   }
 ];
 

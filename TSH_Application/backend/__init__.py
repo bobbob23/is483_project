@@ -34,7 +34,9 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 from routes.applicantRoute import *
 from routes.jobListingRoute import *
 from routes.jobApplicationRoute import *
+from routes.dashboardRoute import *
 # Register routes
 app.register_blueprint(applicant_routes)
 app.register_blueprint(job_listing_routes)
 app.register_blueprint(job_application_routes)
+app.register_blueprint(dashboard_routes)

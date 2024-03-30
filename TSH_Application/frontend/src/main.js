@@ -2,9 +2,8 @@ import './assets/main.css'
 import { createApp } from 'vue';
 import App from './App.vue';
 import { registerPlugins } from '@/plugins';
-import mitt from 'mitt';
+import { createStore } from 'vuex';
 const app = createApp(App);
-const emitter = mitt();
 registerPlugins(app);
 
 /* import primevue ui components */
@@ -28,7 +27,32 @@ import VirtualScroller from 'primevue/virtualscroller';
 import MultiSelect from 'primevue/multiselect';
 import Textarea from 'primevue/textarea';
 import Dialog from 'primevue/dialog';
+import Editor from 'primevue/editor';
+import ProgressSpinner from 'primevue/progressspinner';
 
+
+const store = createStore({
+    state () {
+        return {
+            formData: {}
+        }
+    },
+    mutations: {
+        setFormData(state, formData) {
+            state.formData = formData;
+        }
+    },
+    actions: {
+        updateFormData({commit}, formData) {
+            commit('setFormData', formData);
+        }
+    },
+    getters: {
+        formData(state) {
+            return state.formData;
+        }
+    }
+});
 
 /* use imported primevue components */
 app.component('Card', Card);
@@ -46,10 +70,12 @@ app.component("VirtualScroller", VirtualScroller)
 app.component("MultiSelect", MultiSelect)
 app.component("Textarea", Textarea)
 app.component("Dialog", Dialog)
+app.component("Editor", Editor)
+app.component("ProgressSpinner", ProgressSpinner)
 
 app.use(PrimeVue)
 app.use(HighchartsVue)
-
-app.config.globalProperties.emitter = emitter;
+app.use(store)
 
 app.mount('#app')
+

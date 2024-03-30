@@ -61,7 +61,7 @@
                     </template>
                 </Card>
             </div>
-            <hr>
+            
         </div>
 
 

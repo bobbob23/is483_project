@@ -23,7 +23,12 @@ export default {
                     }
                 },
                 {
-                    label: 'Dashboard'
+                    label: 'Dashboard',
+                    command:() => {
+                        this.$router.push({
+                            name: "HRDashboard"
+                        })
+                    }
                 }, 
                 {
                     label: 'Job Listings',
@@ -40,7 +45,15 @@ export default {
                             name: "Home"
                         })
                     }
-                }
+                },
+                {
+                    label: "Manager",
+                    command:() => {
+                        this.$router.push({
+                            name: "Manager"
+                        })
+                    }
+                },
             ]
         }
     }
