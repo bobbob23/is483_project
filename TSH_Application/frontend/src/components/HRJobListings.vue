@@ -54,8 +54,8 @@
                     </template>
                 </Card>
             </div>
-            <div class="col-3" :key="job">
-                <EditJobDialog :job_ID="job.job_ID"/>
+            <div class="col-3" style="margin-top: 5%" :key="job">
+                <EditJobDialog :job_ID="job.job_ID" style="margin-bottom: 5%;"/>
                 <Button label="Deactivate" style="display: block; margin: 0 auto; background-color: white; 
                                     color: darkblue; border: darkblue 1px solid; width: 80%;" />
             </div>
