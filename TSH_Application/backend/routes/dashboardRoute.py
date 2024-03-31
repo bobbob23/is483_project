@@ -176,3 +176,18 @@ def dashboard_job_id(job_id):
             'message': f'Failed to retrieve data!',
             'error' : str(e)
         })
+    
+@dashboard_routes.route('/job_ids', methods=['GET'])
+def get_all_job_ids():
+    try:
+        query_job_ids = Job_listing.query.with_entities(Job_listing.job_ID).distinct().all()
+        job_ids = [row.job_ID for row in query_job_ids]
+        return jsonify({
+            'job_ids': job_ids,
+            'message': f'All job IDs retrieved successfully'
+        })
+    except Exception as e:
+        return jsonify({
+            'message': f'Failed to retrieve job IDs!',
+            'error': str(e)
+        })
