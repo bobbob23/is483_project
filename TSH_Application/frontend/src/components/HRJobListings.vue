@@ -21,7 +21,7 @@
             <i class="pi pi-spin pi-spinner" style="font-size: 3em;"></i> <!-- Progress spinner -->
         </div>
 
-        <div class="row mt-3" v-for="(job, index) in jobs" :key="job.title">
+        <div class="row mt-3" v-for="(job, index) in jobs" :key="job">
             <div class="col-9">
                 <Card style="width: 90%; margin-left: 13%; margin-bottom: 2%; margin-right: 3%"
                     @mouseenter="hover[index] = true" @mouseleave="hover[index] = false"
@@ -54,29 +54,26 @@
                     </template>
                 </Card>
             </div>
-            <div class="col-3">
-                <div style="display:block; flex: 1;" class="mr-5">
-                    <Button label="Edit" style="display: block; margin: 30% auto 3%; background-color: white; 
+            <div class="col-3" :key="job">
+                <EditJobDialog :job_ID="job.job_ID"/>
+                <Button label="Deactivate" style="display: block; margin: 0 auto; background-color: white; 
                                     color: darkblue; border: darkblue 1px solid; width: 80%;" />
-                    <Button label="Deactivate" style="display: block; margin: 0 auto; background-color: white; 
-                                    color: darkblue; border: darkblue 1px solid; width: 80%;" />
-                </div>
             </div>
-            <hr>
         </div>
-
-
+        <hr>
     </div>
 </template>
 
 <script>
 import HRNavBar from "./HRNavBar.vue"
 import { getAllJobListing } from '@/api/api';
+import EditJobDialog from "@/components/EditJobDialog.vue"
 import axios from "axios";
 
 export default {
     components: {
-        HRNavBar
+        HRNavBar,
+        EditJobDialog
     },
     data() {
         return {
