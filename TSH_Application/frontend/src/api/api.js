@@ -19,5 +19,6 @@ export const getAllUnprocessedApplicant = rootURL + "/unprocessed_applicant_deta
 // dashboard APIs
 export const getDashboardDepartmentJobID = rootURL + "/department"
 export const getDashboardDepartment = rootURL + "/manager/"
-export const getDashboardJobID = rootURL + "/dashboard/"export const getDashboardAllHRJobID = rootURL + "/job_ids"
+export const getDashboardJobID = rootURL + "/dashboard/"
+export const getDashboardAllHRJobID = rootURL + "/job_ids"
 export const getDashboardHRInfo = rootURL + "/HR"
