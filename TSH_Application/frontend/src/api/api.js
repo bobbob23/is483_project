@@ -5,6 +5,7 @@ export const getJobListing = rootURL + "/job_listing"
 export const createJobListing = rootURL + "/new_job_listing"
 export const getAllActiveJob = rootURL + "/active_job_listing_list"
 export const editJobListing = rootURL + "/edit_job_listing"
+export const deleteJobListing = rootURL + "/delete_job_listing"
 
 export const createApplicant = rootURL + "/new_applicant"
 export const createApplicantFiles = rootURL + "/new_applicant_files"

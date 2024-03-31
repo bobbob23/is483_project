@@ -56,8 +56,7 @@
             </div>
             <div class="col-3" style="margin-top: 5%" :key="job">
                 <EditJobDialog :job_ID="job.job_ID" style="margin-bottom: 5%;"/>
-                <Button label="Deactivate" style="display: block; margin: 0 auto; background-color: white; 
-                                    color: darkblue; border: darkblue 1px solid; width: 80%;" />
+                <DeleteDialog :job_ID="job.job_ID"/>
             </div>
         </div>
         <hr>
@@ -69,11 +68,13 @@ import HRNavBar from "./HRNavBar.vue"
 import { getAllJobListing } from '@/api/api';
 import EditJobDialog from "@/components/EditJobDialog.vue"
 import axios from "axios";
+import DeleteDialog from "./DeleteDialog.vue";
 
 export default {
     components: {
         HRNavBar,
-        EditJobDialog
+        EditJobDialog,
+        DeleteDialog
     },
     data() {
         return {

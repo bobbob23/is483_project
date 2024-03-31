@@ -31,7 +31,7 @@
                 <Textarea id="description" class="flex-auto" autocomplete="off" v-model="description" style="height: 200px"/>
             </div>
 
-            <div class="flex justify-content-center mt-5">
+            <div class="flex justify-content-center mt-5" style="text-align: center;">
                 <Button type="button" label="Cancel" severity="secondary" @click="visible = false" link></Button>
                 <Button type="button" label="Save" @click="editJobListing()"></Button>
             </div>
