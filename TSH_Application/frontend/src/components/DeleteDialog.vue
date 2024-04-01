@@ -5,7 +5,7 @@
             @click="visible = true" />
         <Dialog v-model:visible="visible" modal header="Delete Job Listing" :style="{ width: '25rem' }">
             <p class="text-center">Are you sure that you want to delete this listing?</p>
-            <div class="flex justify-content-center mt-5" style="text-align: center;">
+            <div class="flex justify-content-center " style="text-align: center;">
                 <Button type="button" label="Cancel" severity="secondary" @click="visible = false" link></Button>
                 <Button type="button" label="Save" @click="deleteJobListing(job_ID)"></Button>
             </div>
