@@ -33,7 +33,7 @@
                             <div class="d-flex">
                                 <div class="mt-4 w-100">
                                     <p style="color: rgb(91, 91, 91); margin-right: 0;">Application Deadline: {{
-                    job.closing_date.slice(6, 16) }}</p>
+                    job.closing_date.slice(5, 16) }}</p>
                                 </div>
                                 <div class="d-flex" style="margin-left: 30%">
                                     <div class="text-center mx-3">
