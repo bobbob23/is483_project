@@ -25,3 +25,6 @@ export const getDashboardDepartment = rootURL + "/manager/"
 export const getDashboardJobID = rootURL + "/dashboard/"
 export const getDashboardAllHRJobID = rootURL + "/job_ids"
 export const getDashboardHRInfo = rootURL + "/HR"
+
+// Autofill APIs
+export const getAutofill = rootURL + "/autofill"
