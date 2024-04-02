@@ -80,7 +80,7 @@ def new_applicant():
             email = data['email'],
             job_ID = data['job_id'],
             applicant_status = "Unprocessed",
-            skill = ['PHP', 'Python'],
+            skill = data['skill'],
             rank_probability = None,
             past_salary = pastSalary,
             work_permit = data['workPermit'],
