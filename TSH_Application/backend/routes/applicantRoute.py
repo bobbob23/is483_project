@@ -1,6 +1,7 @@
 import boto3
 import os
 import logging
+from services import file_services
 from botocore.exceptions import ClientError
 import uuid
 from flask import request, jsonify
@@ -218,3 +219,11 @@ def applicant_details(email):
             'message': 'Failed to receive applicant details!',
             'error' : str(e)
         })
+
+# @applicant_routes.route('/process/<string:file>', methods=['GET'])
+# def process(file):
+#     return file_services.perform_parsing(file)
+
+# @applicant_routes.route('/get_file', methods=['GET'])
+# def get_file(key=""):
+#     return file_services.fetch_file(key)

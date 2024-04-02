@@ -12,14 +12,7 @@
       <div class="m-3 px-4">
         <h1 class="m-3">{{ jobData.title }}</h1>
         <hr>
-        <!-- <div class="row" style="width: 95%" v-if="errorMsg">
-              <div class="col-4"></div>
-              <div class="col">
-                <Message severity="error">Please fill up all required fields! </Message>
-              </div>
-              <div class="col-4"></div>
-            </div> -->
-        <FormValidation :formValid="formValid" :errorMsg="errorMsg"/>
+        <FormValidation :formValid="formValid" :errorMsg="errorMsg" />
         <form @submit.prevent="submitForm">
           <div class="row">
             <div class="col"></div>
@@ -29,7 +22,8 @@
             <div class="col">
               <input type="file" class="flex-end" name="resume"
                 accept="application/pdf, application/docx, application/doc" :maxFileSize="1000000"
-                style="background-color: rgba(211, 211, 211, 0); color: darkblue;" @change="onUpload($event, 'resume')" />
+                style="background-color: rgba(211, 211, 211, 0); color: darkblue;"
+                @change="onUpload($event, 'resume')" />
             </div>
             <div class="col"></div>
           </div>
@@ -128,7 +122,8 @@
             <div class="col" v-if="jobData.type !== 'Internship'">
               <label for="pastSalary">Past Salary ($) <span style="color: red;">*</span></label>
               <InputText v-model="pastSalary" @input="pastSalaryInput" id="pastSalary" style="width: 300px" />
-              <small v-if="showPastSalaryError && !validatePositiveSalary(pastSalary)" style="color: red">Past salary cannot be negative</small>
+              <small v-if="showPastSalaryError && !validatePositiveSalary(pastSalary)" style="color: red">Past salary
+                cannot be negative</small>
             </div>
             <div class="col">
               <label for="course">Type of Work Permit <span style="color: red;">*</span></label>
@@ -152,10 +147,9 @@
     </div>
   </div>
 </template>
-  
+
 <script>
 import InputText from 'primevue/inputtext';
-import FileUpload from 'primevue/fileupload';
 import Button from 'primevue/button';
 import Banner from './Banner.vue'
 import Dropdown from 'primevue/dropdown';
@@ -235,34 +229,48 @@ export default {
       } else if (name === 'transcript') {
         this.transcriptUploaded = true;
       }
+
+      // var reader = new FileReader();
+      // var encodedFile;
+      // reader.readAsDataURL(file);
+      // reader.onload = function () {
+      //   console.log(reader.result);
+      //   encodedFile = reader.result
+        
+      //   axios.get(`${processResume}/'${encodedFile}'`)
+      //   .then((response) => {
+      //     console.log("processresume" + response.data)
+      //   })
+      // };
+        this.$cookies.set("skills","test")
     },
     isFormValid() {
       if (this.jobData.type === 'Full time') {
-    this.formValid = this.fName.length !== 0 &&
-      this.lName.length !== 0 &&
-      this.email.length !== 0 &&
-      this.number.length !== 0 &&
-      this.school.length !== 0 &&
-      this.course.length !== 0 &&
-      this.resumeUploaded &&
-      this.transcriptUploaded &&
-      this.pastSalary.length !== 0 &&
-      this.workPermit.length !== 0;
-  } else if (this.jobData.type === 'Internship') {
-    this.formValid = this.fName.length !== 0 &&
-      this.lName.length !== 0 &&
-      this.email.length !== 0 &&
-      this.number.length !== 0 &&
-      this.school.length !== 0 &&
-      this.course.length !== 0 &&
-      this.gradDate.length !== 0 &&
-      this.gpa.length !== 0 &&
-      this.workPermit.length !== 0 &&
-      this.startDate.length !== 0 &&
-      this.endDate.length !== 0 &&
-      this.resumeUploaded &&
-      this.transcriptUploaded;
-  }
+        this.formValid = this.fName.length !== 0 &&
+          this.lName.length !== 0 &&
+          this.email.length !== 0 &&
+          this.number.length !== 0 &&
+          this.school.length !== 0 &&
+          this.course.length !== 0 &&
+          this.resumeUploaded &&
+          this.transcriptUploaded &&
+          this.pastSalary.length !== 0 &&
+          this.workPermit.length !== 0;
+      } else if (this.jobData.type === 'Internship') {
+        this.formValid = this.fName.length !== 0 &&
+          this.lName.length !== 0 &&
+          this.email.length !== 0 &&
+          this.number.length !== 0 &&
+          this.school.length !== 0 &&
+          this.course.length !== 0 &&
+          this.gradDate.length !== 0 &&
+          this.gpa.length !== 0 &&
+          this.workPermit.length !== 0 &&
+          this.startDate.length !== 0 &&
+          this.endDate.length !== 0 &&
+          this.resumeUploaded &&
+          this.transcriptUploaded;
+      }
       return this.formValid
     },
     submitForm() {
@@ -349,6 +357,7 @@ export default {
   },
 }
 </script>
+
 <style scoped>
 .row {
   padding-top: 10px;

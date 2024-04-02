@@ -54,9 +54,14 @@ def get_job_listing(job_id):
             job_dict['location'] = query_job_listing.location
             job_dict['type'] = query_job_listing.type
             job_dict['department'] = query_job_listing.department
+            job_dict['opening_date'] = query_job_listing.opening_date
             job_dict['closing_date'] = query_job_listing.closing_date
             job_dict['description'] = query_job_listing.job_description
             job_dict['requirement'] = query_job_listing.job_requirement
+            job_dict['job_status'] = query_job_listing.job_status
+            job_dict['hiring_manager'] = query_job_listing.hiring_manager
+            job_dict['salary'] = query_job_listing.salary
+            job_dict['work_permit'] = query_job_listing.work_permit
 
             return jsonify({
                 "message": "Succesfully retrieved data from database!",
