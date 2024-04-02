@@ -212,19 +212,19 @@ export default {
         this.resumeUploaded = true;
         const fileFormData = new FormData();
         fileFormData.append('pdf_file', file)
-      //   fetch(getAutofill, {
-      //       method: 'POST',
-      //       body: fileFormData
-      //   })
-      //   .then(response => {
-      //     return response.json(); // Output success message from the backend
-      //   })
-      //   .then(data => {
-      //     console.log(data.data)
-      //   })
-      //   .catch(error => {
-      //       console.error('Error:', error);
-      //   });
+        fetch(getAutofill, {
+            method: 'POST',
+            body: fileFormData
+        })
+        .then(response => {
+          return response.json();
+        })
+        .then(data => {
+          console.log(data.data)
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
       }
       else if (name === 'transcript') {
         this.transcriptUploaded = true;
