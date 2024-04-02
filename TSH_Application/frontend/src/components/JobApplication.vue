@@ -212,24 +212,24 @@ export default {
         this.resumeUploaded = true;
         const fileFormData = new FormData();
         fileFormData.append('pdf_file', file)
-        fetch(getAutofill, {
-            method: 'POST',
-            body: fileFormData
-        })
-        .then(response => {
-          return response.json(); // Output success message from the backend
-        })
-        .then(data => {
-          console.log(data.data)
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-
-      } else if (name === 'transcript') {
+      //   fetch(getAutofill, {
+      //       method: 'POST',
+      //       body: fileFormData
+      //   })
+      //   .then(response => {
+      //     return response.json(); // Output success message from the backend
+      //   })
+      //   .then(data => {
+      //     console.log(data.data)
+      //   })
+      //   .catch(error => {
+      //       console.error('Error:', error);
+      //   });
+      }
+      else if (name === 'transcript') {
         this.transcriptUploaded = true;
       }
-
+// ===================================================================================================================================
       // var reader = new FileReader();
       // var encodedFile;
       // reader.readAsDataURL(file);
@@ -302,6 +302,7 @@ export default {
             if (response.ok) {
               console.log('Form submitted successfully');
               this.filesData.append('email', this.email)
+              this.filesData.append('job_id', this.job_ID)
               this.$router.push({
                 name: "Success",
                 params: {

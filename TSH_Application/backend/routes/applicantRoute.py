@@ -1,3 +1,4 @@
+import traceback
 import boto3
 import os
 import logging
@@ -67,18 +68,24 @@ def new_applicant():
             school = data['school'], 
             course_of_study = data['course'], 
             GPA = data['gpa'], 
-            grad_month = data['gradDate'],
-            past_salary = data['pastSalary'],
-            work_permit = data['workPermit'],
-            start_date = data['startDate'],
-            end_date = data['endDate']
+            grad_month = data['gradDate']
         )
+
+        pastSalary = "0"
+
+        if 'pastSalary' in data:
+            pastSalary = data['pastSalary']
 
         new_job_application_record = Job_Application(
             email = data['email'],
             job_ID = data['job_id'],
             applicant_status = "Unprocessed",
-            rank_number = None
+            skill = ['PHP', 'Python'],
+            rank_probability = None,
+            past_salary = pastSalary,
+            work_permit = data['workPermit'],
+            start_date = data['startDate'],
+            end_date = data['endDate']
         )
 
         query_job_listing = Job_listing.query.get(data['job_id'])
@@ -94,6 +101,7 @@ def new_applicant():
         })
 
     except Exception as e:
+        print(traceback.format_exc())
         return jsonify({
             'isApplied': False,
             'message': 'Failed to receive application!',
@@ -115,6 +123,7 @@ def new_applicant_files():
     try:
         # File schema
         email = request.form.get('email')
+        job_id = request.form.get('job_id')
         if 'resume' in request.files:
             resume_file = request.files['resume']
         if 'transcript' in request.files:
@@ -127,8 +136,10 @@ def new_applicant_files():
             transcript = transcript_file,
             reference_letter = reference_letter_file
         )
-
-        query_candidate = Applicant.query.get(email)
+        print(email)
+        print(job_id)
+        query_candidate = Job_Application.query.get(email, job_id)
+        print(query_candidate)
         bucket_name = 'candidate-uploaded-files'
 
         for key, value in file_dict.items():
