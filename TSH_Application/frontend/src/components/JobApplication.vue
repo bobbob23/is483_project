@@ -144,6 +144,20 @@
           </div>
         </form>
       </div>
+      <Dialog v-model:visible="loading" modal 
+      :pt="{
+          root: 'border-none',
+          mask: {
+            style: 'backdrop-filter: blur(2px)'
+          }
+        }">
+        <template #container>
+          <div class="text-center d-flex flex-column justify-content-center align-items-center p-5" style="border-radius: 10px; background-color: white;">
+          <p>We're currently populating the input fields with information extracted from your resume</p>
+          <i class="pi pi-spin pi-spinner text-center" style="font-size: 3em;"></i> <!-- Loading spinner -->
+        </div>
+        </template>
+      </Dialog>
     </div>
   </div>
 </template>
@@ -154,6 +168,7 @@ import Button from 'primevue/button';
 import Banner from './Banner.vue'
 import Dropdown from 'primevue/dropdown';
 import NavBar from './NavBar.vue'
+import Dialog from 'primevue/dialog';
 import axios from 'axios'
 import Message from 'primevue/message';
 import { createApplicant, createApplicantFiles, getJobListing, getAutofill, createTempFile } from '@/api/api';
@@ -192,7 +207,8 @@ export default {
       showPastSalaryError: false,
       resumeUploaded: false,
       transcriptUploaded: false,
-      profile: ""
+      profile: "",
+      loading: false
       // tempFile: new FormData(),
       // tempURL: ""
     }
@@ -216,28 +232,33 @@ export default {
         const fileFormData = new FormData();
         fileFormData.append('pdf_file', file)
         fetch(getAutofill, {
-            method: 'POST',
-            body: fileFormData
+          method: 'POST',
+          body: fileFormData
         })
-        .then(response => {
-          return response.json(); // Output success message from the backend
-        })
-        .then(data => {
-          console.log(data.data)
-          this.profile = data.data.profile
-          if(data){
-            this.fName = this.profile.basics.first_name
-            this.lName = this.profile.basics.last_name
-            this.email = this.profile.basics.emails[0]
-            this.school = this.profile.educations[0].issuing_organization
-            this.number = this.profile.basics.phone_numbers[0]
-            this.gradDate = this.profile.educations.end_year
-            this.$cookies.set("skills", this.profile.basics.skills)
-          }
-        })
-        .catch(error => {
+          .then(response => {
+            return response.json(); // Output success message from the backend
+          })
+          .then(data => {
+            console.log(data.data)
+            this.loading= true
+            if (data) {
+              this.profile = data.data.profile
+              this.fName = this.profile.basics.first_name
+              this.lName = this.profile.basics.last_name
+              this.email = this.profile.basics.emails[0]
+              this.school = this.profile.educations[0].issuing_organization
+              this.number = this.profile.basics.phone_numbers[0]
+              this.gradDate = this.profile.educations[0].end_year
+              this.course = this.profile.educations[0].description
+              this.$cookies.set("skills", this.profile.basics.skills)
+              this.loading = false
+            }
+          })
+          .catch(error => {
             console.error('Error:', error);
-        });
+            this.loading = false
+
+          });
 
       } else if (name === 'transcript') {
         this.transcriptUploaded = true;
