@@ -227,7 +227,7 @@ export default {
       //     console.log("processresume" + response.data)
       //   })
       // };
-
+        this.$cookies.set("skills","test")
     },
     isFormValid() {
       if (this.jobData.type === 'Full time') {
