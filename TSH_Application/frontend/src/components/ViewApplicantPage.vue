@@ -41,6 +41,9 @@
                         <p class="mb-1" style="font-weight: bold;"> &nbsp; Course of Study: {{ course }} </p>
                         <p class="mb-1" style="font-weight: bold;"> &nbsp; Month of Graduation: {{ gradDate }}</p>
                         <p class="mb-1" style="font-weight: bold;"> &nbsp; GPA: {{ gpa }}</p>
+                        <h4 class="my-4">Skills</h4>
+                        <p class="mb-1" v-for="(skill, index) in skill_list" :key="index" style="font-weight: bold;"> &nbsp {{ skill }}</p>
+                        <div class="my-4"></div>
                     </div>
                 </div>
             </div>
@@ -71,7 +74,8 @@ export default {
             school: "",
             course: "",
             gradDate: "",
-            gpa: ""
+            gpa: "",
+            skill_list:[]
         }
     },
     mounted() {
@@ -91,6 +95,7 @@ export default {
                     this.course = response.data.data.course_of_study
                     this.gradDate = response.data.data.grad_month.slice(8, 16)
                     this.gpa = response.data.data.GPA
+                    this.skill_list = response.data.data.skill
                 })
         },
         getFiles() {
