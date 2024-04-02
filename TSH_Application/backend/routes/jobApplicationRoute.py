@@ -25,7 +25,6 @@ def get_all_applicants_by_job_ID(job_ID):
             applicant_dict['email'] = applicant.email
             applicant_dict['job_ID'] = applicant.job_ID
             applicant_dict['applicant_status'] = applicant.applicant_status
-            applicant_dict['rank_number'] = applicant.rank_number
             applicant_dict['phone_number'] = Applicant.query.get(applicant_dict['email']).phone_number
             applicant_dict['grad_month'] = Applicant.query.get(applicant_dict['email']).grad_month
             applicant_dict['first_name'] = Applicant.query.get(applicant_dict['email']).first_name
@@ -33,14 +32,16 @@ def get_all_applicants_by_job_ID(job_ID):
             applicant_dict['school'] = Applicant.query.get(applicant_dict['email']).school
             applicant_dict['course_of_study'] = Applicant.query.get(applicant_dict['email']).course_of_study
             applicant_dict['GPA'] = Applicant.query.get(applicant_dict['email']).GPA
-            applicant_dict['past_salary'] = Applicant.query.get(applicant_dict['email']).past_salary
-            applicant_dict['work_permit'] = Applicant.query.get(applicant_dict['email']).work_permit
-            applicant_dict['start_date'] = Applicant.query.get(applicant_dict['email']).start_date
-            applicant_dict['end_date'] = Applicant.query.get(applicant_dict['email']).end_date
+            applicant_dict['Skills'] = applicant.skill
+            applicant_dict['rank_probability'] = applicant.rank_probability
+            applicant_dict['past_salary'] = applicant.past_salary
+            applicant_dict['work_permit'] = applicant.work_permit
+            applicant_dict['start_date'] = applicant.start_date
+            applicant_dict['end_date'] = applicant.end_date
 
             applicant_list.append(applicant_dict)
 
-        sorted_applicant_list = sorted(applicant_list, key=lambda x: x["rank_number"])
+        sorted_applicant_list = sorted(applicant_list, key=lambda x: x["rank_probability"])
 
         return jsonify({
             'message': 'Succesfully retrieved data from database!',

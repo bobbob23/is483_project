@@ -35,10 +35,10 @@ def get_all_applicants():
             applicant_dict['course'] = applicant.course_of_study
             applicant_dict['gpa'] = applicant.GPA
             applicant_dict['gradDate'] = applicant.grad_month
-            applicant_dict['pastSalary'] = applicant.past_salary
-            applicant_dict['workPermit'] = applicant.work_permit
-            applicant_dict['startDate'] = applicant.start_date
-            applicant_dict['endDate'] = applicant.end_date
+            # applicant_dict['pastSalary'] = applicant.past_salary
+            # applicant_dict['workPermit'] = applicant.work_permit
+            # applicant_dict['startDate'] = applicant.start_date
+            # applicant_dict['endDate'] = applicant.end_date
             applicant_list.append(applicant_dict)
         
         applicant_list.reverse()
