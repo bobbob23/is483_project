@@ -192,8 +192,9 @@ export default {
       showPastSalaryError: false,
       resumeUploaded: false,
       transcriptUploaded: false,
-      tempFile: new FormData(),
-      tempURL: ""
+      profile: ""
+      // tempFile: new FormData(),
+      // tempURL: ""
     }
   },
   mounted() {
@@ -223,6 +224,16 @@ export default {
         })
         .then(data => {
           console.log(data.data)
+          this.profile = data.data.profile
+          if(data){
+            this.fName = this.profile.basics.first_name
+            this.lName = this.profile.basics.last_name
+            this.email = this.profile.basics.emails[0]
+            this.school = this.profile.educations[0].issuing_organization
+            this.number = this.profile.basics.phone_numbers[0]
+            this.gradDate = this.profile.educations.end_year
+            this.$cookies.set("skills", this.profile.basics.skills)
+          }
         })
         .catch(error => {
             console.error('Error:', error);
@@ -249,8 +260,6 @@ export default {
 
 
       // 4. store skills in cookies
-
-      this.$cookies.set("skills", "test")
     },
     isFormValid() {
       if (this.jobData.type === 'Full time') {
