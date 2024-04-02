@@ -231,6 +231,7 @@ export default {
         this.resumeUploaded = true;
         const fileFormData = new FormData();
         fileFormData.append('pdf_file', file)
+        this.loading= true
         fetch(getAutofill, {
           method: 'POST',
           body: fileFormData
@@ -240,7 +241,6 @@ export default {
           })
           .then(data => {
             console.log(data.data)
-            this.loading= true
             if (data) {
               this.profile = data.data.profile
               this.fName = this.profile.basics.first_name
