@@ -162,7 +162,7 @@ import Dropdown from 'primevue/dropdown';
 import NavBar from './NavBar.vue'
 import axios from 'axios'
 import Message from 'primevue/message';
-import { createApplicant, createApplicantFiles, getJobListing } from '@/api/api';
+import { createApplicant, createApplicantFiles, getJobListing, getAutofill } from '@/api/api';
 import FormValidation from './FormValidation.vue';
 
 
@@ -212,12 +212,26 @@ export default {
   methods: {
     onUpload(event, name) {
       const file = event.target.files[0];
-      console.log(name)
-      console.log(file)
       this.filesData.append(name, file)
 
       if (name === 'resume') {
         this.resumeUploaded = true;
+        const fileFormData = new FormData();
+        fileFormData.append('pdf_file', file)
+        fetch(getAutofill, {
+            method: 'POST',
+            body: fileFormData
+        })
+        .then(response => {
+          return response.json(); // Output success message from the backend
+        })
+        .then(data => {
+          console.log(data.data)
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
       } else if (name === 'transcript') {
         this.transcriptUploaded = true;
       }
