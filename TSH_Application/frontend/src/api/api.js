@@ -9,6 +9,7 @@ export const deleteJobListing = rootURL + "/delete_job_listing"
 
 export const createApplicant = rootURL + "/new_applicant"
 export const createApplicantFiles = rootURL + "/new_applicant_files"
+export const createTempFile = rootURL + "/post_file"
 
 export const getAllApplicantStatus = rootURL + "/all_applicant_status"
 export const getAllApplicant = rootURL + "/all_applicant_details"
@@ -17,7 +18,6 @@ export const editApplicantStatus = rootURL + "/edit_applicant_status"
 export const getApplicantDetails = rootURL + "/applicant_details"
 export const getApplicantFiles = rootURL + "/applicant_files"
 export const getAllUnprocessedApplicant = rootURL + "/unprocessed_applicant_details"
-export const processResume = rootURL + "/process"
 
 // dashboard APIs
 export const getDashboardDepartmentJobID = rootURL + "/department"

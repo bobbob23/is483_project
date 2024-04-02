@@ -155,7 +155,7 @@ import Banner from './Banner.vue'
 import Dropdown from 'primevue/dropdown';
 import NavBar from './NavBar.vue'
 import axios from 'axios'
-import { createApplicant, createApplicantFiles, getJobListing, processResume } from '@/api/api';
+import { createApplicant, createApplicantFiles, getJobListing, createTempFile } from '@/api/api';
 import FormValidation from './FormValidation.vue';
 
 
@@ -191,6 +191,8 @@ export default {
       showPastSalaryError: false,
       resumeUploaded: false,
       transcriptUploaded: false,
+      tempFile: new FormData(),
+      tempURL: ""
     }
   },
   mounted() {
@@ -215,19 +217,25 @@ export default {
         this.transcriptUploaded = true;
       }
 
-      // var reader = new FileReader();
-      // var encodedFile;
-      // reader.readAsDataURL(file);
-      // reader.onload = function () {
-      //   console.log(reader.result);
-      //   encodedFile = reader.result
-        
-      //   axios.get(`${processResume}/'${encodedFile}'`)
-      //   .then((response) => {
-      //     console.log("processresume" + response.data)
+      // // 2. upload it
+      // if (name == 'resume') {
+      //   this.tempFile.append(name, file)
+      //   fetch(createTempFile, {
+      //     method: 'POST',
+      //     body: this.tempFile
+      //   }).then((response) => {
+      //     console.log(response)
+      //   }).catch((error) => {
+      //     console.log(error)
       //   })
-      // };
-        this.$cookies.set("skills","test")
+      // }
+
+      // 3. cvparser -- store cvparser result to v-model name
+
+
+      // 4. store skills in cookies
+
+      this.$cookies.set("skills", "test")
     },
     isFormValid() {
       if (this.jobData.type === 'Full time') {

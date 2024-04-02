@@ -2,8 +2,9 @@ import logging
 import boto3
 from botocore.exceptions import ClientError  
 import requests
-import base64
 import os
+import uuid
+import json
 
 ACCESS_KEY = os.environ.get("ACCESS_KEY")
 SECRET_ACCESS_KEY = os.environ.get("SECRET_ACCESS_KEY")
@@ -18,7 +19,7 @@ def fetch_file(object_key):
         response = s3_client.generate_presigned_url(
             ClientMethod="get_object",
             Params={
-                "Bucket": "candidate-uploaded-files",
+                "Bucket": "candidate-cvs-temp-bucket",
                 "Key": object_key,
             },
             ExpiresIn=60000,
@@ -36,12 +37,31 @@ def perform_parsing(uploaded):
         'X-API-Key': API_KEY
     }
 
-    with open(uploaded, 'rb') as file:
-        encoded_file = base64.b64encode(file.read()).decode('utf-8')
-
     data = {
-        'base64': encoded_file
+        'url': uploaded
     }
 
     response = requests.post(url, headers=headers, json=data)
     return response.json()
+
+# def perform_temp_upload(file):  
+#     bucket_name = 'candidate-cvs-temp-bucket'
+#     new_filename = uuid.uuid4().hex + '.pdf'
+#     s3_client.upload_fileobj(file, bucket_name, new_filename)
+
+#     return json.dump({
+#             'isUploaded': True,
+#             'message': 'File has been uploaded to temp bucket!'
+#         })
+    
+
+# def perform_delete(key):
+#     try:
+#         response = s3_client.delete_object(
+#             Bucket="candidate-cvs-temp-bucket",
+#             Key=key,
+#         )
+#         return response
+
+#     except Exception as e:
+#         return e
