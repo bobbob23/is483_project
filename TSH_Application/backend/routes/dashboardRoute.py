@@ -55,6 +55,15 @@ def applicant_details_con(filter_column, filter_value):
 
     for applicant in applicant_list:
         email = Applicant.query.get(applicant.email)
+        past_salary = applicant.past_salary
+        work_permit = applicant.work_permit
+
+        if past_salary != '':
+            past_salary = int(past_salary)
+            past_salary_list.append(past_salary)
+        
+        field_sum(work_permit, permit_dict)
+
         if email not in email_set:
             email_list.append(applicant.email)
             email_set.add(email)
@@ -62,21 +71,16 @@ def applicant_details_con(filter_column, filter_value):
     applicant_detail_list = Applicant.query.filter(Applicant.email.in_(email_list)).all()
 
     for applicant in applicant_detail_list:
+        email = applicant.email
         GPA = float(applicant.GPA.split("/")[0])
         school = applicant.school
         course = applicant.course_of_study
-        past_salary = applicant.past_salary
-        work_permit = applicant.work_permit
 
         field_conditions(GPA, gpa_dict, 3.0, 3.5, 4.0)
-        if past_salary != '':
-            past_salary = int(past_salary)
-            past_salary_list.append(past_salary)
 
         field_sum(school, school_dict)
         field_sum(course, course_dict)
-        field_sum(work_permit, permit_dict)
-    
+
     return data_list
 
 
@@ -98,6 +102,7 @@ def get_HR():
         }
 
         for applicant in query_applicant_listing:
+            email = applicant.email
             GPA = float(applicant.GPA.split("/")[0])
             school = applicant.school
             course = applicant.course_of_study
@@ -177,17 +182,17 @@ def dashboard_job_id(job_id):
             'error' : str(e)
         })
     
-@dashboard_routes.route('/job_ids', methods=['GET'])
-def get_all_job_ids():
-    try:
-        query_job_ids = Job_listing.query.with_entities(Job_listing.job_ID).distinct().all()
-        job_ids = [row.job_ID for row in query_job_ids]
-        return jsonify({
-            'job_ids': job_ids,
-            'message': f'All job IDs retrieved successfully'
-        })
-    except Exception as e:
-        return jsonify({
-            'message': f'Failed to retrieve job IDs!',
-            'error': str(e)
-        })
+# @dashboard_routes.route('/job_ids', methods=['GET'])
+# def get_all_job_ids():
+#     try:
+#         query_job_ids = Job_listing.query.with_entities(Job_listing.job_ID).distinct().all()
+#         job_ids = [row.job_ID for row in query_job_ids]
+#         return jsonify({
+#             'job_ids': job_ids,
+#             'message': f'All job IDs retrieved successfully'
+#         })
+#     except Exception as e:
+#         return jsonify({
+#             'message': f'Failed to retrieve job IDs!',
+#             'error': str(e)
+#         })
