@@ -71,7 +71,7 @@
             <div class="col-3"></div>
             <div class="col">
               <label for="email">Email <span style="color: red;">*</span></label>
-              <InputText v-model="email" @input="emailInput" id="email" style="width: 300px" />
+              <InputText v-model="email" @input="emailInput()" id="email" style="width: 300px" />
               <small v-if="showEmailError && !validateEmail(email)" style="color: red">Invalid email address</small>
             </div>
             <div class="col">
@@ -136,7 +136,7 @@
             <div class="col-5">
             </div>
             <div class="col-2 justify-content-centre">
-              <Button label="Submit" @click="submitForm()"
+              <Button label="Submit" @click="submitForm()" name="btnSubmit"
                 style="border-radius: 50px; background-color: darkblue; width: 150px" />
             </div>
             <div class="col-5">
@@ -209,7 +209,8 @@ export default {
       resumeUploaded: false,
       transcriptUploaded: false,
       profile: "",
-      loading: false
+      loading: false,
+      skill: ["PHP"]
       // tempFile: new FormData(),
       // tempURL: ""
     }
@@ -276,8 +277,7 @@ export default {
       //   }).catch((error) => {
       //     console.log(error)
       // });
-      }
-    },
+      },
     // ===================================================================================================================================
       // var reader = new FileReader();
       // var encodedFile;
@@ -341,7 +341,8 @@ export default {
           pastSalary: this.pastSalary,
           workPermit: this.workPermit,
           startDate: this.startDate,
-          endDate: this.endDate
+          endDate: this.endDate,
+          skill: this.skill
         }
 
         fetch(createApplicant, {
@@ -409,6 +410,7 @@ export default {
       return salary >= 0;
     }
   }
+}
 </script>
 
 <style scoped>
