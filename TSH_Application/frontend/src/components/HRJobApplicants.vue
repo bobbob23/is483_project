@@ -51,6 +51,10 @@
                                     <p class="mb-0 text-secondary secondary">
                                         Graduation: {{ applicant.grad_month.slice(8, 16) }}
                                     </p>
+                                    <!-- Matching score field -->
+                                    <p class="mb-0">
+                                        <b>Overall matching score: <span style="text-decoration: underline;">97%</span></b>
+                                    </p>
                                 </div>
                             </div>
                         </template>
@@ -132,6 +136,8 @@ export default {
             axios.get(`${getAllApplicantByJobID}/${this.job_ID}`)
                 .then((response => {
                     console.log(this.job_ID)
+                    console.log(response)
+                    console.log(response.data)
                     console.log(response.data.data)
                     this.applicants = response.data.data
                     this.hover = new Array(response.data.data.length).fill(false);
