@@ -275,12 +275,10 @@ export default {
       //     console.log(response)
       //   }).catch((error) => {
       //     console.log(error)
-        });
+      // });
       }
-      else if (name === 'transcript') {
-        this.transcriptUploaded = true;
-      }
-// ===================================================================================================================================
+    },
+    // ===================================================================================================================================
       // var reader = new FileReader();
       // var encodedFile;
       // reader.readAsDataURL(file);
@@ -298,7 +296,6 @@ export default {
 
 
       // 4. store skills in cookies
-    },
     isFormValid() {
       if (this.jobData.type === 'Full-Time') {
         this.formValid = this.fName.length !== 0 &&
@@ -411,8 +408,7 @@ export default {
     validatePositiveSalary(salary) {
       return salary >= 0;
     }
-  },
-}
+  }
 </script>
 
 <style scoped>
