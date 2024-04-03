@@ -274,6 +274,22 @@ export default {
       //     console.log(response)
       //   }).catch((error) => {
       //     console.log(error)
+        });
+      }
+      else if (name === 'transcript') {
+        this.transcriptUploaded = true;
+      }
+// ===================================================================================================================================
+      // var reader = new FileReader();
+      // var encodedFile;
+      // reader.readAsDataURL(file);
+      // reader.onload = function () {
+      //   console.log(reader.result);
+      //   encodedFile = reader.result
+        
+      //   axios.get(`${processResume}/'${encodedFile}'`)
+      //   .then((response) => {
+      //     console.log("processresume" + response.data)
       //   })
       // }
 
@@ -283,7 +299,7 @@ export default {
       // 4. store skills in cookies
     },
     isFormValid() {
-      if (this.jobData.type === 'Full time') {
+      if (this.jobData.type === 'Full-Time') {
         this.formValid = this.fName.length !== 0 &&
           this.lName.length !== 0 &&
           this.email.length !== 0 &&
@@ -309,6 +325,7 @@ export default {
           this.resumeUploaded &&
           this.transcriptUploaded;
       }
+
       return this.formValid
     },
     submitForm() {
@@ -340,6 +357,7 @@ export default {
             if (response.ok) {
               console.log('Form submitted successfully');
               this.filesData.append('email', this.email)
+              this.filesData.append('job_id', this.job_ID)
               this.$router.push({
                 name: "Success",
                 params: {
