@@ -1,3 +1,4 @@
+import traceback
 import boto3
 import os
 import logging
@@ -39,10 +40,10 @@ def get_all_applicants():
             applicant_dict['course'] = applicant.course_of_study
             applicant_dict['gpa'] = applicant.GPA
             applicant_dict['gradDate'] = applicant.grad_month
-            applicant_dict['pastSalary'] = applicant.past_salary
-            applicant_dict['workPermit'] = applicant.work_permit
-            applicant_dict['startDate'] = applicant.start_date
-            applicant_dict['endDate'] = applicant.end_date
+            # applicant_dict['pastSalary'] = applicant.past_salary
+            # applicant_dict['workPermit'] = applicant.work_permit
+            # applicant_dict['startDate'] = applicant.start_date
+            # applicant_dict['endDate'] = applicant.end_date
             applicant_list.append(applicant_dict)
         
         applicant_list.reverse()
@@ -72,18 +73,24 @@ def new_applicant():
             school = data['school'], 
             course_of_study = data['course'], 
             GPA = data['gpa'], 
-            grad_month = data['gradDate'],
-            past_salary = data['pastSalary'],
-            work_permit = data['workPermit'],
-            start_date = data['startDate'],
-            end_date = data['endDate']
+            grad_month = data['gradDate']
         )
+
+        pastSalary = "0"
+
+        if 'pastSalary' in data:
+            pastSalary = data['pastSalary']
 
         new_job_application_record = Job_Application(
             email = data['email'],
             job_ID = data['job_id'],
             applicant_status = "Unprocessed",
-            rank_number = None
+            skill = data['skill'],
+            rank_probability = None,
+            past_salary = pastSalary,
+            work_permit = data['workPermit'],
+            start_date = data['startDate'],
+            end_date = data['endDate']
         )
 
         query_job_listing = Job_listing.query.get(data['job_id'])
@@ -99,6 +106,7 @@ def new_applicant():
         })
 
     except Exception as e:
+        print(traceback.format_exc())
         return jsonify({
             'isApplied': False,
             'message': 'Failed to receive application!',
@@ -120,6 +128,7 @@ def new_applicant_files():
     try:
         # File schema
         email = request.form.get('email')
+        job_id = request.form.get('job_id')
         if 'resume' in request.files:
             resume_file = request.files['resume']
         if 'transcript' in request.files:
@@ -133,7 +142,7 @@ def new_applicant_files():
             reference_letter = reference_letter_file
         )
 
-        query_candidate = Applicant.query.get(email)
+        query_candidate = Job_Application.query.get((email, job_id))
         bucket_name = 'candidate-uploaded-files'
 
         for key, value in file_dict.items():
@@ -155,14 +164,15 @@ def new_applicant_files():
         print(logging.error(e))
 
     except Exception as e:
+        print(traceback.format_exc())
         return jsonify({
             'isApplied': False,
             'message': 'Failed to receive application!',
             'error' : str(e)
         })
 
-@applicant_routes.route('/applicant_files/<string:email>', methods=['GET'])
-def applicant_details(email):
+@applicant_routes.route('/applicant_files/<string:email>/<int:job_id>', methods=['GET'])
+def applicant_details(email, job_id):
 
     aws_access_key_id = ACCESS_KEY
     aws_secret_access_key = SECRET_ACCESS_KEY
@@ -179,9 +189,10 @@ def applicant_details(email):
 
     try:
         # File schema
-        query_candidate = Applicant.query.get(email)
-        fname = query_candidate.first_name
-        lname = query_candidate.last_name
+        query_candidate = Job_Application.query.get((email, job_id))
+        applicant_query = Applicant.query.get(email)
+        fname = applicant_query.first_name
+        lname = applicant_query.last_name
         resume_file = query_candidate.resume
         transcript_file = query_candidate.transcript
         reference_letter_file = query_candidate.reference_letter
