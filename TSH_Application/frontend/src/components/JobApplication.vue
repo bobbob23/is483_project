@@ -144,18 +144,19 @@
           </div>
         </form>
       </div>
-      <Dialog v-model:visible="loading" modal 
-      :pt="{
-          root: 'border-none',
-          mask: {
-            style: 'backdrop-filter: blur(2px)'
-          }
-        }">
+      <Dialog v-model:visible="loading" modal :pt="{
+      root: 'border-none',
+      mask: {
+        style: 'backdrop-filter: blur(2px)'
+      }
+    }">
         <template #container>
-          <div class="text-center d-flex flex-column justify-content-center align-items-center p-5" style="border-radius: 10px; background-color: white;">
-          <p>We're currently populating the input fields with information extracted from your resume</p>
-          <i class="pi pi-spin pi-spinner text-center" style="font-size: 3em;"></i> <!-- Loading spinner -->
-        </div>
+          <div class="text-center d-flex flex-column justify-content-center align-items-center p-5"
+            style="border-radius: 10px; background-color: white;">
+            <p>We're currently populating the input fields with information extracted from your resume.</p>
+            <p>Kindly allow some time for your details to be filled in.</p>
+            <i class="pi pi-spin pi-spinner text-center" style="font-size: 3em;"></i> <!-- Loading spinner -->
+          </div>
         </template>
       </Dialog>
     </div>
@@ -231,17 +232,15 @@ export default {
         this.resumeUploaded = true;
         const fileFormData = new FormData();
         fileFormData.append('pdf_file', file)
-        this.loading= true
+        this.loading = true
         fetch(getAutofill, {
           method: 'POST',
           body: fileFormData
         })
-          .then(response => {
-            return response.json(); // Output success message from the backend
-          })
-          .then(data => {
+        .then(data => {
             console.log(data.data)
             if (data) {
+              this.loading = false
               this.profile = data.data.profile
               this.fName = this.profile.basics.first_name
               this.lName = this.profile.basics.last_name
@@ -251,13 +250,15 @@ export default {
               this.gradDate = this.profile.educations[0].end_year
               this.course = this.profile.educations[0].description
               this.$cookies.set("skills", this.profile.basics.skills)
-              this.loading = false
             }
+          })
+          .then(response => {
+            return response.json(); // Output success message from the backend
           })
           .catch(error => {
             console.error('Error:', error);
-            this.loading = false
-
+          }).finally(() => {
+            this.loading = false; // Ensure loading is always set to false, even if there's an error
           });
 
       } else if (name === 'transcript') {
@@ -274,12 +275,10 @@ export default {
       //     console.log(response)
       //   }).catch((error) => {
       //     console.log(error)
-        });
+      // });
       }
-      else if (name === 'transcript') {
-        this.transcriptUploaded = true;
-      }
-// ===================================================================================================================================
+    },
+    // ===================================================================================================================================
       // var reader = new FileReader();
       // var encodedFile;
       // reader.readAsDataURL(file);
@@ -297,7 +296,6 @@ export default {
 
 
       // 4. store skills in cookies
-    },
     isFormValid() {
       if (this.jobData.type === 'Full-Time') {
         this.formValid = this.fName.length !== 0 &&
@@ -410,8 +408,7 @@ export default {
     validatePositiveSalary(salary) {
       return salary >= 0;
     }
-  },
-}
+  }
 </script>
 
 <style scoped>
