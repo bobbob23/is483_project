@@ -48,6 +48,16 @@
                                         <h3> {{ job.interview_num }}</h3>
                                         <span class="d-block">Interview</span>
                                     </div>
+                                    <!-- Rejected num -->
+                                    <div class="text-center mx-3">
+                                        <h3>5</h3>
+                                        <span class="d-block">Rejected</span>
+                                    </div>
+                                    <!-- Hired num -->
+                                    <div class="text-center mx-3">
+                                        <h3>6</h3>
+                                        <span class="d-block">Hired</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
