@@ -244,7 +244,7 @@ export default {
                     this.funnelChartOptions.series[0].data[0][1] = this.apiData.status.unprocessed;
                     this.funnelChartOptions.series[0].data[1][1] = this.apiData.status.shortlisted;
                     this.funnelChartOptions.series[0].data[2][1] = this.apiData.status.interview;
-                    this.funnelChartOptions.series[0].data[3][1] = this.apiData.status.hire;
+                    this.funnelChartOptions.series[0].data[3][1] = this.apiData.status.hired;
                     this.isLoading = false
                 })
                 .catch(error => {
