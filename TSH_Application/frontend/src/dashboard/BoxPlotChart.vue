@@ -38,14 +38,18 @@ export default {
         renderChart() {
             const dataArr = this.data[1];
             var department = this.data[0];
-            department = department.charAt(0).toUpperCase() + department.slice(1);
+            var header = this.title;
+            if (department != undefined){
+                department = department.charAt(0).toUpperCase() + department.slice(1);
+                header += " (" + department + ")"
+            }
 
             Highcharts.chart(this.$refs.chart, {
                 chart: {
                     type: 'boxplot'
                 },
                 title: {
-                    text: this.title + " (" + department + ")"
+                    text: header
                 },
                 xAxis: {
                     labels:{
