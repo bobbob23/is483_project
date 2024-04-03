@@ -1,3 +1,4 @@
+import traceback
 import requests
 import base64
 from flask import request, jsonify
@@ -33,6 +34,7 @@ def get_autofill():
 
         response = requests.post(url, headers=headers, json=data)
         response_data = response.json()['data']
+        print(response_data)
 
         return jsonify({
             'message': 'Succesfully retrieved data from database!',
@@ -40,6 +42,7 @@ def get_autofill():
         })
 
     except Exception as e:
+        print(traceback.format_exc())
         return jsonify({
             'isApplied': False,
             'message': 'Failed to receive applicants details for the job_ID!',

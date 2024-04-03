@@ -5,11 +5,10 @@ import logging
 from services import file_services
 from botocore.exceptions import ClientError
 import uuid
-from flask import request, jsonify
+from flask import request, jsonify, Blueprint, send_file
 from models.applicantModel import Applicant
 from models.jobApplicationModel import Job_Application
 from models.jobListingModel import Job_listing
-from flask import Blueprint
 from __init__ import db
 from dotenv import load_dotenv
 
@@ -183,7 +182,7 @@ def applicant_details(email, job_id):
     )
 
     # data directory, INPUT YOUR OWN PATH
-    data_folder = r"applicantFiles"
+    data_folder = r""
     if not os.path.exists(data_folder):
         os.makedirs(data_folder)
 
@@ -204,19 +203,14 @@ def applicant_details(email, job_id):
         )
 
         bucket_name = 'candidate-uploaded-files'
-        
+
         for key, value in file_dict.items():
+            if value == None:
+                continue
             folder_name = key
             file_uuid = value
             file_name = f"{fname}{lname}_{folder_name}.pdf"
 
-            # subfolder_name = f'{fname}{lname}'
-            # subfolder_path = os.path.join(data_folder, subfolder_name)
-
-            # # Create the folder if it doesn't exist
-            # if not os.path.exists(subfolder_path):
-            #     os.makedirs(subfolder_path)
-        
             folder_path = os.path.join(data_folder, file_name)
             s3_client.download_file(bucket_name, f"{folder_name}/{file_uuid}", Filename=folder_path)
 
@@ -224,7 +218,7 @@ def applicant_details(email, job_id):
             'isApplied': True,
             'message': 'Applicant details have been received!'
         })
-    
+
     except ClientError as e:
         print("========ERROR========")
         print(logging.error(e))
@@ -236,6 +230,7 @@ def applicant_details(email, job_id):
             'error' : str(e)
         })
 
+# =====================================================================================================================================================
 # @applicant_routes.route('/get_file/<string:key>', methods=['GET'])
 # def get_file(key):
 #     return file_services.fetch_file(key)

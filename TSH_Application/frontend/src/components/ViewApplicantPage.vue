@@ -26,7 +26,8 @@
                             <span><i class="pi pi-file"></i> Reference Letter</span>
                         </span>
                         &nbsp;
-                        <i class="pi pi-download" style="color: darkblue"></i> <Button label='Download all'
+                        <i class="pi pi-download" style="color: darkblue"></i>&nbsp;
+                        <Button label='Download all'
                             class="mt-1 p-0" style="color: darkblue" link @click="getFiles()" />
                     </p>
                     <hr>
@@ -99,9 +100,14 @@ export default {
                 })
         },
         getFiles() {
-            axios.get(`${getApplicantFiles}/${this.email}`)
-                .then(response => {
-                    alert("Files have been successfully downloaded")
+            axios.get(`${getApplicantFiles}/${this.email}/${this.job_ID}`)
+                .then(response => {                   
+                    if(response.data.isApplied == true){
+                        alert("Files have been successfully downloaded into applicant_files folder!")
+                    } 
+                    else {
+                        alert("Download Failed!")
+                    }
                 })
         },
         getStatusColor(status) {
