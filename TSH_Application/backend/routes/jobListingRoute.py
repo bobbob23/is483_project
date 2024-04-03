@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 from flask import request, jsonify, make_response
 from models.jobListingModel import Job_listing
 import json
@@ -117,7 +117,7 @@ def new_job_listing():
 def edit_job_listing(job_id):
     edit_data = request.get_json()
     query_job_listing = Job_listing.query.get(job_id)
-
+    
     try:
         query_job_listing.title = edit_data['title']
         query_job_listing.location = edit_data['location']
@@ -173,7 +173,7 @@ def get_active_job_listings():
     
     try:
         listing_query_list = Job_listing.query.all()
-        current_time = datetime.datetime.now()
+        current_time = datetime.now()
         job_list = []
         
         for job in listing_query_list:

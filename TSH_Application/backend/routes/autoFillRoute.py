@@ -6,6 +6,12 @@ from models.jobApplicationModel import Job_Application
 from models.jobListingModel import Job_listing
 from flask import Blueprint
 from __init__ import db
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+API_KEY = os.environ["API_KEY"]
 
 autofill_routes = Blueprint('autofill', __name__)
 
@@ -17,7 +23,7 @@ def get_autofill():
         url = 'https://cvparser.ai/api/v3/parse'
         headers = {
             'Content-Type': 'application/json',
-            'X-API-Key': ''
+            'X-API-Key': API_KEY
         }
 
         encoded_file = base64.b64encode(file.read()).decode('utf-8')

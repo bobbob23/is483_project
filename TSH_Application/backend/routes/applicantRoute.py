@@ -19,6 +19,11 @@ load_dotenv()
 
 ACCESS_KEY = os.environ["ACCESS_KEY"]
 SECRET_ACCESS_KEY = os.environ["SECRET_ACCESS_KEY"]
+s3_client = boto3.client(
+    's3',
+    aws_access_key_id=ACCESS_KEY,
+    aws_secret_access_key=SECRET_ACCESS_KEY
+)
 
 @applicant_routes.route("/all_applicant_details", methods=["GET"])
 def get_all_applicants():
@@ -231,10 +236,35 @@ def applicant_details(email, job_id):
             'error' : str(e)
         })
 
-# @applicant_routes.route('/process/<string:file>', methods=['GET'])
-# def process(file):
-#     return file_services.perform_parsing(file)
-
-# @applicant_routes.route('/get_file', methods=['GET'])
-# def get_file(key=""):
+# @applicant_routes.route('/get_file/<string:key>', methods=['GET'])
+# def get_file(key):
 #     return file_services.fetch_file(key)
+
+
+# @applicant_routes.route('/post_file', methods=['POST'])
+# def upload_file():
+#     try: 
+#         file = request.files['resume']
+#         bucket_name = 'candidate-cvs-temp-bucket'
+#         new_filename = uuid.uuid4().hex + '.pdf'
+#         s3_client.upload_fileobj(file, bucket_name, new_filename)
+
+#         return jsonify({
+#                 'isUploaded': True,
+#                 'filename': new_filename,
+#                 'message': 'File has been uploaded to temp bucket!'
+#             })
+#     except ClientError as e:
+#         print("========ERROR========")
+#         print(logging.error(e))
+
+
+# @applicant_routes.route('/delete_file/<string:key>', methods=['DELETE'])
+# def delete_file(key):
+#     response = s3_client.delete_object(
+#         Bucket="candidate-cvs-temp-bucket",
+#         Key=key,
+#         )
+    
+#     return response
+    # return file_services.perform_delete(key)
