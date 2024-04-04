@@ -16,6 +16,7 @@ class Job_Application(db.Model):
     reference_letter = db.Column(db.String(250))
     start_date = db.Column(db.DateTime(timezone=True))
     end_date = db.Column(db.DateTime(timezone=True))
+    reject_reason = db.Column(db.String(5000))
 
 
     applicant = relationship("Applicant", back_populates="application")

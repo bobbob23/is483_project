@@ -182,7 +182,11 @@ def edit_applicant_status(email, job_ID, status):
         job_new_status_num = getattr(query_job_listing, new_status_num_str)
         new_num = int(job_new_status_num) + 1
         setattr(query_job_listing, new_status_num_str, str(new_num))
-        
+
+        if status == "Reject":
+            data = request.get_json()
+            queried_job_applicant.reject_reason = data['reject_reason']
+
         queried_job_applicant.applicant_status = status
         db.session.commit()
 
