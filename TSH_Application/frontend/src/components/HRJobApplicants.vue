@@ -32,8 +32,10 @@
                             <span style="color: rgb(127, 126, 126);">{{ applicant.rank_number }}</span>
                             {{ applicant.first_name }} {{ applicant.last_name }}
                             <span :style="{ backgroundColor: getStatusColor(applicant.applicant_status) }"
-                                style="font-size:15px; color: white; border-radius: 5%; margin-left: 0%" class="p-2">{{
-                            applicant.applicant_status }}</span>
+                                style="font-size:15px; color: white; border-radius: 5%; margin-left: 0%" class="p-2">
+                                <span v-if="applicant.applicant_status === 'Reject'">No longer under consideration</span>
+                                <span v-else-if="applicant.applicant_status === 'Interview'">Interviewing</span>
+                                <span v-else>{{applicant.applicant_status }}</span></span>
                         </template>
 
                         <template #content>
