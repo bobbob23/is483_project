@@ -7,7 +7,7 @@ class Applicant(db.Model):
     email = db.Column(db.String(150), primary_key=True)
     first_name = db.Column(db.String(150))
     last_name = db.Column(db.String(150))
-    phone_number = db.Column(db.Integer)
+    phone_number = db.Column(db.String(150))
     school = db.Column(db.String(150))
     course_of_study = db.Column(db.String(150))
     GPA = db.Column(db.String(20))

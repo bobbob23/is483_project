@@ -210,7 +210,7 @@ export default {
       transcriptUploaded: false,
       profile: "",
       loading: false,
-      skill: ["PHP"]
+      skill: ""
       // tempFile: new FormData(),
       // tempURL: ""
     }
@@ -252,6 +252,7 @@ export default {
               this.school = this.profile.educations[0].issuing_organization
               this.number = this.profile.basics.phone_numbers[0]
               this.course = this.profile.educations[0].description
+              this.skill = this.profile.basics.skills
               this.$cookies.set("skills", this.profile.basics.skills)
             }
           })
