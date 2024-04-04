@@ -1,6 +1,7 @@
 from datetime import datetime
 from flask import request, jsonify, make_response
 from models.jobListingModel import Job_listing
+from models.jobApplicationModel import Job_Application
 import json
 from flask import Blueprint
 from __init__ import db
@@ -154,8 +155,11 @@ def edit_job_listing(job_id):
 @job_listing_routes.route('/delete_job_listing/<int:job_id>', methods=['DELETE'])
 def delete_job_listing(job_id):
     query_job_listing = Job_listing.query.get(job_id)
-
+    query_job_application = Job_Application.query.filter_by(job_ID=job_id).all()
+    
     try:
+        for applicant in query_job_application:
+            db.session.delete(applicant)
         db.session.delete(query_job_listing)
         db.session.commit()
 
