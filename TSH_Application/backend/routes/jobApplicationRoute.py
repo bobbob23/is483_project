@@ -1,3 +1,4 @@
+import traceback
 from flask import request, jsonify, make_response
 from models.applicantModel import Applicant
 from models.jobListingModel import Job_listing
@@ -50,6 +51,7 @@ def get_all_applicants_by_job_ID(job_ID):
         })
 
     except Exception as e:
+        print(traceback.format_exc())
         return jsonify({
             'isApplied': False,
             'message': 'Failed to receive applicants for the job_ID!',
@@ -170,21 +172,16 @@ def edit_applicant_status(email, job_ID, status):
                 'isEdited': False,
                 'message': f'Applicant ({email}) current status is {status}!'
             }) 
-                
-        if (current_status == "Unprocessed"):
-            query_job_listing.unprocessed_num -= 1
+                            
+        current_status_num_str = current_status.lower() + '_num'
+        job_current_status_num = getattr(query_job_listing, current_status_num_str)
+        new_current_num = int(job_current_status_num) - 1
+        setattr(query_job_listing, current_status_num_str, str(new_current_num))
 
-        elif status != "Reject":
-            if current_status != "Reject":
-                current_status_num_str = current_status.lower() + '_num'
-                job_current_status_num = getattr(query_job_listing, current_status_num_str)
-                new_current_num = int(job_current_status_num) - 1
-                setattr(query_job_listing, current_status_num_str, str(new_current_num))
-
-            new_status_num_str = status.lower() + '_num'
-            job_new_status_num = getattr(query_job_listing, new_status_num_str)
-            new_num = int(job_new_status_num) + 1
-            setattr(query_job_listing, new_status_num_str, str(new_num))
+        new_status_num_str = status.lower() + '_num'
+        job_new_status_num = getattr(query_job_listing, new_status_num_str)
+        new_num = int(job_new_status_num) + 1
+        setattr(query_job_listing, new_status_num_str, str(new_num))
         
         queried_job_applicant.applicant_status = status
         db.session.commit()
