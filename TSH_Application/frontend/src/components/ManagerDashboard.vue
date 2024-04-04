@@ -143,6 +143,7 @@ export default {
                         ['Unprocessed', 8000],
                         ['Shortlisted', 4064],
                         ['Interviewing', 1987],
+                        ['Rejected', 1987],
                         ['Successful', 900],
                     ]
                 }]
@@ -269,6 +270,7 @@ export default {
                         ['Unprocessed', this.apiData.status['unprocessed']],
                         ['Shortlisted', this.apiData.status['shortlisted']],
                         ['Interviewing', this.apiData.status['interview']],
+                        ['Rejected', this.apiData.status['reject']],
                         ['Successful', this.apiData.status['hired']]
                     ]
                     this.nextLoad = false
@@ -285,6 +287,7 @@ export default {
                         ['Unprocessed', this.apiData.status['unprocessed']],
                         ['Shortlisted', this.apiData.status['shortlisted']],
                         ['Interviewing', this.apiData.status['interview']],
+                        ['Rejected', this.apiData.status['reject']],
                         ['Successful', this.apiData.status['hired']]
                     ]
                     this.nextLoad = false

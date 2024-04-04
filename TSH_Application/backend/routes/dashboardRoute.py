@@ -31,7 +31,7 @@ def applicant_details_con(filter_column, filter_value):
     course_dict = {}
     past_salary_list = []
     permit_dict = {}
-    status_dict = {'unprocessed': 0, 'shortlisted': 0, 'interview': 0, 'hired': 0}
+    status_dict = {'unprocessed': 0, 'shortlisted': 0, 'interview': 0, 'reject': 0, 'hired': 0}
     data_list = {
         'GPA': gpa_dict,
         'school' : school_dict,
@@ -48,6 +48,8 @@ def applicant_details_con(filter_column, filter_value):
         status_dict['unprocessed'] += int(listing.unprocessed_num)
         status_dict['shortlisted'] += int(listing.shortlisted_num)
         status_dict['interview'] += int(listing.interview_num)
+        status_dict['reject'] += int(listing.reject_num)
+        status_dict['hired'] += int(listing.hired_num)
 
     applicant_list = Job_Application.query.filter(Job_Application.job_ID.in_(job_id_list)).all()
 
@@ -96,7 +98,7 @@ def get_HR():
         course_dict = {}
         past_salary_list = []
         permit_dict = {}
-        status_dict = {'unprocessed': 0, 'shortlisted': 0, 'interview': 0, 'hired': 0}
+        status_dict = {'unprocessed': 0, 'shortlisted': 0, 'interview': 0, 'reject': 0, 'hired': 0}
         data_list = {
             'GPA': gpa_dict,
             'school' : school_dict,
@@ -130,6 +132,8 @@ def get_HR():
             status_dict['unprocessed'] += int(listing.unprocessed_num)
             status_dict['shortlisted'] += int(listing.shortlisted_num)
             status_dict['interview'] += int(listing.interview_num)
+            status_dict['reject'] += int(listing.reject_num)
+            status_dict['hired'] += int(listing.hired_num)
 
 
         return jsonify({

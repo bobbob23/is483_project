@@ -129,7 +129,8 @@ export default {
                         ['Unprocessed', 8000],
                         ['Shortlisted', 4064],
                         ['Interviewing', 1987],
-                        ['Successful', 900],
+                        ['Rejected', 1987],
+                        ['Hired', 900],
                     ]
                 }]
             },
@@ -244,7 +245,8 @@ export default {
                     this.funnelChartOptions.series[0].data[0][1] = this.apiData.status.unprocessed;
                     this.funnelChartOptions.series[0].data[1][1] = this.apiData.status.shortlisted;
                     this.funnelChartOptions.series[0].data[2][1] = this.apiData.status.interview;
-                    this.funnelChartOptions.series[0].data[3][1] = this.apiData.status.hired;
+                    this.funnelChartOptions.series[0].data[3][1] = this.apiData.status.reject;
+                    this.funnelChartOptions.series[0].data[4][1] = this.apiData.status.hired;
                     this.isLoading = false
                 })
                 .catch(error => {
