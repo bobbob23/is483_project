@@ -50,12 +50,12 @@
                                     </div>
                                     <!-- Rejected num -->
                                     <div class="text-center mx-3">
-                                        <h3>5</h3>
+                                        <h3>{{ job.reject_num }}</h3>
                                         <span class="d-block">Rejected</span>
                                     </div>
                                     <!-- Hired num -->
                                     <div class="text-center mx-3">
-                                        <h3>6</h3>
+                                        <h3>{{ job.hired_num }}</h3>
                                         <span class="d-block">Hired</span>
                                     </div>
                                 </div>

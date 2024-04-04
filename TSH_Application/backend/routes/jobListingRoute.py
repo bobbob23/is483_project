@@ -27,6 +27,8 @@ def get_job_listings():
             job_dict['unprocessed_num'] = job.unprocessed_num
             job_dict['shortlisted_num'] = job.shortlisted_num
             job_dict['interview_num'] = job.interview_num
+            job_dict['reject_num'] = job.reject_num
+            job_dict['hired_num'] = job.hired_num
 
             job_list.append(job_dict)
 
@@ -94,6 +96,8 @@ def new_job_listing():
             unprocessed_num = 0,
             shortlisted_num = 0,
             interview_num = 0,
+            reject_num = 0,
+            hired_num = 0,
             # NEED TO ENSURE WORK_PERMIT IS STORED AS JSON
             work_permit = data['work_permit']
         )
@@ -191,6 +195,8 @@ def get_active_job_listings():
                 job_dict['unprocessed_num'] = job.unprocessed_num
                 job_dict['shortlisted_num'] = job.shortlisted_num
                 job_dict['interview_num'] = job.interview_num
+                job_dict['reject_num'] = job.reject_num
+                job_dict['hired_num'] = job.hired_num
 
                 job_list.append(job_dict)
 
