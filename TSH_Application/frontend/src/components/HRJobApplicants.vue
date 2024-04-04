@@ -61,16 +61,19 @@
                             </div>
                         </template>
                     </Card>
-                    <div style="display: block; flex: 1; margin-left: 45%; " :key="applicant">
-                        <Button label="Shortlist" style="display: block; margin: -40% auto 3%; background-color: white; 
-                color: darkblue; border: darkblue 1px solid; width: 90%; border-radius: 100px;" :disabled="applicant.applicant_status == 'Shortlisted'"
+                    <div style="display: block; flex: 1; margin-left: 35%;" :key="applicant">
+                        <Button label="Shortlist" style="display: block; margin: -45% 10% 2%; background-color: white; 
+                color: darkblue; border: darkblue 1px solid; width: 80%; border-radius: 100px;" :disabled="applicant.applicant_status == 'Shortlisted'"
                             @click="showDialog('Shortlisted', applicant)" />
-                        <Button label="Reject" style="display: block; margin: 0 auto; background-color: white; 
-                color: darkblue; border: darkblue 1px solid; width: 90%; border-radius: 100px;" :disabled="applicant.applicant_status == 'Reject'"
+                        <Button label="Reject" style="display: block; margin: 0 10%; background-color: white; 
+                color: darkblue; border: darkblue 1px solid; width: 80%; border-radius: 100px;" :disabled="applicant.applicant_status == 'Reject'"
                             @click="showDialog('Reject', applicant)" />
-                        <Button label="Invite for Interview" style="display: block; margin: 3% auto 3%; background-color: white; 
-                color: darkblue; border: darkblue 1px solid; width: 90%; border-radius: 100px;" :disabled="applicant.applicant_status == 'Interview'"
+                        <Button label="Invite for Interview" style="display: block; margin: 2% 10% 2%; background-color: white; 
+                color: darkblue; border: darkblue 1px solid; width: 80%; border-radius: 100px;" :disabled="applicant.applicant_status == 'Interview'"
                             @click="showDialog('Interview', applicant)" />
+                            <Button label="Hire" style="display: block; margin: 2% 10%; background-color: white; 
+                color: darkblue; border: darkblue 1px solid; width: 80%; border-radius: 100px;" :disabled="applicant.applicant_status == 'Hire'"
+                            @click="showDialog('Hire', applicant)" />
                     </div>
                     <Dialog v-model:visible="openDialog" modal :style="{ width: '25rem' }">
 
@@ -91,6 +94,12 @@
                             <h4 class="text-center">Invite Applicant for Interview</h4>
                             <p class="text-center">Are you sure that you would like to invite 
                                 <strong> {{ applicantSelected.first_name }} {{ applicantSelected.last_name }} </strong> for an interview for
+                                <strong> {{ job_title}} </strong> role? </p>
+                        </template>
+                        <template v-else-if="status === 'Hire'">
+                            <h4 class="text-center">Hire Applicant</h4>
+                            <p class="text-center">Are you sure that you would like to hire 
+                                <strong> {{ applicantSelected.first_name }} {{ applicantSelected.last_name }} </strong> for 
                                 <strong> {{ job_title}} </strong> role? </p>
                         </template>
                         <div class="text-center">
@@ -170,6 +179,8 @@ export default {
                     return 'darkblue';
                 case 'Reject':
                     return '#ff6961';
+                case 'Hire':
+                    return '#77DD77';
                 default:
                     return 'transparent';
             }
