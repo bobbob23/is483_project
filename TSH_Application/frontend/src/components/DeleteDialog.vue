@@ -7,7 +7,7 @@
             <p class="text-center">Are you sure that you want to delete this listing?</p>
             <div class="flex justify-content-center " style="text-align: center;">
                 <Button type="button" label="Cancel" severity="secondary" @click="visible = false" link></Button>
-                <Button type="button" label="Save" @click="deleteJobListing(job_ID)"></Button>
+                <Button type="button" label="Delete" @click="deleteJobListing(job_ID)"></Button>
             </div>
         </Dialog>
     </div>
