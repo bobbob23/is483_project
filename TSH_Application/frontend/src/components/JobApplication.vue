@@ -242,7 +242,7 @@ export default {
             return response.json();
           })
           .then(data => {
-            console.log(data.data)
+            console.log(data.data.profile)
             if (data.data) {
               this.loading = false
               this.profile = data.data.profile
@@ -251,7 +251,6 @@ export default {
               this.email = this.profile.basics.emails[0]
               this.school = this.profile.educations[0].issuing_organization
               this.number = this.profile.basics.phone_numbers[0]
-              this.gradDate = this.profile.educations[0].end_year
               this.course = this.profile.educations[0].description
               this.$cookies.set("skills", this.profile.basics.skills)
             }
