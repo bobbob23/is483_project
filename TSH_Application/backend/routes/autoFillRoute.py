@@ -31,8 +31,9 @@ def get_autofill():
         data = {
             'base64': encoded_file
         }
-
+        
         response = requests.post(url, headers=headers, json=data)
+        print(response.text)
         response_data = response.json()['data']
         print(response_data)
 

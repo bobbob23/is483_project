@@ -238,9 +238,12 @@ export default {
           method: 'POST',
           body: fileFormData
         })
-        .then(data => {
+        .then(response => {
+            return response.json();
+          })
+          .then(data => {
             console.log(data.data)
-            if (data) {
+            if (data.data) {
               this.loading = false
               this.profile = data.data.profile
               this.fName = this.profile.basics.first_name
@@ -252,9 +255,6 @@ export default {
               this.course = this.profile.educations[0].description
               this.$cookies.set("skills", this.profile.basics.skills)
             }
-          })
-          .then(response => {
-            return response.json(); // Output success message from the backend
           })
           .catch(error => {
             console.error('Error:', error);
