@@ -36,7 +36,8 @@ export default {
     },
     methods: {
         renderChart() {
-            const dataArr = this.data[1];
+            var dataArr = this.data[1];
+            dataArr = dataArr.slice().sort((a, b) => a - b);
             var department = this.data[0];
             var header = this.title;
             if (department != undefined){
