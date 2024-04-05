@@ -33,9 +33,10 @@
                             {{ applicant.first_name }} {{ applicant.last_name }}
                             <span :style="{ backgroundColor: getStatusColor(applicant.applicant_status) }"
                                 style="font-size:15px; color: white; border-radius: 5%; margin-left: 0%" class="p-2">
-                                <span v-if="applicant.applicant_status === 'Reject'">No longer under consideration</span>
+                                <span v-if="applicant.applicant_status === 'Reject'">No longer under
+                                    consideration</span>
                                 <span v-else-if="applicant.applicant_status === 'Interview'">Interviewing</span>
-                                <span v-else>{{applicant.applicant_status }}</span></span>
+                                <span v-else>{{ applicant.applicant_status }}</span></span>
                         </template>
 
                         <template #content>
@@ -55,7 +56,8 @@
                                     </p>
                                     <!-- Matching score field -->
                                     <p class="mb-0">
-                                        <b>Overall matching score: <span style="text-decoration: underline;">97%</span></b>
+                                        <b>Overall matching score: <span
+                                                style="text-decoration: underline;">97%</span></b>
                                     </p>
                                 </div>
                             </div>
@@ -63,44 +65,63 @@
                     </Card>
                     <div style="display: block; flex: 1; margin-left: 35%;" :key="applicant">
                         <Button label="Shortlist" style="display: block; margin: -45% 30% 2%; background-color: white; 
-                color: darkblue; border: darkblue 1px solid; width: 50%; border-radius: 100px;" :disabled="applicant.applicant_status == 'Shortlisted'"
+                color: darkblue; border: darkblue 1px solid; width: 50%; border-radius: 100px;"
+                            :disabled="applicant.applicant_status == 'Shortlisted'"
                             @click="showDialog('Shortlisted', applicant)" />
                         <Button label="Reject" style="display: block; margin: 0 30%; background-color: white; 
-                color: darkblue; border: darkblue 1px solid; width: 50%; border-radius: 100px;" :disabled="applicant.applicant_status == 'Reject'"
+                color: darkblue; border: darkblue 1px solid; width: 50%; border-radius: 100px;"
+                            :disabled="applicant.applicant_status == 'Reject'"
                             @click="showDialog('Reject', applicant)" />
                         <Button label="Invite for Interview" style="display: block; margin: 2% 30% 2%; background-color: white; 
-                color: darkblue; border: darkblue 1px solid; width: 50%; border-radius: 100px;" :disabled="applicant.applicant_status == 'Interview'"
+                color: darkblue; border: darkblue 1px solid; width: 50%; border-radius: 100px;"
+                            :disabled="applicant.applicant_status == 'Interview'"
                             @click="showDialog('Interview', applicant)" />
-                            <Button label="Hire" style="display: block; margin: 2% 30%; background-color: white; 
-                color: darkblue; border: darkblue 1px solid; width: 50%; border-radius: 100px;" :disabled="applicant.applicant_status == 'Hired'"
-                            @click="showDialog('Hired', applicant)" />
+                        <Button label="Hire" style="display: block; margin: 2% 30%; background-color: white; 
+                color: darkblue; border: darkblue 1px solid; width: 50%; border-radius: 100px;"
+                            :disabled="applicant.applicant_status == 'Hired'" @click="showDialog('Hired', applicant)" />
                     </div>
                     <Dialog v-model:visible="openDialog" modal :style="{ width: '25rem' }">
 
                         <template v-if="status === 'Shortlisted'">
                             <h4 class="text-center">Shortlist Applicant</h4>
                             <p class="text-center">Are you sure that you would like to shortlist <strong>{{
-                            applicantSelected.first_name }} {{ applicantSelected.last_name }}</strong> for <strong> {{ job_title}} </strong> role? </p>
+                            applicantSelected.first_name }} {{ applicantSelected.last_name }}</strong> for
+                                <strong> {{ job_title }} </strong> role?
+                            </p>
                         </template>
 
                         <template v-else-if="status === 'Reject'">
                             <h4 class="text-center">Reject Applicant</h4>
                             <p class="text-center">Are you sure that you would like to reject {{
-                            applicantSelected.first_name }} {{ applicantSelected.last_name }} for <strong> {{ job_title}} </strong>
+                            applicantSelected.first_name }} {{ applicantSelected.last_name }} for <strong> {{
+                            job_title }} </strong>
                                 role? </p>
+
+                            <div class="row">
+                                <div style="display: flex; flex-direction: column; width: 90%; margin-left: 5%"
+                                    class="mb-4">
+                                    <label for="comment" class="mb-2">Reason for Rejection:</label>
+                                    <Textarea v-model="comment" class="w-100"></Textarea>
+                                </div>
+                            </div>
                         </template>
 
                         <template v-else-if="status === 'Interview'">
                             <h4 class="text-center">Invite Applicant for Interview</h4>
-                            <p class="text-center">Are you sure that you would like to invite 
-                                <strong> {{ applicantSelected.first_name }} {{ applicantSelected.last_name }} </strong> for an interview for
-                                <strong> {{ job_title}} </strong> role? </p>
+                            <p class="text-center">Are you sure that you would like to invite
+                                <strong> {{ applicantSelected.first_name }} {{ applicantSelected.last_name }} </strong>
+                                for an interview for
+                                <strong> {{ job_title }} </strong> role?
+                            </p>
                         </template>
+
                         <template v-else-if="status === 'Hired'">
                             <h4 class="text-center">Hire Applicant</h4>
-                            <p class="text-center">Are you sure that you would like to hire 
-                                <strong> {{ applicantSelected.first_name }} {{ applicantSelected.last_name }} </strong> for 
-                                <strong> {{ job_title}} </strong> role? </p>
+                            <p class="text-center">Are you sure that you would like to hire
+                                <strong> {{ applicantSelected.first_name }} {{ applicantSelected.last_name }} </strong>
+                                for
+                                <strong> {{ job_title }} </strong> role?
+                            </p>
                         </template>
                         <div class="text-center">
                             <Button style="margin-right: 5%" label="Cancel" @click="openDialog = false" link />
@@ -122,7 +143,7 @@ import { getAllApplicantByJobID, editApplicantStatus } from "@/api/api.js"
 import Card from "primevue/card"
 import Button from 'primevue/button'
 import Dialog from "primevue/dialog"
-
+import Textarea from "primevue/textarea"
 
 export default {
     components: {
@@ -137,6 +158,7 @@ export default {
             openDialog: false,
             applicantSelected: "",
             status: "",
+            comment: "",
         }
     },
     mounted() {
@@ -155,10 +177,12 @@ export default {
                 }))
         },
         changeStatus(email, job_ID, status) {
-            axios.put(`${editApplicantStatus}/${email}/${job_ID}/${status}`)
-                .then((response) => {
-                    this.$router.go()
-                })
+            axios.put(`${editApplicantStatus}/${email}/${job_ID}/${status}`,{
+                "reject_reason": this.comment
+            })
+            .then((response) => {
+                this.$router.go()
+            })
         },
         goToApplicantDetails(email, job_id) {
             this.$router.push({
@@ -199,7 +223,8 @@ export default {
 .div-hover {
     background-color: lightgrey;
 }
+
 .p-message .p-message-wrapper {
-    padding: 0.25rem 0.5rem; 
+    padding: 0.25rem 0.5rem;
 }
 </style>
