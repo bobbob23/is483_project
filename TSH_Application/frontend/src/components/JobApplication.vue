@@ -210,7 +210,9 @@ export default {
       transcriptUploaded: false,
       profile: "",
       loading: false,
-      skill: ""
+      skill: "",
+      totalWorkingYears: "",
+      numCompaniesWorked : "",
       // tempFile: new FormData(),
       // tempURL: ""
     }
@@ -225,6 +227,14 @@ export default {
     }
   },
   methods: {
+    countCompaniesWorked(experience_list) {
+      if (this.totalWorkingYears == 0) {
+        return 0
+      }
+      const uniqueCompanies = new Set(experience_list.map(key => key.company));
+
+      return uniqueCompanies.size
+    },
     onUpload(event, name) {
       const file = event.target.files[0];
       this.filesData.append(name, file)
@@ -253,6 +263,8 @@ export default {
               this.number = this.profile.basics.phone_numbers[0]
               this.course = this.profile.educations[0].description
               this.skill = this.profile.basics.skills
+              this.totalWorkingYears = this.profile.basics.total_experience_in_years
+              this.numCompaniesWorked = this.countCompaniesWorked(this.profile.professional_experiences)
               this.$cookies.set("skills", this.profile.basics.skills)
             }
           })
@@ -342,7 +354,9 @@ export default {
           workPermit: this.workPermit,
           startDate: this.startDate,
           endDate: this.endDate,
-          skill: this.skill
+          skill: this.skill,
+          totalWorkingYears : this.totalWorkingYears,
+          numCompaniesWorked : this.numCompaniesWorked
         }
 
         fetch(createApplicant, {
