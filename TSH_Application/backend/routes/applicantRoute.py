@@ -9,6 +9,7 @@ from flask import request, jsonify, Blueprint, send_file
 from models.applicantModel import Applicant
 from models.jobApplicationModel import Job_Application
 from models.jobListingModel import Job_listing
+from models.mlFieldsModel import ML_Fields
 from __init__ import db
 from dotenv import load_dotenv
 
@@ -92,11 +93,23 @@ def new_applicant():
             end_date = data['endDate']
         )
 
+        new_ml_row = ML_Fields(
+            email = data['email'],
+            total_working_years = data['totalWorkingYears'],
+            num_companies_worked = data['numCompaniesWorked'],
+            education_field = data['course'], 
+            education_level = data['course']
+        )
+
+        print(data['totalWorkingYears'])
+        print(data['numCompaniesWorked'])
+
         query_job_listing = Job_listing.query.get(data['job_id'])
         query_job_listing.unprocessed_num += 1
 
         db.session.add(new_record)
         db.session.add(new_job_application_record)
+        db.session.add(new_ml_row)
         db.session.commit()
 
         return jsonify({
