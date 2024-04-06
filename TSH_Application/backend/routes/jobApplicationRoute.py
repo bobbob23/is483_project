@@ -74,6 +74,8 @@ def get_applicant_details(email, job_id):
         applicant_dict['grad_month'] = Applicant.query.get(applicant_dict['email']).grad_month
         applicant_dict['GPA'] = Applicant.query.get(applicant_dict['email']).GPA
         applicant_dict['skill'] = queried_applicant.skill
+        applicant_dict['status'] = queried_applicant.applicant_status
+        applicant_dict['reject_reason'] = queried_applicant.reject_reason
         
 
         return jsonify({

@@ -15,10 +15,9 @@
             <div class="col-2"></div>
             <div class="col-8 mt-4">
                 <div class="">
-                    <h3>{{ fName }} {{ lName }}</h3>
-                    <!-- <span :style="{ backgroundColor: getStatusColor(applicant.applicant_status) }"
-                            style="font-size:15px; color: white; border-radius: 5%; margin-left: 1%"
-                            class="p-2">{{ applicant.applicant_status }}</span> -->
+                    <p v-if="status">{{ status }}</p>
+                    <h3>{{ fName }} {{ lName }} </h3> 
+                    <Button link style="color: darkslategrey" class="p-0 mb-1"> <u class="ml-5">Overall Matching Rate: 97%</u></Button>
                     <p>
                         <span class="text-secondary secondary">
                             <i class="pi pi-file"></i> Resume &nbsp;
@@ -71,6 +70,7 @@ export default {
             name: "",
             fName: "",
             lName: "",
+            status: "",
             number: "",
             school: "",
             course: "",
@@ -93,6 +93,7 @@ export default {
                     this.number = response.data.data.phone_number
                     this.school = response.data.data.school
                     this.school = response.data.data.school
+                    this.status = response.data.data.status
                     this.course = response.data.data.course_of_study
                     this.gradDate = response.data.data.grad_month.slice(8, 16)
                     this.gpa = response.data.data.GPA
