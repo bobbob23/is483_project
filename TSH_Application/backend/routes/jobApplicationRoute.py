@@ -35,7 +35,7 @@ def get_all_applicants_by_job_ID(job_ID):
             applicant_dict['course_of_study'] = Applicant.query.get(applicant_dict['email']).course_of_study
             applicant_dict['GPA'] = Applicant.query.get(applicant_dict['email']).GPA
             applicant_dict['Skills'] = applicant.skill
-            applicant_dict['rank_probability'] = Probability.query.get(applicant.email).overall_probability
+            applicant_dict['rank_probability'] = round(Probability.query.get(applicant.email).overall_probability, 1)
             applicant_dict['past_salary'] = applicant.past_salary
             applicant_dict['work_permit'] = applicant.work_permit
             applicant_dict['start_date'] = applicant.start_date
@@ -44,7 +44,7 @@ def get_all_applicants_by_job_ID(job_ID):
             applicant_list.append(applicant_dict)
         
 
-        sorted_applicant_list = sorted(applicant_list, key=lambda x: x["rank_probability"])
+        sorted_applicant_list = sorted(applicant_list, key=lambda x: x["rank_probability"], reverse=True)
         print(sorted_applicant_list)
 
         return jsonify({

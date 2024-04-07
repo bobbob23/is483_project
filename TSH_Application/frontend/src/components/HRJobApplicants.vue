@@ -57,7 +57,7 @@
                                     <!-- Matching score field -->
                                     <p class="mb-0">
                                         <b>Overall matching score: <span
-                                                style="text-decoration: underline;">97%</span></b>
+                                                style="text-decoration: underline;">{{ applicant.rank_probability * 100 }}%</span></b>
                                     </p>
                                 </div>
                             </div>
