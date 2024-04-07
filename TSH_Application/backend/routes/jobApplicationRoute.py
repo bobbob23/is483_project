@@ -35,7 +35,7 @@ def get_all_applicants_by_job_ID(job_ID):
             applicant_dict['course_of_study'] = Applicant.query.get(applicant_dict['email']).course_of_study
             applicant_dict['GPA'] = Applicant.query.get(applicant_dict['email']).GPA
             applicant_dict['Skills'] = applicant.skill
-            applicant_dict['rank_probability'] = round(Probability.query.get(applicant.email).overall_probability, 1)
+            applicant_dict['rank_probability'] = round(Probability.query.get(applicant.email).overall_probability, 2)
             applicant_dict['past_salary'] = applicant.past_salary
             applicant_dict['work_permit'] = applicant.work_permit
             applicant_dict['start_date'] = applicant.start_date
@@ -207,4 +207,29 @@ def edit_applicant_status(email, job_ID, status):
             'message': f'Falied to edit Applicant ({email}) status for Job id ({job_ID})!',
             'error' : str(e)
         })
+
+@job_application_routes.route('/score_details/<string:email>', methods=['GET'])
+def get_applicant_score_details(email):
     
+    try:
+        queried_applicant = Probability.query.get(email)
+
+        applicant_dict = {}
+        applicant_dict['email'] = email
+        applicant_dict['overall_probability'] = round(queried_applicant.overall_probability * 100, 2)
+        applicant_dict['total_working_years'] = round(queried_applicant.total_working_years * 100, 2)
+        applicant_dict['num_companies_worked'] = round(queried_applicant.num_companies_worked * 100, 2)
+        applicant_dict['education_field'] = round(queried_applicant.education_field * 100, 2)
+        applicant_dict['education_level'] = round(queried_applicant.education_level * 100, 2)   
+
+        return jsonify({
+            'message': 'Succesfully retrieved data from database!',
+            "data": applicant_dict
+        })
+
+    except Exception as e:
+        return jsonify({
+            'isApplied': False,
+            'message': 'Failed to receive applicants details for the job_ID!',
+            'error' : str(e)
+        })
