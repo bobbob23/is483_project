@@ -366,8 +366,11 @@ export default {
           },
           body: JSON.stringify(formData)
         })
-          .then(response => {
-            if (response.ok) {
+        .then(response => {
+            return response.json();
+          })
+          .then(data => {
+            if (data.isApplied == true) {
               console.log('Form submitted successfully');
               this.filesData.append('email', this.email)
               this.filesData.append('job_id', this.job_ID)
@@ -395,10 +398,6 @@ export default {
                   console.error('Error sending files:', error);
                   // Handle error
                 });
-
-            } else {
-              console.error('Failed to submit form');
-              // Handle error
             }
           })
           .catch(error => {
