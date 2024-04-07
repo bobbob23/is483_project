@@ -2,7 +2,7 @@
   <div>
     <NavBar />
     <!-- <Banner msg="CAREERS AT TSH" /> -->
-    <div v-if="!jobData" class="text-center mt-5">
+    <div v-if="!jobData || submit == false " class="text-center mt-5">
       <i class="pi pi-spin pi-spinner" style="font-size: 3em;"></i> <!-- Progress spinner -->
     </div>
     <div v-else>
@@ -208,6 +208,7 @@ export default {
       showPastSalaryError: false,
       resumeUploaded: false,
       transcriptUploaded: false,
+      submit: "not submit",
       profile: "",
       loading: false,
       skill: "",
@@ -255,7 +256,7 @@ export default {
             console.log(data.data.profile)
             if (data.data) {
               this.loading = false
-              this.profile = data.data.profile
+              this.profile = data.data.data.profile
               this.fName = this.profile.basics.first_name
               this.lName = this.profile.basics.last_name
               this.email = this.profile.basics.emails[0]
@@ -370,7 +371,9 @@ export default {
             return response.json();
           })
           .then(data => {
+            // this.submit = false
             if (data.isApplied == true) {
+              this.submit = true
               console.log('Form submitted successfully');
               this.filesData.append('email', this.email)
               this.filesData.append('job_id', this.job_ID)

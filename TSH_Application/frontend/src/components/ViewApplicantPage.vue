@@ -15,11 +15,19 @@
             <div class="col-2"></div>
             <div class="col-8 mt-1">
                 <div class="">
-                    <p v-if="status == 'Reject'" class="p-3" style="background-color: var(--red-100); color: var(--red-900);border-radius: 10px;">
+                    <p v-if="status == 'Reject'" class="p-3 mt-2" style="background-color: var(--red-100); color: var(--red-900);border-radius: 10px;">
                         Reason for Rejection: {{ reject_reason }}
                     </p>
                     <h3>{{ fName }} {{ lName }} </h3> 
-                    <Button link style="color: darkslategrey" class="p-0 mb-1"> <u class="ml-5">Overall Matching Rate: 97%</u></Button>
+                    <Dialog  v-model:visible="openDialog" modal :style="{ width: '25rem' }">
+                        <h3>Score Details</h3>
+                        <p style="margin-bottom: 2%">Education Level: {{ scoreDetails.education_level }}</p>
+                        <p style="margin-bottom: 2%">Education Field: {{ scoreDetails.education_field }}</p>
+                        <p style="margin-bottom: 2%">Number of Companies: {{ scoreDetails.num_companies_worked }} </p>
+                        <p style="margin-bottom: 2%">Total Working Years: {{ scoreDetails.total_working_years }}</p>
+                        <p style="margin-bottom: 2%; font-weight: bold">Overall Matching Score: <span style="font-weight: bold">{{ scoreDetails.overall_probability }}%</span> </p>
+                    </Dialog>
+                    <Button link style="color: blue" class="p-0 mb-2"> <u class="ml-5" @click="openDialog = true">Overall Matching Rate: {{ scoreDetails.overall_probability }} %</u></Button>
                     <p>
                         <span class="text-secondary secondary">
                             <i class="pi pi-file"></i> Resume &nbsp;
@@ -57,8 +65,9 @@
 <script>
 import axios from "axios"
 import HRNavBar from "./HRNavBar.vue"
-import { getApplicantDetails, getApplicantFiles } from "@/api/api";
+import { getApplicantDetails, getApplicantFiles, getScoreDetails } from "@/api/api";
 import Button from 'primevue/button';
+import Dialog from "primevue/dialog";
 
 export default {
     components: {
@@ -76,6 +85,8 @@ export default {
             number: "",
             school: "",
             course: "",
+            openDialog: false,
+            scoreDetails: "",
             reject_reason: "",
             gradDate: "",
             gpa: "",
@@ -85,6 +96,7 @@ export default {
     mounted() {
         this.getApplicantDetails();
         this.readPdf();
+        this.getScoreDetails()
     },
     methods: {
         getApplicantDetails() {
@@ -128,6 +140,13 @@ export default {
                 default:
                     return 'transparent';
             }
+        },
+        getScoreDetails(){
+            axios.get(`${getScoreDetails}/${this.email}`)
+                .then((response) => {
+                    console.log(response.data.data)
+                    this.scoreDetails = response.data.data
+                })
         },
         readPdf() {
             // let pdfReader = new PdfReader()
