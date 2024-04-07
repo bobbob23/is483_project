@@ -10,6 +10,7 @@ from models.applicantModel import Applicant
 from models.jobApplicationModel import Job_Application
 from models.jobListingModel import Job_listing
 from models.mlFieldsModel import ML_Fields
+from ML import logRegFunction
 from __init__ import db
 from dotenv import load_dotenv
 
@@ -111,6 +112,9 @@ def new_applicant():
         db.session.add(new_job_application_record)
         db.session.add(new_ml_row)
         db.session.commit()
+
+        result = logRegFunction.run_script_with_ipython()
+        print(result)
 
         return jsonify({
             'isApplied': True,
