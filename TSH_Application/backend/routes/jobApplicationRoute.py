@@ -113,7 +113,8 @@ def get_unprocessed_applicant_details():
                 applicant_dict['GPA'] = Applicant.query.get(applicant_dict['email']).GPA
 
                 unprocessed_list.append(applicant_dict)
-            
+        
+        unprocessed_list.reverse()
 
         return jsonify({
             'message': 'Succesfully retrieved data from database!',
