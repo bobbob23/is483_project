@@ -3,6 +3,7 @@ from flask import request, jsonify, make_response
 from models.applicantModel import Applicant
 from models.jobListingModel import Job_listing
 from models.jobApplicationModel import Job_Application
+from models.probabilityModel import Probability
 import json
 from flask import Blueprint
 from __init__ import db
@@ -34,15 +35,17 @@ def get_all_applicants_by_job_ID(job_ID):
             applicant_dict['course_of_study'] = Applicant.query.get(applicant_dict['email']).course_of_study
             applicant_dict['GPA'] = Applicant.query.get(applicant_dict['email']).GPA
             applicant_dict['Skills'] = applicant.skill
-            applicant_dict['rank_probability'] = applicant.rank_probability
+            applicant_dict['rank_probability'] = Probability.query.get(applicant.email).overall_probability
             applicant_dict['past_salary'] = applicant.past_salary
             applicant_dict['work_permit'] = applicant.work_permit
             applicant_dict['start_date'] = applicant.start_date
             applicant_dict['end_date'] = applicant.end_date
 
             applicant_list.append(applicant_dict)
+        
 
         sorted_applicant_list = sorted(applicant_list, key=lambda x: x["rank_probability"])
+        print(sorted_applicant_list)
 
         return jsonify({
             'message': 'Succesfully retrieved data from database!',
