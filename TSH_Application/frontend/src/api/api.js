@@ -28,3 +28,6 @@ export const getDashboardHRInfo = rootURL + "/HR"
 
 // Autofill APIs
 export const getAutofill = rootURL + "/autofill"
+
+// Score API
+export const getScoreDetails = rootURL + "/score_details/"
