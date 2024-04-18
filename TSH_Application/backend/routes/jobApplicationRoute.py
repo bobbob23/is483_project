@@ -1,7 +1,9 @@
+import traceback
 from flask import request, jsonify, make_response
 from models.applicantModel import Applicant
 from models.jobListingModel import Job_listing
 from models.jobApplicationModel import Job_Application
+from models.probabilityModel import Probability
 import json
 from flask import Blueprint
 from __init__ import db
@@ -25,7 +27,6 @@ def get_all_applicants_by_job_ID(job_ID):
             applicant_dict['email'] = applicant.email
             applicant_dict['job_ID'] = applicant.job_ID
             applicant_dict['applicant_status'] = applicant.applicant_status
-            applicant_dict['rank_number'] = applicant.rank_number
             applicant_dict['phone_number'] = Applicant.query.get(applicant_dict['email']).phone_number
             applicant_dict['grad_month'] = Applicant.query.get(applicant_dict['email']).grad_month
             applicant_dict['first_name'] = Applicant.query.get(applicant_dict['email']).first_name
@@ -33,14 +34,18 @@ def get_all_applicants_by_job_ID(job_ID):
             applicant_dict['school'] = Applicant.query.get(applicant_dict['email']).school
             applicant_dict['course_of_study'] = Applicant.query.get(applicant_dict['email']).course_of_study
             applicant_dict['GPA'] = Applicant.query.get(applicant_dict['email']).GPA
-            applicant_dict['past_salary'] = Applicant.query.get(applicant_dict['email']).past_salary
-            applicant_dict['work_permit'] = Applicant.query.get(applicant_dict['email']).work_permit
-            applicant_dict['start_date'] = Applicant.query.get(applicant_dict['email']).start_date
-            applicant_dict['end_date'] = Applicant.query.get(applicant_dict['email']).end_date
+            applicant_dict['Skills'] = applicant.skill
+            applicant_dict['rank_probability'] = round(Probability.query.get(applicant.email).overall_probability, 2)
+            applicant_dict['past_salary'] = applicant.past_salary
+            applicant_dict['work_permit'] = applicant.work_permit
+            applicant_dict['start_date'] = applicant.start_date
+            applicant_dict['end_date'] = applicant.end_date
 
             applicant_list.append(applicant_dict)
+        
 
-        sorted_applicant_list = sorted(applicant_list, key=lambda x: x["rank_number"])
+        sorted_applicant_list = sorted(applicant_list, key=lambda x: x["rank_probability"], reverse=True)
+        print(sorted_applicant_list)
 
         return jsonify({
             'message': 'Succesfully retrieved data from database!',
@@ -49,6 +54,7 @@ def get_all_applicants_by_job_ID(job_ID):
         })
 
     except Exception as e:
+        print(traceback.format_exc())
         return jsonify({
             'isApplied': False,
             'message': 'Failed to receive applicants for the job_ID!',
@@ -70,6 +76,9 @@ def get_applicant_details(email, job_id):
         applicant_dict['course_of_study'] = Applicant.query.get(applicant_dict['email']).course_of_study
         applicant_dict['grad_month'] = Applicant.query.get(applicant_dict['email']).grad_month
         applicant_dict['GPA'] = Applicant.query.get(applicant_dict['email']).GPA
+        applicant_dict['skill'] = queried_applicant.skill
+        applicant_dict['status'] = queried_applicant.applicant_status
+        applicant_dict['reject_reason'] = queried_applicant.reject_reason
         
 
         return jsonify({
@@ -104,7 +113,8 @@ def get_unprocessed_applicant_details():
                 applicant_dict['GPA'] = Applicant.query.get(applicant_dict['email']).GPA
 
                 unprocessed_list.append(applicant_dict)
-            
+        
+        unprocessed_list.reverse()
 
         return jsonify({
             'message': 'Succesfully retrieved data from database!',
@@ -168,22 +178,21 @@ def edit_applicant_status(email, job_ID, status):
                 'isEdited': False,
                 'message': f'Applicant ({email}) current status is {status}!'
             }) 
-                
-        if (current_status == "Unprocessed"):
-            query_job_listing.unprocessed_num -= 1
+                            
+        current_status_num_str = current_status.lower() + '_num'
+        job_current_status_num = getattr(query_job_listing, current_status_num_str)
+        new_current_num = int(job_current_status_num) - 1
+        setattr(query_job_listing, current_status_num_str, str(new_current_num))
 
-        elif status != "Reject":
-            if current_status != "Reject":
-                current_status_num_str = current_status.lower() + '_num'
-                job_current_status_num = getattr(query_job_listing, current_status_num_str)
-                new_current_num = int(job_current_status_num) - 1
-                setattr(query_job_listing, current_status_num_str, str(new_current_num))
+        new_status_num_str = status.lower() + '_num'
+        job_new_status_num = getattr(query_job_listing, new_status_num_str)
+        new_num = int(job_new_status_num) + 1
+        setattr(query_job_listing, new_status_num_str, str(new_num))
 
-            new_status_num_str = status.lower() + '_num'
-            job_new_status_num = getattr(query_job_listing, new_status_num_str)
-            new_num = int(job_new_status_num) + 1
-            setattr(query_job_listing, new_status_num_str, str(new_num))
-        
+        if status == "Reject":
+            data = request.get_json()
+            queried_job_applicant.reject_reason = data['reject_reason']
+
         queried_job_applicant.applicant_status = status
         db.session.commit()
 
@@ -199,4 +208,29 @@ def edit_applicant_status(email, job_ID, status):
             'message': f'Falied to edit Applicant ({email}) status for Job id ({job_ID})!',
             'error' : str(e)
         })
+
+@job_application_routes.route('/score_details/<string:email>', methods=['GET'])
+def get_applicant_score_details(email):
     
+    try:
+        queried_applicant = Probability.query.get(email)
+
+        applicant_dict = {}
+        applicant_dict['email'] = email
+        applicant_dict['overall_probability'] = round(queried_applicant.overall_probability * 100, 2)
+        applicant_dict['total_working_years'] = round(queried_applicant.total_working_years * 100, 2)
+        applicant_dict['num_companies_worked'] = round(queried_applicant.num_companies_worked * 100, 2)
+        applicant_dict['education_field'] = round(queried_applicant.education_field * 100, 2)
+        applicant_dict['education_level'] = round(queried_applicant.education_level * 100, 2)   
+
+        return jsonify({
+            'message': 'Succesfully retrieved data from database!',
+            "data": applicant_dict
+        })
+
+    except Exception as e:
+        return jsonify({
+            'isApplied': False,
+            'message': 'Failed to receive applicants details for the job_ID!',
+            'error' : str(e)
+        })

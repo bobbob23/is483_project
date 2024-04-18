@@ -1,6 +1,7 @@
-import datetime
+from datetime import datetime
 from flask import request, jsonify, make_response
 from models.jobListingModel import Job_listing
+from models.jobApplicationModel import Job_Application
 import json
 from flask import Blueprint
 from __init__ import db
@@ -27,6 +28,8 @@ def get_job_listings():
             job_dict['unprocessed_num'] = job.unprocessed_num
             job_dict['shortlisted_num'] = job.shortlisted_num
             job_dict['interview_num'] = job.interview_num
+            job_dict['reject_num'] = job.reject_num
+            job_dict['hired_num'] = job.hired_num
 
             job_list.append(job_dict)
 
@@ -54,9 +57,14 @@ def get_job_listing(job_id):
             job_dict['location'] = query_job_listing.location
             job_dict['type'] = query_job_listing.type
             job_dict['department'] = query_job_listing.department
+            job_dict['opening_date'] = query_job_listing.opening_date
             job_dict['closing_date'] = query_job_listing.closing_date
             job_dict['description'] = query_job_listing.job_description
             job_dict['requirement'] = query_job_listing.job_requirement
+            job_dict['job_status'] = query_job_listing.job_status
+            job_dict['hiring_manager'] = query_job_listing.hiring_manager
+            job_dict['salary'] = query_job_listing.salary
+            job_dict['work_permit'] = query_job_listing.work_permit
 
             return jsonify({
                 "message": "Succesfully retrieved data from database!",
@@ -89,6 +97,8 @@ def new_job_listing():
             unprocessed_num = 0,
             shortlisted_num = 0,
             interview_num = 0,
+            reject_num = 0,
+            hired_num = 0,
             # NEED TO ENSURE WORK_PERMIT IS STORED AS JSON
             work_permit = data['work_permit']
         )
@@ -112,7 +122,7 @@ def new_job_listing():
 def edit_job_listing(job_id):
     edit_data = request.get_json()
     query_job_listing = Job_listing.query.get(job_id)
-
+    
     try:
         query_job_listing.title = edit_data['title']
         query_job_listing.location = edit_data['location']
@@ -145,8 +155,11 @@ def edit_job_listing(job_id):
 @job_listing_routes.route('/delete_job_listing/<int:job_id>', methods=['DELETE'])
 def delete_job_listing(job_id):
     query_job_listing = Job_listing.query.get(job_id)
-
+    query_job_application = Job_Application.query.filter_by(job_ID=job_id).all()
+    
     try:
+        for applicant in query_job_application:
+            db.session.delete(applicant)
         db.session.delete(query_job_listing)
         db.session.commit()
 
@@ -168,7 +181,7 @@ def get_active_job_listings():
     
     try:
         listing_query_list = Job_listing.query.all()
-        current_time = datetime.datetime.now()
+        current_time = datetime.now()
         job_list = []
         
         for job in listing_query_list:
@@ -186,6 +199,8 @@ def get_active_job_listings():
                 job_dict['unprocessed_num'] = job.unprocessed_num
                 job_dict['shortlisted_num'] = job.shortlisted_num
                 job_dict['interview_num'] = job.interview_num
+                job_dict['reject_num'] = job.reject_num
+                job_dict['hired_num'] = job.hired_num
 
                 job_list.append(job_dict)
 

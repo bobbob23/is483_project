@@ -93,7 +93,7 @@ export default {
             untouchedJobList: [], // original job list that contains all job listings
             jobListingTitles: [], // to be used to populate datalist tag for search bar
             selectedExperience: "",
-            experienceLevel: ["Internship", "Full time"],
+            experienceLevel: ["Internship", "Full-Time"],
             selectedLocation: "",
             countries: ["Singapore", "Malaysia"],
             searchItem: "",

@@ -17,24 +17,23 @@
             <div class="col-2"></div>
         </div>
 
-        <div class="container text-center mt-5" v-if="jobs.length == 0" >
+        <div class="container text-center mt-5" v-if="jobs.length == 0">
             <i class="pi pi-spin pi-spinner" style="font-size: 3em;"></i> <!-- Progress spinner -->
         </div>
-        
-        <div class="row mt-3" v-for="(job, index) in jobs" :key="job.title">
-            <!-- <div class="col-1">
-            </div> -->
+
+        <div class="row mt-3" v-for="(job, index) in jobs" :key="job">
             <div class="col-9">
-                <Card style="width: 100%; margin-left: 13%; margin-bottom: 2%; margin-right: 3%"
+                <Card style="width: 90%; margin-left: 13%; margin-bottom: 2%; margin-right: 3%"
                     @mouseenter="hover[index] = true" @mouseleave="hover[index] = false"
                     :class="{ 'div-hover': hover[index] }" @click="goToApplicantsPage(job.job_ID, job.title)">
                     <template #title>{{ job.title }}</template>
+
                     <template #content>
                         <div class="content-container" style="display: flex;">
                             <div class="d-flex">
                                 <div class="mt-4 w-100">
                                     <p style="color: rgb(91, 91, 91); margin-right: 0;">Application Deadline: {{
-                                        job.closing_date.slice(6, 16) }}</p>
+                    job.closing_date.slice(5, 16) }}</p>
                                 </div>
                                 <div class="d-flex" style="margin-left: 30%">
                                     <div class="text-center mx-3">
@@ -49,32 +48,43 @@
                                         <h3> {{ job.interview_num }}</h3>
                                         <span class="d-block">Interview</span>
                                     </div>
+                                    <!-- Rejected num -->
+                                    <div class="text-center mx-3">
+                                        <h3>{{ job.reject_num }}</h3>
+                                        <span class="d-block">Rejected</span>
+                                    </div>
+                                    <!-- Hired num -->
+                                    <div class="text-center mx-3">
+                                        <h3>{{ job.hired_num }}</h3>
+                                        <span class="d-block">Hired</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div style="display:block; flex: 1;" class="mr-5">
-                                <Button label="Edit" style="display: block; margin: -3% auto 3%; background-color: white; 
-                                    color: darkblue; border: darkblue 1px solid; width: 40%;" />
-                                <Button label="Deactivate" style="display: block; margin: 0 auto; background-color: white; 
-                                    color: darkblue; border: darkblue 1px solid; width: 40%;" />
                             </div>
                         </div>
                     </template>
                 </Card>
             </div>
-            
+            <div class="col-3" style="margin-top: 5%" :key="job">
+                <EditJobDialog :job_ID="job.job_ID" style="margin-bottom: 5%;"/>
+                <DeleteDialog :job_ID="job.job_ID"/>
+            </div>
         </div>
-
-
+        <hr>
     </div>
 </template>
+
 <script>
 import HRNavBar from "./HRNavBar.vue"
 import { getAllJobListing } from '@/api/api';
+import EditJobDialog from "@/components/EditJobDialog.vue"
 import axios from "axios";
+import DeleteDialog from "./DeleteDialog.vue";
 
 export default {
     components: {
-        HRNavBar
+        HRNavBar,
+        EditJobDialog,
+        DeleteDialog
     },
     data() {
         return {

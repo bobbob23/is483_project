@@ -3,6 +3,7 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import { registerPlugins } from '@/plugins';
 import { createStore } from 'vuex';
+import VueCookies from 'vue-cookies'
 const app = createApp(App);
 registerPlugins(app);
 
@@ -76,6 +77,7 @@ app.component("ProgressSpinner", ProgressSpinner)
 app.use(PrimeVue)
 app.use(HighchartsVue)
 app.use(store)
+app.use(VueCookies)
 
 app.mount('#app')
 

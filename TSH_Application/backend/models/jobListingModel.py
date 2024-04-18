@@ -19,5 +19,7 @@ class Job_listing(db.Model):
     unprocessed_num = db.Column(db.Integer)
     shortlisted_num = db.Column(db.Integer)
     interview_num = db.Column(db.Integer)
+    reject_num = db.Column(db.Integer)
+    hired_num = db.Column(db.Integer)
 
     application = relationship("Job_Application", back_populates="job_listing")

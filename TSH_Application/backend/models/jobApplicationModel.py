@@ -7,7 +7,16 @@ class Job_Application(db.Model):
     email = db.Column(db.String(250), ForeignKey('Applicant.email'), primary_key=True)
     job_ID = db.Column(db.Integer, ForeignKey('Job_listing.job_ID'), primary_key=True)
     applicant_status = db.Column(db.String(250))
-    rank_number = db.Column(db.Integer)
+    skill = db.Column(db.JSON)
+    rank_probability = db.Column(db.Float)
+    past_salary = db.Column(db.String(150))
+    work_permit = db.Column(db.String(150))
+    resume = db.Column(db.String(250))
+    transcript = db.Column(db.String(250))
+    reference_letter = db.Column(db.String(250))
+    start_date = db.Column(db.DateTime(timezone=True))
+    end_date = db.Column(db.DateTime(timezone=True))
+    reject_reason = db.Column(db.String(5000))
 
 
     applicant = relationship("Applicant", back_populates="application")

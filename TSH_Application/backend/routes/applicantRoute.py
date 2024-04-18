@@ -1,13 +1,16 @@
+import traceback
 import boto3
 import os
 import logging
+from services import file_services
 from botocore.exceptions import ClientError
 import uuid
-from flask import request, jsonify
+from flask import request, jsonify, Blueprint, send_file
 from models.applicantModel import Applicant
 from models.jobApplicationModel import Job_Application
 from models.jobListingModel import Job_listing
-from flask import Blueprint
+from models.mlFieldsModel import ML_Fields
+from ML import logRegFunction
 from __init__ import db
 from dotenv import load_dotenv
 
@@ -17,6 +20,11 @@ load_dotenv()
 
 ACCESS_KEY = os.environ["ACCESS_KEY"]
 SECRET_ACCESS_KEY = os.environ["SECRET_ACCESS_KEY"]
+s3_client = boto3.client(
+    's3',
+    aws_access_key_id=ACCESS_KEY,
+    aws_secret_access_key=SECRET_ACCESS_KEY
+)
 
 @applicant_routes.route("/all_applicant_details", methods=["GET"])
 def get_all_applicants():
@@ -33,10 +41,10 @@ def get_all_applicants():
             applicant_dict['course'] = applicant.course_of_study
             applicant_dict['gpa'] = applicant.GPA
             applicant_dict['gradDate'] = applicant.grad_month
-            applicant_dict['pastSalary'] = applicant.past_salary
-            applicant_dict['workPermit'] = applicant.work_permit
-            applicant_dict['startDate'] = applicant.start_date
-            applicant_dict['endDate'] = applicant.end_date
+            # applicant_dict['pastSalary'] = applicant.past_salary
+            # applicant_dict['workPermit'] = applicant.work_permit
+            # applicant_dict['startDate'] = applicant.start_date
+            # applicant_dict['endDate'] = applicant.end_date
             applicant_list.append(applicant_dict)
         
         applicant_list.reverse()
@@ -66,26 +74,47 @@ def new_applicant():
             school = data['school'], 
             course_of_study = data['course'], 
             GPA = data['gpa'], 
-            grad_month = data['gradDate'],
-            past_salary = data['pastSalary'],
-            work_permit = data['workPermit'],
-            start_date = data['startDate'],
-            end_date = data['endDate']
+            grad_month = data['gradDate']
         )
+
+        pastSalary = "0"
+
+        if 'pastSalary' in data:
+            pastSalary = data['pastSalary']
 
         new_job_application_record = Job_Application(
             email = data['email'],
             job_ID = data['job_id'],
             applicant_status = "Unprocessed",
-            rank_number = None
+            skill = data['skill'],
+            rank_probability = None,
+            past_salary = pastSalary,
+            work_permit = data['workPermit'],
+            start_date = data['startDate'],
+            end_date = data['endDate']
         )
+
+        new_ml_row = ML_Fields(
+            email = data['email'],
+            total_working_years = data['totalWorkingYears'],
+            num_companies_worked = data['numCompaniesWorked'],
+            education_field = data['course'], 
+            education_level = data['course']
+        )
+
+        print(data['totalWorkingYears'])
+        print(data['numCompaniesWorked'])
 
         query_job_listing = Job_listing.query.get(data['job_id'])
         query_job_listing.unprocessed_num += 1
 
         db.session.add(new_record)
         db.session.add(new_job_application_record)
+        db.session.add(new_ml_row)
         db.session.commit()
+
+        result = logRegFunction.run_script_with_ipython()
+        print(result)
 
         return jsonify({
             'isApplied': True,
@@ -93,6 +122,7 @@ def new_applicant():
         })
 
     except Exception as e:
+        print(traceback.format_exc())
         return jsonify({
             'isApplied': False,
             'message': 'Failed to receive application!',
@@ -114,6 +144,7 @@ def new_applicant_files():
     try:
         # File schema
         email = request.form.get('email')
+        job_id = request.form.get('job_id')
         if 'resume' in request.files:
             resume_file = request.files['resume']
         if 'transcript' in request.files:
@@ -127,7 +158,7 @@ def new_applicant_files():
             reference_letter = reference_letter_file
         )
 
-        query_candidate = Applicant.query.get(email)
+        query_candidate = Job_Application.query.get((email, job_id))
         bucket_name = 'candidate-uploaded-files'
 
         for key, value in file_dict.items():
@@ -149,14 +180,15 @@ def new_applicant_files():
         print(logging.error(e))
 
     except Exception as e:
+        print(traceback.format_exc())
         return jsonify({
             'isApplied': False,
             'message': 'Failed to receive application!',
             'error' : str(e)
         })
 
-@applicant_routes.route('/applicant_files/<string:email>', methods=['GET'])
-def applicant_details(email):
+@applicant_routes.route('/applicant_files/<string:email>/<int:job_id>', methods=['GET'])
+def applicant_details(email, job_id):
 
     aws_access_key_id = ACCESS_KEY
     aws_secret_access_key = SECRET_ACCESS_KEY
@@ -167,15 +199,16 @@ def applicant_details(email):
     )
 
     # data directory, INPUT YOUR OWN PATH
-    data_folder = r"applicantFiles"
+    data_folder = r""
     if not os.path.exists(data_folder):
         os.makedirs(data_folder)
 
     try:
         # File schema
-        query_candidate = Applicant.query.get(email)
-        fname = query_candidate.first_name
-        lname = query_candidate.last_name
+        query_candidate = Job_Application.query.get((email, job_id))
+        applicant_query = Applicant.query.get(email)
+        fname = applicant_query.first_name
+        lname = applicant_query.last_name
         resume_file = query_candidate.resume
         transcript_file = query_candidate.transcript
         reference_letter_file = query_candidate.reference_letter
@@ -187,19 +220,14 @@ def applicant_details(email):
         )
 
         bucket_name = 'candidate-uploaded-files'
-        
+
         for key, value in file_dict.items():
+            if value == None:
+                continue
             folder_name = key
             file_uuid = value
             file_name = f"{fname}{lname}_{folder_name}.pdf"
 
-            # subfolder_name = f'{fname}{lname}'
-            # subfolder_path = os.path.join(data_folder, subfolder_name)
-
-            # # Create the folder if it doesn't exist
-            # if not os.path.exists(subfolder_path):
-            #     os.makedirs(subfolder_path)
-        
             folder_path = os.path.join(data_folder, file_name)
             s3_client.download_file(bucket_name, f"{folder_name}/{file_uuid}", Filename=folder_path)
 
@@ -207,7 +235,7 @@ def applicant_details(email):
             'isApplied': True,
             'message': 'Applicant details have been received!'
         })
-    
+
     except ClientError as e:
         print("========ERROR========")
         print(logging.error(e))
@@ -218,3 +246,37 @@ def applicant_details(email):
             'message': 'Failed to receive applicant details!',
             'error' : str(e)
         })
+
+# =====================================================================================================================================================
+# @applicant_routes.route('/get_file/<string:key>', methods=['GET'])
+# def get_file(key):
+#     return file_services.fetch_file(key)
+
+
+# @applicant_routes.route('/post_file', methods=['POST'])
+# def upload_file():
+#     try: 
+#         file = request.files['resume']
+#         bucket_name = 'candidate-cvs-temp-bucket'
+#         new_filename = uuid.uuid4().hex + '.pdf'
+#         s3_client.upload_fileobj(file, bucket_name, new_filename)
+
+#         return jsonify({
+#                 'isUploaded': True,
+#                 'filename': new_filename,
+#                 'message': 'File has been uploaded to temp bucket!'
+#             })
+#     except ClientError as e:
+#         print("========ERROR========")
+#         print(logging.error(e))
+
+
+# @applicant_routes.route('/delete_file/<string:key>', methods=['DELETE'])
+# def delete_file(key):
+#     response = s3_client.delete_object(
+#         Bucket="candidate-cvs-temp-bucket",
+#         Key=key,
+#         )
+    
+#     return response
+    # return file_services.perform_delete(key)

@@ -1,3 +1,4 @@
+import traceback
 from flask import request, jsonify
 from models.applicantModel import Applicant
 from models.jobApplicationModel import Job_Application
@@ -30,7 +31,7 @@ def applicant_details_con(filter_column, filter_value):
     course_dict = {}
     past_salary_list = []
     permit_dict = {}
-    status_dict = {'unprocessed': 0, 'shortlisted': 0, 'interview': 0, 'hired': 0}
+    status_dict = {'unprocessed': 0, 'shortlisted': 0, 'interview': 0, 'reject': 0, 'hired': 0}
     data_list = {
         'GPA': gpa_dict,
         'school' : school_dict,
@@ -47,6 +48,8 @@ def applicant_details_con(filter_column, filter_value):
         status_dict['unprocessed'] += int(listing.unprocessed_num)
         status_dict['shortlisted'] += int(listing.shortlisted_num)
         status_dict['interview'] += int(listing.interview_num)
+        status_dict['reject'] += int(listing.reject_num)
+        status_dict['hired'] += int(listing.hired_num)
 
     applicant_list = Job_Application.query.filter(Job_Application.job_ID.in_(job_id_list)).all()
 
@@ -55,6 +58,15 @@ def applicant_details_con(filter_column, filter_value):
 
     for applicant in applicant_list:
         email = Applicant.query.get(applicant.email)
+        past_salary = applicant.past_salary
+        work_permit = applicant.work_permit
+
+        if past_salary != '':
+            past_salary = int(past_salary)
+            past_salary_list.append(past_salary)
+        
+        field_sum(work_permit, permit_dict)
+
         if email not in email_set:
             email_list.append(applicant.email)
             email_set.add(email)
@@ -62,21 +74,16 @@ def applicant_details_con(filter_column, filter_value):
     applicant_detail_list = Applicant.query.filter(Applicant.email.in_(email_list)).all()
 
     for applicant in applicant_detail_list:
+        email = applicant.email
         GPA = float(applicant.GPA.split("/")[0])
         school = applicant.school
         course = applicant.course_of_study
-        past_salary = applicant.past_salary
-        work_permit = applicant.work_permit
 
         field_conditions(GPA, gpa_dict, 3.0, 3.5, 4.0)
-        if past_salary != '':
-            past_salary = int(past_salary)
-            past_salary_list.append(past_salary)
 
         field_sum(school, school_dict)
         field_sum(course, course_dict)
-        field_sum(work_permit, permit_dict)
-    
+
     return data_list
 
 
@@ -84,34 +91,50 @@ def applicant_details_con(filter_column, filter_value):
 def get_HR():
     try:
         query_applicant_listing = Applicant.query.all()
+        query_job_application_listing = Job_Application.query.all()
+        query_job_listing = Job_listing.query.all()
         gpa_dict = {'< 3.0': 0, '< 3.5': 0, '< 4.0': 0, '> 4.0': 0}
         school_dict = {}
         course_dict = {}
         past_salary_list = []
         permit_dict = {}
+        status_dict = {'unprocessed': 0, 'shortlisted': 0, 'interview': 0, 'reject': 0, 'hired': 0}
         data_list = {
             'GPA': gpa_dict,
             'school' : school_dict,
             'courses' : course_dict,
             'past_salary' : past_salary_list,
-            'work_permit' : permit_dict
+            'work_permit' : permit_dict,
+            'status' : status_dict
         }
 
         for applicant in query_applicant_listing:
             GPA = float(applicant.GPA.split("/")[0])
             school = applicant.school
             course = applicant.course_of_study
-            past_salary = applicant.past_salary
-            work_permit = applicant.work_permit
 
             field_conditions(GPA, gpa_dict, 3.0, 3.5, 4.0)
+
+            field_sum(school, school_dict)
+            field_sum(course, course_dict)
+        
+        for application in query_job_application_listing:
+            past_salary = application.past_salary
+            work_permit = application.work_permit
+
             if past_salary != '':
                 past_salary = int(past_salary)
                 past_salary_list.append(past_salary)
 
-            field_sum(school, school_dict)
-            field_sum(course, course_dict)
             field_sum(work_permit, permit_dict)
+
+        for listing in query_job_listing:
+            status_dict['unprocessed'] += int(listing.unprocessed_num)
+            status_dict['shortlisted'] += int(listing.shortlisted_num)
+            status_dict['interview'] += int(listing.interview_num)
+            status_dict['reject'] += int(listing.reject_num)
+            status_dict['hired'] += int(listing.hired_num)
+
 
         return jsonify({
             'data': data_list,
@@ -119,6 +142,7 @@ def get_HR():
         })
 
     except Exception as e:
+        print(traceback.format_exc())
         return jsonify({
             'message': f'Failed to retrieve data!',
             'error' : str(e)
@@ -177,17 +201,17 @@ def dashboard_job_id(job_id):
             'error' : str(e)
         })
     
-@dashboard_routes.route('/job_ids', methods=['GET'])
-def get_all_job_ids():
-    try:
-        query_job_ids = Job_listing.query.with_entities(Job_listing.job_ID).distinct().all()
-        job_ids = [row.job_ID for row in query_job_ids]
-        return jsonify({
-            'job_ids': job_ids,
-            'message': f'All job IDs retrieved successfully'
-        })
-    except Exception as e:
-        return jsonify({
-            'message': f'Failed to retrieve job IDs!',
-            'error': str(e)
-        })
+# @dashboard_routes.route('/job_ids', methods=['GET'])
+# def get_all_job_ids():
+#     try:
+#         query_job_ids = Job_listing.query.with_entities(Job_listing.job_ID).distinct().all()
+#         job_ids = [row.job_ID for row in query_job_ids]
+#         return jsonify({
+#             'job_ids': job_ids,
+#             'message': f'All job IDs retrieved successfully'
+#         })
+#     except Exception as e:
+#         return jsonify({
+#             'message': f'Failed to retrieve job IDs!',
+#             'error': str(e)
+#         })

@@ -14,7 +14,8 @@ import Button from 'primevue/button';
 export default {
   data() {
     return {
-      job_title: this.$route.params.job_title
+      job_title: this.$route.params.job_title,
+      cookie: this.$cookies.get("skills")
     }
   },
   methods:{

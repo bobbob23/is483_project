@@ -3,59 +3,69 @@
     <div v-if="!isLoading" class="container">
         <!-- Display heading -->
         <div class="row"
-            style="margin-top: 40px; display: flex; align-items: center; position: sticky; top: 0; z-index: 999; background-color: white; border-bottom: 1px solid #000; padding-bottom: 1px; margin-bottom: 15px;">
+            style="margin-top: 40px; display: flex; align-items: center; top: 0; z-index: 999; background-color: white; border-bottom: 1px solid #000; padding-bottom: 1px; margin-bottom: 15px;">
             <div class="col">
-                <h2 class="p" v-if="jobID">
-                    <span class="job-info bold-text">
-                        Job ID: {{ jobID }}
-                    </span>
-                </h2>
-                <h2 class="p job-info bold-text" v-else>Dashboard</h2>
-            </div>
-            <!-- Filter search bars -->
-            <div class="col"
-                style="margin-top: 13px; display: flex; justify-content: flex-end; align-items: center; flex: 0;">
-                <select class="form-select mb-3" aria-label="Default select example" style="width: 11rem"
-                    v-model="selectedJobID">
-                    <option value="" selected hidden>Filter by Job ID</option>
-                    <option v-for="jobID in jobID_list" :key="jobID" :value="jobID">{{ jobID }}</option>
-                </select>
-            </div>
-            <div class="col" style="display: flex; justify-content: flex-end; align-items: center; flex: 0;">
-                <button class="btn btn-primary btn-md rounded-2" style="margin-top: -5px;"
-                    @click="updatePage">Filter</button>
+                <h2 class="p job-info bold-text">HR Dashboard</h2>
             </div>
         </div>
-        <div v-if="!nextLoad" class="container">
+        <div class="container">
             <!-- Row 1 -->
             <div class="row" style="margin-bottom: 40px;">
                 <div class="col chartBox">
-                    <highcharts class="hc" :options="funnelChartOptions" style="width: 100%;" />
+                    <highcharts 
+                        class="hc" 
+                        :options="funnelChartOptions" 
+                        style="width: 100%;" 
+                    />
                 </div>
                 <div class="col chartBox">
-                    <pie-chart :data="workPermitData" title="Work Permit" />
+                    <pie-chart 
+                        :data="workPermitData" 
+                        title="Work Permit" 
+                    />
                 </div>
             </div>
             <!-- Row 2 -->
             <div class="row" style="margin-bottom: 40px;">
                 <div class="col chartBox">
-                    <histogram-chart :data="GPAhistogramData" :bins="GPAhistorgramBins" title="GPA"
-                        x-axis-title="GPA Score" y-axis-title="Number of Applicants" seriesName="GPA Distribution" />
+                    <histogram-chart 
+                        :data="GPAhistogramData" 
+                        :bins="GPAhistorgramBins" 
+                        title="GPA"
+                        x-axis-title="GPA Score" 
+                        y-axis-title="Number of Applicants" 
+                        seriesName="GPA Distribution" 
+                    />
                 </div>
                 <div class="col chartBox">
-                    <bar-chart :data="schoolData" title="School" x-axis-title="School"
-                        y-axis-title="Number of Applicants" seriesName="School Distribution" />
+                    <bar-chart 
+                        :data="schoolData" 
+                        title="School" 
+                        x-axis-title="School"
+                        y-axis-title="Number of Applicants" 
+                        seriesName="School Distribution" 
+                    />
                 </div>
             </div>
             <!-- Row 3 -->
             <div class="row" style="margin-bottom: 40px;">
                 <div class="col chartBox">
-                    <bar-chart :data="courseData" title="Course of Study" x-axis-title="Course of Study"
-                        y-axis-title="Number of Applicants" seriesName="Course of Study Distribution" />
+                    <bar-chart 
+                        :data="courseData" 
+                        title="Course of Study" 
+                        x-axis-title="Course of Study"
+                        y-axis-title="Number of Applicants" 
+                        seriesName="Course of Study Distribution" 
+                    />
                 </div>
                 <div class="col chartBox">
-                    <box-plot-chart :data="pastSalaryData" title="Past Salary" x-axis-title="" y-axis-title="Salary ($)"
-                        seriesName="Salary" />
+                    <box-plot-chart 
+                        :data="pastSalaryData" 
+                        title="Past Salary" 
+                        x-axis-title="" 
+                        y-axis-title="Salary ($)"
+                        seriesName="Salary" 
+                    />
                 </div>
             </div>
         </div>
@@ -71,7 +81,7 @@ import HistogramChart from '../dashboard/HistogramChart.vue';
 import BarChart from '../dashboard/BarChart.vue';
 import BoxPlotChart from '../dashboard/BoxPlotChart.vue';
 import PieChart from '../dashboard/PieChart.vue';
-import { getDashboardAllHRJobID, getDashboardJobID } from "@/api/api.js";
+import { getDashboardHRInfo } from "@/api/api.js";
 
 loadFunnel(Highcharts);
 
@@ -86,14 +96,8 @@ export default {
     data() {
         return {
             isLoading: true,
-            nextLoad: true,
             filterData: null,
             apiData: null,
-            selectedJobID: '',
-            // DEPARTMENT IS HARDCODED FOR NOW!
-            jobID_list: [],
-            // jobID IS HARDCODED FOR NOW!
-            jobID: '',
             colors: ["#C2272D", "#F8931F", "#E6E600", "#009245", "#0193D9", "#0C04ED", "#612F90"],
             funnelChartOptions: {
                 chart: {
@@ -125,7 +129,8 @@ export default {
                         ['Unprocessed', 8000],
                         ['Shortlisted', 4064],
                         ['Interviewing', 1987],
-                        ['Successful', 900],
+                        ['Rejected', 1987],
+                        ['Hired', 900],
                     ]
                 }]
             },
@@ -133,6 +138,9 @@ export default {
         };
     },
     computed: {
+        capitalizedDepartment() {
+            return this.department.charAt(0).toUpperCase() + this.department.slice(1);
+        },
         GPAhistogramData() {
             return [
                 {
@@ -207,6 +215,7 @@ export default {
         },
         pastSalaryData() {
             const returnList = []
+            returnList.push(this.department)
             returnList.push(this.apiData.past_salary)
             return returnList
         },
@@ -230,37 +239,19 @@ export default {
     },
     methods: {
         getFilterData() {
-            axios.get(getDashboardAllHRJobID)
+            axios.get(getDashboardHRInfo)
                 .then(response => {
-                    // console.log(response.data.job_ids)
-                    this.jobID_list = response.data.job_ids
+                    this.apiData = response.data.data
+                    this.funnelChartOptions.series[0].data[0][1] = this.apiData.status.unprocessed;
+                    this.funnelChartOptions.series[0].data[1][1] = this.apiData.status.shortlisted;
+                    this.funnelChartOptions.series[0].data[2][1] = this.apiData.status.interview;
+                    this.funnelChartOptions.series[0].data[3][1] = this.apiData.status.reject;
+                    this.funnelChartOptions.series[0].data[4][1] = this.apiData.status.hired;
                     this.isLoading = false
                 })
                 .catch(error => {
                     console.error('Error fetching data!', error);
                 });
-        },
-        getData2() {
-            axios.get(getDashboardJobID + this.selectedJobID.toString())
-                .then(response => {
-                    this.apiData = response.data.data
-                    this.funnelChartOptions.series[0].data = [
-                        ['Unprocessed', this.apiData.status['unprocessed']],
-                        ['Shortlisted', this.apiData.status['shortlisted']],
-                        ['Interviewing', this.apiData.status['interview']],
-                        ['Successful', this.apiData.status['hired']]
-                    ]
-                    this.nextLoad = false
-                })
-                .catch(error => {
-                    console.error('Error fetching data!', error);
-                });
-        },
-        updatePage() {
-            this.jobID = this.selectedJobID
-            this.getData2()
-
-            this.nextLoad = true
         }
     }
 }
