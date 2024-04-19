@@ -13,3 +13,6 @@ For windows:
 3. navigate to the Scripts folder `cd venv/Scripts`
 4. activate the venv by typing `activate`
 4. install packages `pip install -r requirements.txt`
+
+### Miscellaneous event
+If some libraries/modules are not found, please 'pip install *module*'.
