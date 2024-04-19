@@ -43,25 +43,3 @@ def perform_parsing(uploaded):
 
     response = requests.post(url, headers=headers, json=data)
     return response.json()
-
-# def perform_temp_upload(file):  
-#     bucket_name = 'candidate-cvs-temp-bucket'
-#     new_filename = uuid.uuid4().hex + '.pdf'
-#     s3_client.upload_fileobj(file, bucket_name, new_filename)
-
-#     return json.dump({
-#             'isUploaded': True,
-#             'message': 'File has been uploaded to temp bucket!'
-#         })
-    
-
-# def perform_delete(key):
-#     try:
-#         response = s3_client.delete_object(
-#             Bucket="candidate-cvs-temp-bucket",
-#             Key=key,
-#         )
-#         return response
-
-#     except Exception as e:
-#         return e

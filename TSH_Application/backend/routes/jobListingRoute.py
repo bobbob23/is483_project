@@ -99,7 +99,6 @@ def new_job_listing():
             interview_num = 0,
             reject_num = 0,
             hired_num = 0,
-            # NEED TO ENSURE WORK_PERMIT IS STORED AS JSON
             work_permit = data['work_permit']
         )
 

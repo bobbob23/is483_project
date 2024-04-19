@@ -20,6 +20,8 @@ load_dotenv()
 
 ACCESS_KEY = os.environ["ACCESS_KEY"]
 SECRET_ACCESS_KEY = os.environ["SECRET_ACCESS_KEY"]
+FILE_PATH = os.environ["FILE_PATH"]
+
 s3_client = boto3.client(
     's3',
     aws_access_key_id=ACCESS_KEY,
@@ -199,7 +201,7 @@ def applicant_details(email, job_id):
     )
 
     # data directory, INPUT YOUR OWN PATH
-    data_folder = r""
+    data_folder = FILE_PATH
     if not os.path.exists(data_folder):
         os.makedirs(data_folder)
 
@@ -246,37 +248,3 @@ def applicant_details(email, job_id):
             'message': 'Failed to receive applicant details!',
             'error' : str(e)
         })
-
-# =====================================================================================================================================================
-# @applicant_routes.route('/get_file/<string:key>', methods=['GET'])
-# def get_file(key):
-#     return file_services.fetch_file(key)
-
-
-# @applicant_routes.route('/post_file', methods=['POST'])
-# def upload_file():
-#     try: 
-#         file = request.files['resume']
-#         bucket_name = 'candidate-cvs-temp-bucket'
-#         new_filename = uuid.uuid4().hex + '.pdf'
-#         s3_client.upload_fileobj(file, bucket_name, new_filename)
-
-#         return jsonify({
-#                 'isUploaded': True,
-#                 'filename': new_filename,
-#                 'message': 'File has been uploaded to temp bucket!'
-#             })
-#     except ClientError as e:
-#         print("========ERROR========")
-#         print(logging.error(e))
-
-
-# @applicant_routes.route('/delete_file/<string:key>', methods=['DELETE'])
-# def delete_file(key):
-#     response = s3_client.delete_object(
-#         Bucket="candidate-cvs-temp-bucket",
-#         Key=key,
-#         )
-    
-#     return response
-    # return file_services.perform_delete(key)
